@@ -29,10 +29,10 @@ interface Preset {
 }
 
 const GOALS = [
-  "Continue the conversation",
+  "Continue conversation",
   "Reply politely",
-  "End the conversation",
-  "Set a boundary",
+  "End conversation",
+  "Set boundary",
   "Ask for clarification",
   "Be playful",
   "Sound confident",
@@ -41,9 +41,9 @@ const GOALS = [
   "Say no",
   "Flirt",
   "Break up respectfully",
-  "Ask someone out",
+  "Ask out",
   "Negotiate",
-  "Calm an argument",
+  "Calm argument",
   "Be professional",
   "Follow up"
 ];
@@ -56,8 +56,7 @@ const LENGTHS = [
   "Paragraph",
   "Bullet points",
   "Text message",
-  "Email",
-  "Voice note script"
+  "Email"
 ];
 
 export default function SavedScreen() {
@@ -68,7 +67,7 @@ export default function SavedScreen() {
 
   // Preset Form State
   const [presetName, setPresetName] = useState("");
-  const [presetGoal, setPresetGoal] = useState("Continue the conversation");
+  const [presetGoal, setPresetGoal] = useState("Continue conversation");
   const [presetLength, setPresetLength] = useState("Medium");
   const [creatingPreset, setCreatingPreset] = useState(false);
   const [showAddForm, setShowAddForm] = useState(false);
@@ -154,7 +153,7 @@ export default function SavedScreen() {
       setPresets((prev) => [newPreset, ...prev]);
       setPresetName("");
       setShowAddForm(false);
-      Alert.alert("Success", "Preset created! You can now apply it in the 'Generate' screen.");
+      Alert.alert("Success", "Preset created! Apply it on the 'Generate' screen.");
     } catch (e: any) {
       Alert.alert("Error", e.message || "Failed to create preset");
     } finally {
@@ -173,7 +172,7 @@ export default function SavedScreen() {
           <Ionicons
             name="star"
             size={16}
-            color={activeTab === "favorites" ? "#FFFFFF" : "#9CA3AF"}
+            color={activeTab === "favorites" ? "#FFFFFF" : "#6B7280"}
             style={{ marginRight: 6 }}
           />
           <Text style={[styles.segmentText, activeTab === "favorites" && styles.activeSegmentText]}>
@@ -187,7 +186,7 @@ export default function SavedScreen() {
           <Ionicons
             name="options"
             size={16}
-            color={activeTab === "presets" ? "#FFFFFF" : "#9CA3AF"}
+            color={activeTab === "presets" ? "#FFFFFF" : "#6B7280"}
             style={{ marginRight: 6 }}
           />
           <Text style={[styles.segmentText, activeTab === "presets" && styles.activeSegmentText]}>
@@ -198,13 +197,13 @@ export default function SavedScreen() {
 
       <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
         {loading ? (
-          <ActivityIndicator color="#6366F1" size="large" style={{ marginTop: 40 }} />
+          <ActivityIndicator color="#8B5CF6" size="large" style={{ marginTop: 40 }} />
         ) : activeTab === "favorites" ? (
           /* FAVORITES TAB */
           <View>
             {favorites.length === 0 ? (
               <View style={styles.emptyState}>
-                <Ionicons name="star-outline" size={48} color="#4B5563" />
+                <Ionicons name="star-outline" size={48} color="#D1D5DB" />
                 <Text style={styles.emptyTitle}>No Favorite Replies Yet</Text>
                 <Text style={styles.emptySubtitle}>
                   Generate replies and tap the star icon to save them here for quick access.
@@ -217,7 +216,7 @@ export default function SavedScreen() {
                     <Text style={styles.favStyle}>{fav.style_label}</Text>
                     <View style={styles.actionRow}>
                       <TouchableOpacity onPress={() => copyToClipboard(fav.reply_text)} style={styles.actionBtn}>
-                        <Ionicons name="copy-outline" size={18} color="#9CA3AF" />
+                        <Ionicons name="copy-outline" size={18} color="#6B7280" />
                       </TouchableOpacity>
                       <TouchableOpacity onPress={() => deleteFavorite(fav.id)} style={styles.actionBtn}>
                         <Ionicons name="trash-outline" size={18} color="#EF4444" />
@@ -241,9 +240,9 @@ export default function SavedScreen() {
               style={styles.addPresetToggle}
               onPress={() => setShowAddForm(!showAddForm)}
             >
-              <Ionicons name={showAddForm ? "close" : "add-circle"} size={20} color="#FFFFFF" style={{ marginRight: 6 }} />
+              <Ionicons name={showAddForm ? "close" : "add-circle"} size={20} color="#8B5CF6" style={{ marginRight: 6 }} />
               <Text style={styles.addPresetToggleText}>
-                {showAddForm ? "Cancel Preset Creation" : "Create New Custom Preset"}
+                {showAddForm ? "Cancel Creation" : "Create New Style Preset"}
               </Text>
             </TouchableOpacity>
 
@@ -256,7 +255,7 @@ export default function SavedScreen() {
                   <TextInput
                     style={styles.input}
                     placeholder="e.g. My Dating Style, My Wife, My Boss"
-                    placeholderTextColor="#6B7280"
+                    placeholderTextColor="#9CA3AF"
                     value={presetName}
                     onChangeText={setPresetName}
                   />
@@ -280,7 +279,7 @@ export default function SavedScreen() {
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.formLabel}>Default Format / Length</Text>
+                  <Text style={styles.formLabel}>Default Length</Text>
                   <View style={styles.dropdown}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalChips}>
                       {LENGTHS.map((l) => (
@@ -312,10 +311,10 @@ export default function SavedScreen() {
 
             {presets.length === 0 ? (
               <View style={styles.emptyState}>
-                <Ionicons name="options-outline" size={48} color="#4B5563" />
+                <Ionicons name="options-outline" size={48} color="#D1D5DB" />
                 <Text style={styles.emptyTitle}>No Custom Presets</Text>
                 <Text style={styles.emptySubtitle}>
-                  Create custom presets above to quickly prefill goal & length configurations on the generate screen.
+                  Create custom presets above to quickly prefill configurations on the generate screen.
                 </Text>
               </View>
             ) : (
@@ -323,7 +322,7 @@ export default function SavedScreen() {
                 <View key={p.id} style={styles.presetCard}>
                   <View style={styles.presetHeader}>
                     <View style={styles.presetMetaInfo}>
-                      <Ionicons name="color-wand" size={16} color="#6366F1" style={{ marginRight: 6 }} />
+                      <Ionicons name="color-wand" size={16} color="#8B5CF6" style={{ marginRight: 6 }} />
                       <Text style={styles.presetNameText}>{p.name}</Text>
                     </View>
                     <TouchableOpacity onPress={() => deletePreset(p.id)} style={styles.presetDelete}>
@@ -336,7 +335,7 @@ export default function SavedScreen() {
                       <Text style={styles.metaValue}>{p.goal}</Text>
                     </View>
                     <View style={styles.metaRow}>
-                      <Text style={styles.metaLabel}>Format: </Text>
+                      <Text style={styles.metaLabel}>Length: </Text>
                       <Text style={styles.metaValue}>{p.length}</Text>
                     </View>
                   </View>
@@ -353,32 +352,32 @@ export default function SavedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B0F19",
+    backgroundColor: "#F9FAFB",
   },
   segmentedControl: {
     flexDirection: "row",
-    backgroundColor: "#111827",
-    padding: 6,
+    backgroundColor: "#E5E7EB",
+    padding: 4,
     borderRadius: 12,
     margin: 16,
     borderWidth: 1,
-    borderColor: "#1F2937",
+    borderColor: "#E5E7EB",
   },
   segmentBtn: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    height: 40,
+    height: 38,
     borderRadius: 8,
   },
   activeSegmentBtn: {
-    backgroundColor: "#6366F1",
+    backgroundColor: "#8B5CF6",
   },
   segmentText: {
-    color: "#9CA3AF",
+    color: "#4B5563",
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   activeSegmentText: {
     color: "#FFFFFF",
@@ -395,39 +394,44 @@ const styles = StyleSheet.create({
   },
   emptyTitle: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontWeight: "800",
+    color: "#111827",
     marginTop: 16,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 14,
-    color: "#9CA3AF",
+    color: "#6B7280",
     textAlign: "center",
     lineHeight: 20,
   },
   favCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
+    elevation: 2,
   },
   favHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#1F2937",
+    borderBottomColor: "#F3F4F6",
     paddingBottom: 8,
     marginBottom: 10,
   },
   favStyle: {
     fontSize: 13,
-    fontWeight: "bold",
-    color: "#6366F1",
-    backgroundColor: "rgba(99, 102, 241, 0.1)",
+    fontWeight: "800",
+    color: "#8B5CF6",
+    backgroundColor: "rgba(139, 92, 246, 0.08)",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 8,
@@ -440,76 +444,88 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   originalLabel: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: "#6B7280",
+    fontSize: 11,
+    fontWeight: "800",
+    color: "#9CA3AF",
     marginBottom: 2,
     textTransform: "uppercase",
   },
   originalText: {
     fontSize: 13,
-    color: "#9CA3AF",
+    color: "#4B5563",
     marginBottom: 12,
   },
   replyLabel: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: "#6366F1",
+    fontSize: 11,
+    fontWeight: "800",
+    color: "#8B5CF6",
     marginBottom: 2,
     textTransform: "uppercase",
   },
   replyText: {
     fontSize: 15,
-    color: "#E5E7EB",
+    color: "#111827",
     lineHeight: 22,
   },
   addPresetToggle: {
     flexDirection: "row",
-    backgroundColor: "rgba(99, 102, 241, 0.1)",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "rgba(99, 102, 241, 0.2)",
+    borderColor: "#E5E7EB",
     height: 48,
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.02,
+    shadowRadius: 4,
+    elevation: 1,
   },
   addPresetToggleText: {
-    color: "#FFFFFF",
+    color: "#8B5CF6",
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "800",
   },
   presetForm: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
+    elevation: 2,
   },
   formTitle: {
     fontSize: 16,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontWeight: "800",
+    color: "#111827",
     marginBottom: 16,
   },
   formGroup: {
     marginBottom: 16,
   },
   formLabel: {
-    fontSize: 13,
-    fontWeight: "600",
-    color: "#9CA3AF",
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#4B5563",
     marginBottom: 8,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   input: {
     height: 44,
-    backgroundColor: "#1F2937",
+    backgroundColor: "#F9FAFB",
     borderWidth: 1,
-    borderColor: "#374151",
+    borderColor: "#E5E7EB",
     borderRadius: 10,
     paddingHorizontal: 12,
-    color: "#FFFFFF",
+    color: "#111827",
     fontSize: 14,
   },
   dropdown: {
@@ -519,29 +535,29 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   miniChip: {
-    backgroundColor: "#1F2937",
+    backgroundColor: "#F3F4F6",
     borderWidth: 1,
-    borderColor: "#374151",
+    borderColor: "#E5E7EB",
     borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 6,
     marginRight: 6,
   },
   activeMiniChip: {
-    backgroundColor: "#6366F1",
-    borderColor: "#6366F1",
+    backgroundColor: "#8B5CF6",
+    borderColor: "#8B5CF6",
   },
   miniChipText: {
-    color: "#9CA3AF",
+    color: "#4B5563",
     fontSize: 12,
-    fontWeight: "500",
+    fontWeight: "600",
   },
   activeMiniChipText: {
     color: "#FFFFFF",
     fontWeight: "bold",
   },
   submitBtn: {
-    backgroundColor: "#6366F1",
+    backgroundColor: "#8B5CF6",
     height: 44,
     borderRadius: 10,
     justifyContent: "center",
@@ -549,7 +565,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   disabledBtn: {
-    backgroundColor: "#4B5563",
+    backgroundColor: "#9CA3AF",
   },
   submitBtnText: {
     color: "#FFFFFF",
@@ -557,19 +573,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   presetCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
+    elevation: 2,
   },
   presetHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#1F2937",
+    borderBottomColor: "#F3F4F6",
     paddingBottom: 8,
     marginBottom: 10,
   },
@@ -579,8 +600,8 @@ const styles = StyleSheet.create({
   },
   presetNameText: {
     fontSize: 15,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontWeight: "800",
+    color: "#111827",
   },
   presetDelete: {
     padding: 4,
@@ -594,13 +615,13 @@ const styles = StyleSheet.create({
   },
   metaLabel: {
     fontSize: 13,
-    fontWeight: "bold",
+    fontWeight: "700",
     color: "#6B7280",
     width: 60,
   },
   metaValue: {
     fontSize: 13,
-    color: "#D1D5DB",
+    color: "#1F2937",
     flex: 1,
   },
 });

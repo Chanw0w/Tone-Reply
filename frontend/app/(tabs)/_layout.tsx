@@ -10,12 +10,11 @@ export default function TabsLayout() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#6366F1" />
+        <ActivityIndicator size="large" color="#8B5CF6" />
       </View>
     );
   }
 
-  // Double guard - if not authenticated, bounce to login
   if (!user) {
     return <Redirect href="/login" />;
   }
@@ -23,27 +22,27 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#6366F1",
-        tabBarInactiveTintColor: "#9CA3AF",
+        tabBarActiveTintColor: "#8B5CF6",
+        tabBarInactiveTintColor: "#6B7280",
         tabBarStyle: {
-          backgroundColor: "#111827",
+          backgroundColor: "#FFFFFF",
           borderTopWidth: 1,
-          borderTopColor: "#1F2937",
+          borderTopColor: "#E5E7EB",
           height: 64,
           paddingBottom: 8,
           paddingTop: 8,
         },
         headerStyle: {
-          backgroundColor: "#111827",
+          backgroundColor: "#FFFFFF",
           borderBottomWidth: 1,
-          borderBottomColor: "#1F2937",
+          borderBottomColor: "#E5E7EB",
         },
         headerTitleStyle: {
-          color: "#FFFFFF",
-          fontWeight: "bold",
+          color: "#111827",
+          fontWeight: "800",
           fontSize: 18,
         },
-        headerTintColor: "#FFFFFF",
+        headerTintColor: "#111827",
       }}
     >
       <Tabs.Screen
@@ -128,7 +127,7 @@ export default function TabsLayout() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    backgroundColor: "#0B0F19",
+    backgroundColor: "#FFFFFF",
     alignItems: "center",
     justifyContent: "center",
   },

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Image } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
 import { useAuth } from "../../src/utils/auth-context";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -11,11 +11,11 @@ export default function ProfileScreen() {
       {/* Profile Header */}
       <View style={styles.profileHeader}>
         <View style={styles.avatarContainer}>
-          <Ionicons name="person-circle" size={80} color="#6366F1" />
+          <Ionicons name="person-circle" size={80} color="#8B5CF6" />
         </View>
         <Text style={styles.emailText}>{user?.email || "user@example.com"}</Text>
         <View style={styles.badge}>
-          <Ionicons name="sparkles" size={14} color="#F59E0B" style={{ marginRight: 4 }} />
+          <Ionicons name="sparkles" size={14} color="#D97706" style={{ marginRight: 4 }} />
           <Text style={styles.badgeText}>Premium Unlocked</Text>
         </View>
       </View>
@@ -25,7 +25,7 @@ export default function ProfileScreen() {
         <Text style={styles.sectionTitle}>Your Premium Features</Text>
 
         <View style={styles.featureItem}>
-          <View style={[styles.iconWrapper, { backgroundColor: "rgba(16, 185, 129, 0.1)" }]}>
+          <View style={[styles.iconWrapper, { backgroundColor: "rgba(16, 185, 129, 0.08)" }]}>
             <Ionicons name="infinite" size={20} color="#10B981" />
           </View>
           <View style={styles.featureTextWrapper}>
@@ -35,17 +35,17 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.featureItem}>
-          <View style={[styles.iconWrapper, { backgroundColor: "rgba(139, 92, 246, 0.1)" }]}>
+          <View style={[styles.iconWrapper, { backgroundColor: "rgba(139, 92, 246, 0.08)" }]}>
             <Ionicons name="options-outline" size={20} color="#8B5CF6" />
           </View>
           <View style={styles.featureTextWrapper}>
             <Text style={styles.featureTitle}>Custom Style Presets</Text>
-            <Text style={styles.featureDesc}>Save presets for dating, professional emails, family, or friends.</Text>
+            <Text style={styles.featureDesc}>Save presets for dating, professional emails, or friends.</Text>
           </View>
         </View>
 
         <View style={styles.featureItem}>
-          <View style={[styles.iconWrapper, { backgroundColor: "rgba(59, 130, 246, 0.1)" }]}>
+          <View style={[styles.iconWrapper, { backgroundColor: "rgba(59, 130, 246, 0.08)" }]}>
             <Ionicons name="mic-outline" size={20} color="#3B82F6" />
           </View>
           <View style={styles.featureTextWrapper}>
@@ -84,7 +84,7 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B0F19",
+    backgroundColor: "#F9FAFB",
   },
   scrollContainer: {
     padding: 16,
@@ -93,11 +93,16 @@ const styles = StyleSheet.create({
   profileHeader: {
     alignItems: "center",
     paddingVertical: 24,
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 20,
+    borderColor: "#E5E7EB",
+    borderRadius: 24,
     marginBottom: 24,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.03,
+    shadowRadius: 12,
+    elevation: 2,
   },
   avatarContainer: {
     marginBottom: 12,
@@ -105,36 +110,41 @@ const styles = StyleSheet.create({
   emailText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#FFFFFF",
+    color: "#111827",
     marginBottom: 8,
   },
   badge: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(245, 158, 11, 0.1)",
+    backgroundColor: "rgba(217, 119, 6, 0.08)",
     borderWidth: 1,
-    borderColor: "rgba(245, 158, 11, 0.2)",
+    borderColor: "rgba(217, 119, 6, 0.15)",
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 6,
   },
   badgeText: {
-    color: "#F59E0B",
+    color: "#D97706",
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: "700",
   },
   section: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.02,
+    shadowRadius: 8,
+    elevation: 1,
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#9CA3AF",
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#6B7280",
     marginBottom: 16,
     textTransform: "uppercase",
     letterSpacing: 0.5,
@@ -157,13 +167,13 @@ const styles = StyleSheet.create({
   },
   featureTitle: {
     fontSize: 14,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontWeight: "800",
+    color: "#111827",
     marginBottom: 2,
   },
   featureDesc: {
     fontSize: 12,
-    color: "#9CA3AF",
+    color: "#4B5563",
     lineHeight: 16,
   },
   infoRow: {
@@ -171,28 +181,28 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#1F2937",
+    borderBottomColor: "#F3F4F6",
   },
   infoLabel: {
     fontSize: 14,
-    color: "#9CA3AF",
+    color: "#6B7280",
   },
   infoValue: {
     fontSize: 14,
-    color: "#FFFFFF",
-    fontWeight: "500",
+    color: "#111827",
+    fontWeight: "700",
   },
   logoutButton: {
     flexDirection: "row",
     backgroundColor: "#EF4444",
-    borderRadius: 12,
-    height: 48,
+    borderRadius: 14,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
     shadowColor: "#EF4444",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.15,
     shadowRadius: 8,
     elevation: 3,
   },

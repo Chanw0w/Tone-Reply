@@ -12,7 +12,7 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from "react-native";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import { useAuth } from "../src/utils/auth-context";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -49,7 +49,7 @@ export default function LoginScreen() {
         <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
           <View style={styles.header}>
             <View style={styles.logoContainer}>
-              <Ionicons name="chatbubble-ellipses" size={48} color="#6366F1" />
+              <Ionicons name="chatbubble-ellipses" size={44} color="#8B5CF6" />
             </View>
             <Text style={styles.title}>ToneReply</Text>
             <Text style={styles.subtitle}>Your Intelligent Communication Assistant</Text>
@@ -58,7 +58,7 @@ export default function LoginScreen() {
           <View style={styles.form}>
             {error && (
               <View style={styles.errorContainer}>
-                <Ionicons name="alert-circle" size={20} color="#F87171" style={styles.errorIcon} />
+                <Ionicons name="alert-circle" size={20} color="#EF4444" style={styles.errorIcon} />
                 <Text style={styles.errorText}>{error}</Text>
               </View>
             )}
@@ -66,11 +66,11 @@ export default function LoginScreen() {
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Email Address</Text>
               <View style={styles.inputWrapper}>
-                <Ionicons name="mail-outline" size={20} color="#9CA3AF" style={styles.inputIcon} />
+                <Ionicons name="mail-outline" size={20} color="#6B7280" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="name@example.com"
-                  placeholderTextColor="#6B7280"
+                  placeholderTextColor="#9CA3AF"
                   value={email}
                   onChangeText={(text) => {
                     setEmail(text);
@@ -86,11 +86,11 @@ export default function LoginScreen() {
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Password</Text>
               <View style={styles.inputWrapper}>
-                <Ionicons name="lock-closed-outline" size={20} color="#9CA3AF" style={styles.inputIcon} />
+                <Ionicons name="lock-closed-outline" size={20} color="#6B7280" style={styles.inputIcon} />
                 <TextInput
                   style={styles.input}
                   placeholder="Enter your password"
-                  placeholderTextColor="#6B7280"
+                  placeholderTextColor="#9CA3AF"
                   value={password}
                   onChangeText={(text) => {
                     setPassword(text);
@@ -107,7 +107,7 @@ export default function LoginScreen() {
                   <Ionicons
                     name={showPassword ? "eye-off-outline" : "eye-outline"}
                     size={20}
-                    color="#9CA3AF"
+                    color="#6B7280"
                   />
                 </TouchableOpacity>
               </View>
@@ -143,7 +143,7 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B0F19",
+    backgroundColor: "#FFFFFF",
   },
   scrollContainer: {
     flexGrow: 1,
@@ -152,42 +152,52 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
-    marginBottom: 40,
+    marginBottom: 36,
   },
   logoContainer: {
     width: 80,
     height: 80,
     borderRadius: 24,
-    backgroundColor: "rgba(99, 102, 241, 0.1)",
+    backgroundColor: "#F3F4F6",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: "rgba(99, 102, 241, 0.2)",
+    borderColor: "#E5E7EB",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 2,
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#FFFFFF",
-    marginBottom: 8,
+    color: "#111827",
+    marginBottom: 6,
   },
   subtitle: {
     fontSize: 14,
-    color: "#9CA3AF",
+    color: "#4B5563",
     textAlign: "center",
   },
   form: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     padding: 24,
-    borderRadius: 20,
+    borderRadius: 24,
     borderWidth: 1,
-    borderColor: "#1F2937",
+    borderColor: "#E5E7EB",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.06,
+    shadowRadius: 20,
+    elevation: 4,
   },
   errorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(239, 68, 68, 0.1)",
-    borderColor: "rgba(239, 68, 68, 0.2)",
+    backgroundColor: "#FEF2F2",
+    borderColor: "#FEE2E2",
     borderWidth: 1,
     padding: 12,
     borderRadius: 12,
@@ -197,7 +207,7 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   errorText: {
-    color: "#F87171",
+    color: "#EF4444",
     fontSize: 14,
     flex: 1,
   },
@@ -205,19 +215,21 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#E5E7EB",
+    fontSize: 13,
+    fontWeight: "700",
+    color: "#374151",
     marginBottom: 8,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   inputWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#1F2937",
+    backgroundColor: "#F9FAFB",
     borderWidth: 1,
-    borderColor: "#374151",
-    borderRadius: 12,
-    paddingHorizontal: 12,
+    borderColor: "#E5E7EB",
+    borderRadius: 14,
+    paddingHorizontal: 14,
   },
   inputIcon: {
     marginRight: 10,
@@ -225,23 +237,23 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     height: 48,
-    color: "#FFFFFF",
+    color: "#111827",
     fontSize: 15,
   },
   eyeIcon: {
     padding: 8,
   },
   button: {
-    height: 48,
-    backgroundColor: "#6366F1",
-    borderRadius: 12,
+    height: 50,
+    backgroundColor: "#8B5CF6",
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
-    shadowColor: "#6366F1",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
+    shadowColor: "#8B5CF6",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
     elevation: 3,
   },
   buttonText: {
@@ -256,11 +268,11 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   footerText: {
-    color: "#9CA3AF",
+    color: "#4B5563",
     fontSize: 14,
   },
   linkText: {
-    color: "#6366F1",
+    color: "#8B5CF6",
     fontSize: 14,
     fontWeight: "bold",
   },

@@ -33,10 +33,10 @@ const STYLE_LABELS: Record<keyof Rewrites, { label: string; icon: string; color:
   flirty: { label: "✨ More Flirty", icon: "sparkles", color: "#8B5CF6" },
   less_needy: { label: "🎯 Less Needy", icon: "shield-checkmark", color: "#3B82F6" },
   respectful: { label: "🤝 More Respectful", icon: "people", color: "#14B8A6" },
-  mysterious: { label: "🕵️ More Mysterious", icon: "eye-off", color: "#6B7280" },
+  mysterious: { label: "🕵️ More Mysterious", icon: "eye-off", color: "#4B5563" },
   masculine: { label: "💪 More Masculine", icon: "fitness", color: "#EF4444" },
   feminine: { label: "🌸 More Feminine", icon: "flower", color: "#F43F5E" },
-  professional: { label: "💼 More Professional", icon: "briefcase", color: "#F59E0B" },
+  professional: { label: "💼 More Professional", icon: "briefcase", color: "#D97706" },
 };
 
 export default function RewriteScreen() {
@@ -81,7 +81,7 @@ export default function RewriteScreen() {
         {/* Paste Box */}
         <View style={styles.inputCard}>
           <View style={styles.inputHeader}>
-            <Text style={styles.inputTitle}>Your Original Message Draft</Text>
+            <Text style={styles.inputTitle}>Your Message Draft</Text>
             {draft.length > 0 && (
               <TouchableOpacity onPress={() => setDraft("")}>
                 <Text style={styles.clearText}>Clear</Text>
@@ -92,8 +92,8 @@ export default function RewriteScreen() {
             style={styles.textArea}
             multiline
             numberOfLines={4}
-            placeholder="Type or paste a draft, e.g., 'Hey, are you busy tonight? wanted to check if you wanted to get dinner...'"
-            placeholderTextColor="#6B7280"
+            placeholder="Type or paste a draft here to elevate its tone..."
+            placeholderTextColor="#9CA3AF"
             value={draft}
             onChangeText={(text) => {
               setDraft(text);
@@ -139,7 +139,7 @@ export default function RewriteScreen() {
                       onPress={() => copyToClipboard(textVal)}
                       style={styles.copyBtn}
                     >
-                      <Ionicons name="copy-outline" size={18} color="#9CA3AF" />
+                      <Ionicons name="copy-outline" size={18} color="#6B7280" />
                     </TouchableOpacity>
                   </View>
                   <Text style={styles.rewriteContent}>{textVal}</Text>
@@ -156,19 +156,24 @@ export default function RewriteScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B0F19",
+    backgroundColor: "#F9FAFB",
   },
   scrollContainer: {
     padding: 16,
     paddingBottom: 40,
   },
   inputCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
+    elevation: 2,
   },
   inputHeader: {
     flexDirection: "row",
@@ -177,48 +182,49 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputTitle: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    marginBottom: 8,
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#374151",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   clearText: {
     color: "#EF4444",
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   textArea: {
-    backgroundColor: "#1F2937",
+    backgroundColor: "#F9FAFB",
     borderWidth: 1,
-    borderColor: "#374151",
+    borderColor: "#E5E7EB",
     borderRadius: 12,
     padding: 12,
-    color: "#FFFFFF",
+    color: "#111827",
     fontSize: 14,
     height: 100,
     textAlignVertical: "top",
   },
   errorText: {
-    color: "#F87171",
+    color: "#EF4444",
     fontSize: 14,
     textAlign: "center",
     marginBottom: 16,
   },
   rewriteButton: {
-    backgroundColor: "#6366F1",
-    borderRadius: 12,
+    backgroundColor: "#8B5CF6",
+    borderRadius: 14,
     height: 52,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 24,
-    shadowColor: "#6366F1",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowColor: "#8B5CF6",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 3,
   },
   disabledButton: {
-    backgroundColor: "#4B5563",
+    backgroundColor: "#9CA3AF",
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -228,7 +234,7 @@ const styles = StyleSheet.create({
   },
   rewriteButtonText: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
   },
   resultsSection: {
@@ -236,24 +242,29 @@ const styles = StyleSheet.create({
   },
   resultsTitle: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontWeight: "800",
+    color: "#111827",
     marginBottom: 16,
   },
   rewriteCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.04,
+    shadowRadius: 10,
+    elevation: 2,
   },
   rewriteCardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#1F2937",
+    borderBottomColor: "#F3F4F6",
     paddingBottom: 10,
     marginBottom: 12,
   },
@@ -263,14 +274,14 @@ const styles = StyleSheet.create({
   },
   rewriteStyleLabel: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontWeight: "800",
   },
   copyBtn: {
     padding: 4,
   },
   rewriteContent: {
     fontSize: 15,
-    color: "#E5E7EB",
+    color: "#1F2937",
     lineHeight: 22,
   },
 });

@@ -59,7 +59,7 @@ export default function ExplainScreen() {
       <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
         {/* Intro */}
         <Text style={styles.introText}>
-          Understand the dynamics of your chat. We formulate observations and possibilities as guides rather than definitive mind-reading conclusions.
+          Understand conversational dynamics. We present observations and possibilities as analytical insights rather than definitive mind-reading conclusions.
         </Text>
 
         {/* Input Card */}
@@ -76,8 +76,8 @@ export default function ExplainScreen() {
             style={styles.textArea}
             multiline
             numberOfLines={5}
-            placeholder="Paste SMS, WhatsApp logs, Instagram DMs, Discord, or dating app chats..."
-            placeholderTextColor="#6B7280"
+            placeholder="Paste SMS, WhatsApp logs, DMs, or emails..."
+            placeholderTextColor="#9CA3AF"
             value={convo}
             onChangeText={(text) => {
               setConvo(text);
@@ -97,8 +97,8 @@ export default function ExplainScreen() {
             <ActivityIndicator color="#FFFFFF" />
           ) : (
             <View style={styles.buttonInner}>
-              <Ionicons name="analytics" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
-              <Text style={styles.analyzeButtonText}>Analyze Conversation & Get Coach Tips</Text>
+              <Ionicons name="analytics" size={18} color="#FFFFFF" style={{ marginRight: 8 }} />
+              <Text style={styles.analyzeButtonText}>Analyze Conversation & Coach Tips</Text>
             </View>
           )}
         </TouchableOpacity>
@@ -112,7 +112,7 @@ export default function ExplainScreen() {
             {analysis.coaching_tips && analysis.coaching_tips.length > 0 && (
               <View style={styles.coachingCard}>
                 <View style={styles.coachingHeader}>
-                  <Ionicons name="school" size={20} color="#6366F1" style={{ marginRight: 8 }} />
+                  <Ionicons name="school" size={20} color="#8B5CF6" style={{ marginRight: 8 }} />
                   <Text style={styles.coachingTitle}>Communication Coaching Tips</Text>
                 </View>
                 {analysis.coaching_tips.map((tip, index) => (
@@ -163,7 +163,7 @@ export default function ExplainScreen() {
             {/* Unanswered Questions */}
             <View style={styles.infoCard}>
               <View style={styles.infoTitleRow}>
-                <Ionicons name="help-circle-outline" size={18} color="#F59E0B" />
+                <Ionicons name="help-circle-outline" size={18} color="#D97706" />
                 <Text style={styles.infoTitle}>Question Status</Text>
               </View>
               <Text style={styles.infoContent}>{analysis.answered_questions}</Text>
@@ -187,7 +187,7 @@ export default function ExplainScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B0F19",
+    backgroundColor: "#F9FAFB",
   },
   scrollContainer: {
     padding: 16,
@@ -195,17 +195,22 @@ const styles = StyleSheet.create({
   },
   introText: {
     fontSize: 14,
-    color: "#9CA3AF",
+    color: "#4B5563",
     lineHeight: 20,
     marginBottom: 16,
   },
   inputCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
+    elevation: 2,
   },
   inputHeader: {
     flexDirection: "row",
@@ -214,48 +219,49 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputTitle: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    marginBottom: 8,
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#374151",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   clearText: {
     color: "#EF4444",
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   textArea: {
-    backgroundColor: "#1F2937",
+    backgroundColor: "#F9FAFB",
     borderWidth: 1,
-    borderColor: "#374151",
+    borderColor: "#E5E7EB",
     borderRadius: 12,
     padding: 12,
-    color: "#FFFFFF",
+    color: "#111827",
     fontSize: 14,
     height: 120,
     textAlignVertical: "top",
   },
   errorText: {
-    color: "#F87171",
+    color: "#EF4444",
     fontSize: 14,
     textAlign: "center",
     marginBottom: 16,
   },
   analyzeButton: {
-    backgroundColor: "#6366F1",
-    borderRadius: 12,
+    backgroundColor: "#8B5CF6",
+    borderRadius: 14,
     height: 52,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 24,
-    shadowColor: "#6366F1",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowColor: "#8B5CF6",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 3,
   },
   disabledButton: {
-    backgroundColor: "#4B5563",
+    backgroundColor: "#9CA3AF",
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -265,7 +271,7 @@ const styles = StyleSheet.create({
   },
   analyzeButtonText: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
   },
   analysisSection: {
@@ -273,15 +279,15 @@ const styles = StyleSheet.create({
   },
   sectionHeading: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontWeight: "800",
+    color: "#111827",
     marginBottom: 16,
   },
   coachingCard: {
-    backgroundColor: "rgba(99, 102, 241, 0.05)",
-    borderColor: "rgba(99, 102, 241, 0.2)",
+    backgroundColor: "rgba(139, 92, 246, 0.03)",
+    borderColor: "rgba(139, 92, 246, 0.15)",
     borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
   },
@@ -290,13 +296,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(99, 102, 241, 0.1)",
+    borderBottomColor: "rgba(139, 92, 246, 0.08)",
     paddingBottom: 8,
   },
   coachingTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontSize: 15,
+    fontWeight: "800",
+    color: "#111827",
   },
   tipRow: {
     flexDirection: "row",
@@ -309,17 +315,22 @@ const styles = StyleSheet.create({
   },
   tipText: {
     fontSize: 14,
-    color: "#E5E7EB",
+    color: "#374151",
     flex: 1,
     lineHeight: 20,
   },
   infoCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.02,
+    shadowRadius: 6,
+    elevation: 1,
   },
   infoTitleRow: {
     flexDirection: "row",
@@ -327,16 +338,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   infoTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#9CA3AF",
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#6B7280",
     marginLeft: 8,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   infoContent: {
     fontSize: 15,
-    color: "#E5E7EB",
+    color: "#1F2937",
     lineHeight: 22,
   },
 });

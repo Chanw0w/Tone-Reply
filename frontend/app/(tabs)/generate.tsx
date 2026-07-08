@@ -16,10 +16,10 @@ import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 
 const GOALS = [
-  "Continue the conversation",
+  "Continue conversation",
   "Reply politely",
-  "End the conversation",
-  "Set a boundary",
+  "End conversation",
+  "Set boundary",
   "Ask for clarification",
   "Be playful",
   "Sound confident",
@@ -28,12 +28,11 @@ const GOALS = [
   "Say no",
   "Flirt",
   "Break up respectfully",
-  "Ask someone out",
+  "Ask out",
   "Negotiate",
-  "Calm an argument",
+  "Calm argument",
   "Be professional",
-  "Follow up",
-  "Leave them on good terms"
+  "Follow up"
 ];
 
 const LENGTHS = [
@@ -44,8 +43,7 @@ const LENGTHS = [
   "Paragraph",
   "Bullet points",
   "Text message",
-  "Email",
-  "Voice note script"
+  "Email"
 ];
 
 interface ReplyOption {
@@ -63,7 +61,7 @@ interface Preset {
 
 export default function GenerateScreen() {
   const [convo, setConvo] = useState("");
-  const [goal, setGoal] = useState("Continue the conversation");
+  const [goal, setGoal] = useState("Continue conversation");
   const [length, setLength] = useState("Medium");
   const [options, setOptions] = useState<ReplyOption[]>([]);
   const [loading, setLoading] = useState(false);
@@ -153,7 +151,7 @@ export default function GenerateScreen() {
                   style={styles.presetChip}
                   onPress={() => applyPreset(preset)}
                 >
-                  <Ionicons name="options-outline" size={14} color="#6366F1" style={{ marginRight: 4 }} />
+                  <Ionicons name="color-wand" size={14} color="#8B5CF6" style={{ marginRight: 4 }} />
                   <Text style={styles.presetChipText}>{preset.name}</Text>
                 </TouchableOpacity>
               ))}
@@ -175,8 +173,8 @@ export default function GenerateScreen() {
             style={styles.textArea}
             multiline
             numberOfLines={5}
-            placeholder="Paste text messages, WhatsApp chat history, Bumble conversations, emails here..."
-            placeholderTextColor="#6B7280"
+            placeholder="Paste text messages, WhatsApp chat history, or emails here..."
+            placeholderTextColor="#9CA3AF"
             value={convo}
             onChangeText={(text) => {
               setConvo(text);
@@ -203,7 +201,7 @@ export default function GenerateScreen() {
 
         {/* Length Selector */}
         <View style={styles.inputCard}>
-          <Text style={styles.inputTitle}>Choose Output Format & Length</Text>
+          <Text style={styles.inputTitle}>Choose Format & Length</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.goalRow}>
             {LENGTHS.map((len) => (
               <TouchableOpacity
@@ -228,7 +226,7 @@ export default function GenerateScreen() {
             <ActivityIndicator color="#FFFFFF" />
           ) : (
             <View style={styles.buttonInner}>
-              <Ionicons name="sparkles" size={20} color="#FFFFFF" style={{ marginRight: 8 }} />
+              <Ionicons name="sparkles" size={18} color="#FFFFFF" style={{ marginRight: 8 }} />
               <Text style={styles.generateButtonText}>Generate Side-by-Side Replies</Text>
             </View>
           )}
@@ -250,14 +248,14 @@ export default function GenerateScreen() {
                       <Ionicons
                         name={savedStatus[index] ? "star" : "star-outline"}
                         size={18}
-                        color={savedStatus[index] ? "#F59E0B" : "#9CA3AF"}
+                        color={savedStatus[index] ? "#F59E0B" : "#6B7280"}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => copyToClipboard(opt.text, index)}
                       style={styles.actionBtn}
                     >
-                      <Ionicons name="copy-outline" size={18} color="#9CA3AF" />
+                      <Ionicons name="copy-outline" size={18} color="#6B7280" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -274,7 +272,7 @@ export default function GenerateScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#0B0F19",
+    backgroundColor: "#F9FAFB",
   },
   scrollContainer: {
     padding: 16,
@@ -284,9 +282,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#9CA3AF",
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#6B7280",
     marginBottom: 8,
     textTransform: "uppercase",
     letterSpacing: 0.5,
@@ -297,26 +295,36 @@ const styles = StyleSheet.create({
   presetChip: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(99, 102, 241, 0.1)",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "rgba(99, 102, 241, 0.2)",
+    borderColor: "#E5E7EB",
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 6,
     marginRight: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.03,
+    shadowRadius: 4,
+    elevation: 1,
   },
   presetChipText: {
-    color: "#6366F1",
+    color: "#8B5CF6",
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   inputCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.03,
+    shadowRadius: 8,
+    elevation: 2,
   },
   inputHeader: {
     flexDirection: "row",
@@ -325,23 +333,24 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   inputTitle: {
-    fontSize: 15,
-    fontWeight: "bold",
-    color: "#FFFFFF",
-    marginBottom: 8,
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#374151",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   clearText: {
     color: "#EF4444",
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   textArea: {
-    backgroundColor: "#1F2937",
+    backgroundColor: "#F9FAFB",
     borderWidth: 1,
-    borderColor: "#374151",
+    borderColor: "#E5E7EB",
     borderRadius: 12,
     padding: 12,
-    color: "#FFFFFF",
+    color: "#111827",
     fontSize: 14,
     height: 120,
     textAlignVertical: "top",
@@ -351,48 +360,48 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   goalChip: {
-    backgroundColor: "#1F2937",
+    backgroundColor: "#F3F4F6",
     borderWidth: 1,
-    borderColor: "#374151",
+    borderColor: "#E5E7EB",
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 8,
     marginRight: 8,
   },
   activeGoalChip: {
-    backgroundColor: "#6366F1",
-    borderColor: "#6366F1",
+    backgroundColor: "#8B5CF6",
+    borderColor: "#8B5CF6",
   },
   goalChipText: {
-    color: "#9CA3AF",
+    color: "#4B5563",
     fontSize: 13,
-    fontWeight: "500",
+    fontWeight: "600",
   },
   activeGoalChipText: {
     color: "#FFFFFF",
     fontWeight: "bold",
   },
   errorText: {
-    color: "#F87171",
+    color: "#EF4444",
     fontSize: 14,
     textAlign: "center",
     marginBottom: 16,
   },
   generateButton: {
-    backgroundColor: "#6366F1",
-    borderRadius: 12,
+    backgroundColor: "#8B5CF6",
+    borderRadius: 14,
     height: 52,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 24,
-    shadowColor: "#6366F1",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 8,
-    elevation: 4,
+    shadowColor: "#8B5CF6",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.2,
+    shadowRadius: 10,
+    elevation: 3,
   },
   disabledButton: {
-    backgroundColor: "#4B5563",
+    backgroundColor: "#9CA3AF",
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -402,7 +411,7 @@ const styles = StyleSheet.create({
   },
   generateButtonText: {
     color: "#FFFFFF",
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
   },
   resultsSection: {
@@ -410,32 +419,37 @@ const styles = StyleSheet.create({
   },
   resultsTitle: {
     fontSize: 18,
-    fontWeight: "bold",
-    color: "#FFFFFF",
+    fontWeight: "800",
+    color: "#111827",
     marginBottom: 16,
   },
   replyCard: {
-    backgroundColor: "#111827",
+    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#1F2937",
-    borderRadius: 16,
+    borderColor: "#E5E7EB",
+    borderRadius: 18,
     padding: 16,
     marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.04,
+    shadowRadius: 10,
+    elevation: 2,
   },
   replyCardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#1F2937",
+    borderBottomColor: "#F3F4F6",
     paddingBottom: 10,
     marginBottom: 12,
   },
   replyStyleLabel: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: "#6366F1",
-    backgroundColor: "rgba(99, 102, 241, 0.1)",
+    fontSize: 13,
+    fontWeight: "800",
+    color: "#8B5CF6",
+    backgroundColor: "rgba(139, 92, 246, 0.08)",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 8,
@@ -449,7 +463,7 @@ const styles = StyleSheet.create({
   },
   replyContent: {
     fontSize: 15,
-    color: "#E5E7EB",
+    color: "#1F2937",
     lineHeight: 22,
   },
 });
