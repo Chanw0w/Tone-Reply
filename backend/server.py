@@ -31,7 +31,9 @@ client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ.get('DB_NAME', "test_database")]
 
 # JWT Configuration
-JWT_SECRET = os.environ.get("JWT_SECRET", "super_secret_key_123_abc_communication_expert")
+JWT_SECRET = os.environ.get("JWT_SECRET")
+if not JWT_SECRET:
+    raise RuntimeError("CRITICAL STARTUP ERROR: JWT_SECRET environment variable is not configured!")
 ALGORITHM = "HS256"
 
 # Create the main app without a prefix
@@ -52,7 +54,7 @@ def create_jwt_token(user_id: str, email: str) -> str:
     payload = {
         "sub": user_id,
         "email": email,
-        "exp": datetime.utcnow().timestamp() + (3600 * 24 * 30) # 30 days
+        "exp": datetime.utcnow().timestamp() + (3600 * 24 * 7) # 7 days
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=ALGORITHM)
 
@@ -134,15 +136,15 @@ class AuthResponse(BaseModel):
     user: UserResponse
 
 class AnalyzeRequest(BaseModel):
-    conversation_text: str
+    conversation_text: str = Field(..., max_length=5000)
 
 class GenerateRequest(BaseModel):
-    conversation_text: str
-    goal: str
-    length: str
+    conversation_text: str = Field(..., max_length=5000)
+    goal: str = Field(..., max_length=100)
+    length: str = Field(..., max_length=100)
 
 class RewriteRequest(BaseModel):
-    text: str
+    text: str = Field(..., max_length=5000)
 
 class FavoriteRequest(BaseModel):
     original_conversation: str
@@ -385,7 +387,7 @@ app.include_router(api_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
+    allow_credentials=False,
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
