@@ -1,6 +1,9 @@
 import { storage } from "@/src/utils/storage";
 
-const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || "https://tone-reply-2.preview.emergentagent.com";
+const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
+if (!EXPO_PUBLIC_BACKEND_URL) {
+  console.warn("WARNING: EXPO_PUBLIC_BACKEND_URL environment variable is missing!");
+}
 
 class ApiService {
   private baseUrl: string;
