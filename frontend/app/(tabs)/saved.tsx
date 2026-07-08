@@ -163,7 +163,7 @@ export default function SavedScreen() {
 
   return (
     <View style={styles.container}>
-      {/* Tabs segment */}
+      {/* Tabs segment matching Clique layout */}
       <View style={styles.segmentedControl}>
         <TouchableOpacity
           style={[styles.segmentBtn, activeTab === "favorites" && styles.activeSegmentBtn]}
@@ -171,8 +171,8 @@ export default function SavedScreen() {
         >
           <Ionicons
             name="star"
-            size={16}
-            color={activeTab === "favorites" ? "#FFFFFF" : "#6B7280"}
+            size={14}
+            color={activeTab === "favorites" ? "#FFFFFF" : "#8E8E93"}
             style={{ marginRight: 6 }}
           />
           <Text style={[styles.segmentText, activeTab === "favorites" && styles.activeSegmentText]}>
@@ -185,28 +185,28 @@ export default function SavedScreen() {
         >
           <Ionicons
             name="options"
-            size={16}
-            color={activeTab === "presets" ? "#FFFFFF" : "#6B7280"}
+            size={14}
+            color={activeTab === "presets" ? "#FFFFFF" : "#8E8E93"}
             style={{ marginRight: 6 }}
           />
           <Text style={[styles.segmentText, activeTab === "presets" && styles.activeSegmentText]}>
-            My Presets
+            Presets
           </Text>
         </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
         {loading ? (
-          <ActivityIndicator color="#8B5CF6" size="large" style={{ marginTop: 40 }} />
+          <ActivityIndicator color="#111827" size="large" style={{ marginTop: 40 }} />
         ) : activeTab === "favorites" ? (
           /* FAVORITES TAB */
           <View>
             {favorites.length === 0 ? (
               <View style={styles.emptyState}>
                 <Ionicons name="star-outline" size={48} color="#D1D5DB" />
-                <Text style={styles.emptyTitle}>No Favorite Replies Yet</Text>
+                <Text style={styles.emptyTitle}>No Favorites Yet</Text>
                 <Text style={styles.emptySubtitle}>
-                  Generate replies and tap the star icon to save them here for quick access.
+                  Save generated replies to access them here instantly.
                 </Text>
               </View>
             ) : (
@@ -216,10 +216,10 @@ export default function SavedScreen() {
                     <Text style={styles.favStyle}>{fav.style_label}</Text>
                     <View style={styles.actionRow}>
                       <TouchableOpacity onPress={() => copyToClipboard(fav.reply_text)} style={styles.actionBtn}>
-                        <Ionicons name="copy-outline" size={18} color="#6B7280" />
+                        <Ionicons name="copy-outline" size={18} color="#8E8E93" />
                       </TouchableOpacity>
                       <TouchableOpacity onPress={() => deleteFavorite(fav.id)} style={styles.actionBtn}>
-                        <Ionicons name="trash-outline" size={18} color="#EF4444" />
+                        <Ionicons name="trash-outline" size={18} color="#FF3B30" />
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -240,14 +240,14 @@ export default function SavedScreen() {
               style={styles.addPresetToggle}
               onPress={() => setShowAddForm(!showAddForm)}
             >
-              <Ionicons name={showAddForm ? "close" : "add-circle"} size={20} color="#8B5CF6" style={{ marginRight: 6 }} />
+              <Ionicons name={showAddForm ? "close" : "add-circle-outline"} size={18} color="#111827" style={{ marginRight: 6 }} />
               <Text style={styles.addPresetToggleText}>
-                {showAddForm ? "Cancel Creation" : "Create New Style Preset"}
+                {showAddForm ? "Cancel Creation" : "Create New Preset"}
               </Text>
             </TouchableOpacity>
 
             {showAddForm && (
-              <View style={styles.presetForm}>
+              <View style={styles.presetFormCard}>
                 <Text style={styles.formTitle}>New Custom Preset</Text>
 
                 <View style={styles.formGroup}>
@@ -255,7 +255,7 @@ export default function SavedScreen() {
                   <TextInput
                     style={styles.input}
                     placeholder="e.g. My Dating Style, My Wife, My Boss"
-                    placeholderTextColor="#9CA3AF"
+                    placeholderTextColor="#8E8E93"
                     value={presetName}
                     onChangeText={setPresetName}
                   />
@@ -312,7 +312,7 @@ export default function SavedScreen() {
             {presets.length === 0 ? (
               <View style={styles.emptyState}>
                 <Ionicons name="options-outline" size={48} color="#D1D5DB" />
-                <Text style={styles.emptyTitle}>No Custom Presets</Text>
+                <Text style={styles.emptyTitle}>No Presets Yet</Text>
                 <Text style={styles.emptySubtitle}>
                   Create custom presets above to quickly prefill configurations on the generate screen.
                 </Text>
@@ -322,11 +322,11 @@ export default function SavedScreen() {
                 <View key={p.id} style={styles.presetCard}>
                   <View style={styles.presetHeader}>
                     <View style={styles.presetMetaInfo}>
-                      <Ionicons name="color-wand" size={16} color="#8B5CF6" style={{ marginRight: 6 }} />
+                      <Ionicons name="color-wand-outline" size={16} color="#111827" style={{ marginRight: 6 }} />
                       <Text style={styles.presetNameText}>{p.name}</Text>
                     </View>
                     <TouchableOpacity onPress={() => deletePreset(p.id)} style={styles.presetDelete}>
-                      <Ionicons name="trash-outline" size={18} color="#EF4444" />
+                      <Ionicons name="trash-outline" size={18} color="#FF3B30" />
                     </TouchableOpacity>
                   </View>
                   <View style={styles.presetBody}>
@@ -352,7 +352,7 @@ export default function SavedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: "#F4F4F5",
   },
   segmentedControl: {
     flexDirection: "row",
@@ -372,12 +372,14 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   activeSegmentBtn: {
-    backgroundColor: "#8B5CF6",
+    backgroundColor: "#111827",
   },
   segmentText: {
-    color: "#4B5563",
-    fontSize: 14,
-    fontWeight: "700",
+    color: "#8E8E93",
+    fontSize: 13,
+    fontWeight: "800",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   activeSegmentText: {
     color: "#FFFFFF",
@@ -393,29 +395,31 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   emptyTitle: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "800",
     color: "#111827",
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
     marginTop: 16,
     marginBottom: 8,
   },
   emptySubtitle: {
     fontSize: 14,
-    color: "#6B7280",
+    color: "#8E8E93",
     textAlign: "center",
     lineHeight: 20,
   },
   favCard: {
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 18,
+    borderColor: "#EBEBEB",
+    borderRadius: 24,
     padding: 16,
     marginBottom: 16,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 8,
+    shadowOpacity: 0.02,
+    shadowRadius: 10,
     elevation: 2,
   },
   favHeader: {
@@ -423,18 +427,18 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
+    borderBottomColor: "#F4F4F5",
     paddingBottom: 8,
     marginBottom: 10,
   },
   favStyle: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "800",
-    color: "#8B5CF6",
-    backgroundColor: "rgba(139, 92, 246, 0.08)",
+    color: "#111827",
+    backgroundColor: "#F4F4F5",
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   actionRow: {
     flexDirection: "row",
@@ -446,9 +450,10 @@ const styles = StyleSheet.create({
   originalLabel: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#9CA3AF",
+    color: "#8E8E93",
     marginBottom: 2,
     textTransform: "uppercase",
+    letterSpacing: 1.1,
   },
   originalText: {
     fontSize: 13,
@@ -458,9 +463,10 @@ const styles = StyleSheet.create({
   replyLabel: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#8B5CF6",
+    color: "#111827",
     marginBottom: 2,
     textTransform: "uppercase",
+    letterSpacing: 1.1,
   },
   replyText: {
     fontSize: 15,
@@ -471,9 +477,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#EBEBEB",
     height: 48,
-    borderRadius: 12,
+    borderRadius: 18,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
@@ -484,15 +490,15 @@ const styles = StyleSheet.create({
     elevation: 1,
   },
   addPresetToggleText: {
-    color: "#8B5CF6",
+    color: "#111827",
     fontSize: 14,
     fontWeight: "800",
   },
-  presetForm: {
+  presetFormCard: {
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 18,
+    borderColor: "#EBEBEB",
+    borderRadius: 24,
     padding: 16,
     marginBottom: 16,
     shadowColor: "#000",
@@ -511,19 +517,19 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   formLabel: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "800",
-    color: "#4B5563",
+    color: "#8E8E93",
     marginBottom: 8,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 1.1,
   },
   input: {
     height: 44,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 10,
+    borderColor: "#EBEBEB",
+    borderRadius: 14,
     paddingHorizontal: 12,
     color: "#111827",
     fontSize: 14,
@@ -535,37 +541,37 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   miniChip: {
-    backgroundColor: "#F3F4F6",
+    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#EBEBEB",
     borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 6,
     marginRight: 6,
   },
   activeMiniChip: {
-    backgroundColor: "#8B5CF6",
-    borderColor: "#8B5CF6",
+    backgroundColor: "#111827",
+    borderColor: "#111827",
   },
   miniChipText: {
-    color: "#4B5563",
+    color: "#8E8E93",
     fontSize: 12,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   activeMiniChipText: {
     color: "#FFFFFF",
     fontWeight: "bold",
   },
   submitBtn: {
-    backgroundColor: "#8B5CF6",
+    backgroundColor: "#8E8E93",
     height: 44,
-    borderRadius: 10,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
   },
   disabledBtn: {
-    backgroundColor: "#9CA3AF",
+    backgroundColor: "#D1D1D6",
   },
   submitBtnText: {
     color: "#FFFFFF",
@@ -575,14 +581,14 @@ const styles = StyleSheet.create({
   presetCard: {
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 18,
+    borderColor: "#EBEBEB",
+    borderRadius: 24,
     padding: 16,
     marginBottom: 12,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 8,
+    shadowOpacity: 0.02,
+    shadowRadius: 10,
     elevation: 2,
   },
   presetHeader: {
@@ -590,7 +596,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
+    borderBottomColor: "#F4F4F5",
     paddingBottom: 8,
     marginBottom: 10,
   },
@@ -614,14 +620,14 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   metaLabel: {
-    fontSize: 13,
-    fontWeight: "700",
-    color: "#6B7280",
+    fontSize: 12,
+    fontWeight: "800",
+    color: "#8E8E93",
     width: 60,
   },
   metaValue: {
     fontSize: 13,
-    color: "#1F2937",
+    color: "#111827",
     flex: 1,
   },
 });

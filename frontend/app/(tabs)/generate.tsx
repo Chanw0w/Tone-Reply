@@ -151,7 +151,7 @@ export default function GenerateScreen() {
                   style={styles.presetChip}
                   onPress={() => applyPreset(preset)}
                 >
-                  <Ionicons name="color-wand" size={14} color="#8B5CF6" style={{ marginRight: 4 }} />
+                  <Ionicons name="color-wand-outline" size={14} color="#111827" style={{ marginRight: 4 }} />
                   <Text style={styles.presetChipText}>{preset.name}</Text>
                 </TouchableOpacity>
               ))}
@@ -159,78 +159,85 @@ export default function GenerateScreen() {
           </View>
         )}
 
-        {/* Input Box */}
-        <View style={styles.inputCard}>
-          <View style={styles.inputHeader}>
-            <Text style={styles.inputTitle}>Paste Conversation</Text>
-            {convo.length > 0 && (
-              <TouchableOpacity onPress={() => setConvo("")}>
-                <Text style={styles.clearText}>Clear</Text>
-              </TouchableOpacity>
-            )}
-          </View>
-          <TextInput
-            style={styles.textArea}
-            multiline
-            numberOfLines={5}
-            placeholder="Paste text messages, WhatsApp chat history, or emails here..."
-            placeholderTextColor="#9CA3AF"
-            value={convo}
-            onChangeText={(text) => {
-              setConvo(text);
-              setError(null);
-            }}
-          />
-        </View>
-
-        {/* Goal Selector */}
-        <View style={styles.inputCard}>
-          <Text style={styles.inputTitle}>Choose Response Goal</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.goalRow}>
-            {GOALS.map((g) => (
-              <TouchableOpacity
-                key={g}
-                style={[styles.goalChip, goal === g && styles.activeGoalChip]}
-                onPress={() => setGoal(g)}
-              >
-                <Text style={[styles.goalChipText, goal === g && styles.activeGoalChipText]}>{g}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-
-        {/* Length Selector */}
-        <View style={styles.inputCard}>
-          <Text style={styles.inputTitle}>Choose Format & Length</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.goalRow}>
-            {LENGTHS.map((len) => (
-              <TouchableOpacity
-                key={len}
-                style={[styles.goalChip, length === len && styles.activeGoalChip]}
-                onPress={() => setLength(len)}
-              >
-                <Text style={[styles.goalChipText, length === len && styles.activeGoalChipText]}>{len}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
-
-        {/* Generate Button */}
-        {error && <Text style={styles.errorText}>{error}</Text>}
-        <TouchableOpacity
-          style={[styles.generateButton, loading && styles.disabledButton]}
-          onPress={handleGenerate}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#FFFFFF" />
-          ) : (
-            <View style={styles.buttonInner}>
-              <Ionicons name="sparkles" size={18} color="#FFFFFF" style={{ marginRight: 8 }} />
-              <Text style={styles.generateButtonText}>Generate Side-by-Side Replies</Text>
+        {/* Large Rounded White Card Sitting on Soft Grey Background */}
+        <View style={styles.mainCard}>
+          {/* Input Box */}
+          <View style={styles.inputSection}>
+            <View style={styles.inputHeader}>
+              <Text style={styles.cardSectionLabel}>Paste Conversation</Text>
+              {convo.length > 0 && (
+                <TouchableOpacity onPress={() => setConvo("")}>
+                  <Text style={styles.clearText}>Clear</Text>
+                </TouchableOpacity>
+              )}
             </View>
-          )}
-        </TouchableOpacity>
+            <TextInput
+              style={styles.textArea}
+              multiline
+              numberOfLines={4}
+              placeholder="Paste chat history, DMs, or emails here..."
+              placeholderTextColor="#8E8E93"
+              value={convo}
+              onChangeText={(text) => {
+                setConvo(text);
+                setError(null);
+              }}
+            />
+          </View>
+
+          <View style={styles.divider} />
+
+          {/* Goal Selector */}
+          <View style={styles.inputSection}>
+            <Text style={styles.cardSectionLabel}>Choose Response Goal</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.goalRow}>
+              {GOALS.map((g) => (
+                <TouchableOpacity
+                  key={g}
+                  style={[styles.goalChip, goal === g && styles.activeGoalChip]}
+                  onPress={() => setGoal(g)}
+                >
+                  <Text style={[styles.goalChipText, goal === g && styles.activeGoalChipText]}>{g}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+
+          <View style={styles.divider} />
+
+          {/* Length Selector */}
+          <View style={styles.inputSection}>
+            <Text style={styles.cardSectionLabel}>Choose Format & Length</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.goalRow}>
+              {LENGTHS.map((len) => (
+                <TouchableOpacity
+                  key={len}
+                  style={[styles.goalChip, length === len && styles.activeGoalChip]}
+                  onPress={() => setLength(len)}
+                >
+                  <Text style={[styles.goalChipText, length === len && styles.activeGoalChipText]}>{len}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+
+          {/* Generate Button inside the card matching Clique Join Call style */}
+          {error && <Text style={styles.errorText}>{error}</Text>}
+          <TouchableOpacity
+            style={[styles.generateButton, loading && styles.disabledButton]}
+            onPress={handleGenerate}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <View style={styles.buttonInner}>
+                <Ionicons name="sparkles" size={16} color="#FFFFFF" style={{ marginRight: 6 }} />
+                <Text style={styles.generateButtonText}>Generate Styled Replies</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
 
         {/* Output Options */}
         {options.length > 0 && (
@@ -248,14 +255,14 @@ export default function GenerateScreen() {
                       <Ionicons
                         name={savedStatus[index] ? "star" : "star-outline"}
                         size={18}
-                        color={savedStatus[index] ? "#F59E0B" : "#6B7280"}
+                        color={savedStatus[index] ? "#FFCC00" : "#8E8E93"}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => copyToClipboard(opt.text, index)}
                       style={styles.actionBtn}
                     >
-                      <Ionicons name="copy-outline" size={18} color="#6B7280" />
+                      <Ionicons name="copy-outline" size={18} color="#8E8E93" />
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -272,7 +279,7 @@ export default function GenerateScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: "#F4F4F5",
   },
   scrollContainer: {
     padding: 16,
@@ -282,12 +289,12 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   sectionTitle: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "800",
-    color: "#6B7280",
+    color: "#8E8E93",
     marginBottom: 8,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 1.1,
   },
   presetsRow: {
     flexDirection: "row",
@@ -297,111 +304,109 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
+    borderColor: "#EBEBEB",
     borderRadius: 20,
     paddingHorizontal: 12,
     paddingVertical: 6,
     marginRight: 8,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.03,
-    shadowRadius: 4,
-    elevation: 1,
   },
   presetChipText: {
-    color: "#8B5CF6",
-    fontSize: 13,
-    fontWeight: "700",
-  },
-  inputCard: {
-    backgroundColor: "#FFFFFF",
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 18,
-    padding: 16,
-    marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  inputHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
-  inputTitle: {
+    color: "#111827",
     fontSize: 13,
     fontWeight: "800",
-    color: "#374151",
+  },
+  mainCard: {
+    backgroundColor: "#FFFFFF",
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: "#EBEBEB",
+    padding: 20,
+    marginBottom: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.02,
+    shadowRadius: 10,
+    elevation: 2,
+  },
+  inputSection: {
+    marginBottom: 16,
+  },
+  cardSectionLabel: {
+    fontSize: 11,
+    fontWeight: "800",
+    color: "#8E8E93",
+    marginBottom: 8,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 1.1,
   },
   clearText: {
-    color: "#EF4444",
-    fontSize: 13,
-    fontWeight: "700",
+    color: "#FF3B30",
+    fontSize: 12,
+    fontWeight: "800",
   },
   textArea: {
-    backgroundColor: "#F9FAFB",
+    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 12,
-    padding: 12,
+    borderColor: "#EBEBEB",
+    borderRadius: 18,
+    padding: 14,
     color: "#111827",
     fontSize: 14,
-    height: 120,
+    height: 100,
     textAlignVertical: "top",
+  },
+  divider: {
+    height: 1,
+    backgroundColor: "#EBEBEB",
+    marginVertical: 14,
   },
   goalRow: {
     flexDirection: "row",
-    marginTop: 4,
   },
   goalChip: {
-    backgroundColor: "#F3F4F6",
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
+    backgroundColor: "#F4F4F5",
     borderRadius: 20,
     paddingHorizontal: 14,
     paddingVertical: 8,
     marginRight: 8,
+    borderWidth: 1,
+    borderColor: "#EBEBEB",
   },
   activeGoalChip: {
-    backgroundColor: "#8B5CF6",
-    borderColor: "#8B5CF6",
+    backgroundColor: "#111827",
+    borderColor: "#111827",
   },
   goalChipText: {
-    color: "#4B5563",
+    color: "#8E8E93",
     fontSize: 13,
-    fontWeight: "600",
+    fontWeight: "700",
   },
   activeGoalChipText: {
     color: "#FFFFFF",
-    fontWeight: "bold",
+    fontWeight: "800",
   },
   errorText: {
-    color: "#EF4444",
-    fontSize: 14,
+    color: "#FF3B30",
+    fontSize: 13,
     textAlign: "center",
-    marginBottom: 16,
+    marginBottom: 12,
+    fontWeight: "600",
   },
   generateButton: {
-    backgroundColor: "#8B5CF6",
-    borderRadius: 14,
-    height: 52,
+    backgroundColor: "#8E8E93",
+    borderRadius: 20,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 24,
-    shadowColor: "#8B5CF6",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 3,
+    marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
   },
   disabledButton: {
-    backgroundColor: "#9CA3AF",
+    backgroundColor: "#D1D1D6",
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -412,58 +417,56 @@ const styles = StyleSheet.create({
   generateButtonText: {
     color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: "700",
   },
   resultsSection: {
-    marginTop: 8,
+    marginTop: 4,
   },
   resultsTitle: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "800",
     color: "#111827",
-    marginBottom: 16,
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+    marginBottom: 12,
+    marginLeft: 4,
   },
   replyCard: {
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 18,
+    borderColor: "#EBEBEB",
+    borderRadius: 24,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.04,
-    shadowRadius: 10,
-    elevation: 2,
   },
   replyCardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#F3F4F6",
-    paddingBottom: 10,
+    borderBottomColor: "#F4F4F5",
+    paddingBottom: 8,
     marginBottom: 12,
   },
   replyStyleLabel: {
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: "800",
-    color: "#8B5CF6",
-    backgroundColor: "rgba(139, 92, 246, 0.08)",
+    color: "#111827",
+    backgroundColor: "#F4F4F5",
     paddingHorizontal: 10,
     paddingVertical: 4,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   actionRow: {
     flexDirection: "row",
   },
   actionBtn: {
-    padding: 6,
+    padding: 4,
     marginLeft: 8,
   },
   replyContent: {
     fontSize: 15,
-    color: "#1F2937",
+    color: "#111827",
     lineHeight: 22,
   },
 });

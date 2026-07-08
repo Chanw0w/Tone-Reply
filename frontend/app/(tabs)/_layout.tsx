@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs, Redirect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../../src/utils/auth-context";
-import { ActivityIndicator, View, StyleSheet } from "react-native";
+import { ActivityIndicator, View, Text, StyleSheet, TouchableOpacity, Platform } from "react-native";
 
 export default function TabsLayout() {
   const { user, isLoading } = useAuth();
@@ -10,7 +10,7 @@ export default function TabsLayout() {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#8B5CF6" />
+        <ActivityIndicator size="large" color="#111827" />
       </View>
     );
   }
@@ -22,27 +22,34 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#8B5CF6",
-        tabBarInactiveTintColor: "#6B7280",
+        tabBarActiveTintColor: "#111827",
+        tabBarInactiveTintColor: "#8E8E93",
         tabBarStyle: {
           backgroundColor: "#FFFFFF",
           borderTopWidth: 1,
           borderTopColor: "#E5E7EB",
-          height: 64,
+          height: 68,
           paddingBottom: 8,
           paddingTop: 8,
         },
-        headerStyle: {
-          backgroundColor: "#FFFFFF",
-          borderBottomWidth: 1,
-          borderBottomColor: "#E5E7EB",
-        },
-        headerTitleStyle: {
-          color: "#111827",
+        tabBarLabelStyle: {
+          fontSize: 11,
           fontWeight: "800",
-          fontSize: 18,
+          textTransform: "uppercase",
+          letterSpacing: 0.5,
+          marginTop: 2,
         },
-        headerTintColor: "#111827",
+        // Custom header layout to look EXACTLY like the Clique screenshot
+        header: () => (
+          <View style={styles.header}>
+            <View style={styles.headerContent}>
+              <Text style={styles.headerLogo}>💬 TONEREPLY</Text>
+              <TouchableOpacity style={styles.themeToggle}>
+                <Ionicons name="moon-outline" size={16} color="#000000" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        ),
       }}
     >
       <Tabs.Screen
@@ -50,13 +57,14 @@ export default function TabsLayout() {
         options={{
           title: "Generate",
           tabBarLabel: "Generate",
-          headerTitle: "Generate Styled Replies",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "chatbubble-ellipses" : "chatbubble-ellipses-outline"}
-              size={22}
-              color={color}
-            />
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.tabIconWrapper, focused && styles.tabIconWrapperActive]}>
+              <Ionicons
+                name={focused ? "chatbubble-ellipses" : "chatbubble-ellipses-outline"}
+                size={18}
+                color={focused ? "#111827" : "#8E8E93"}
+              />
+            </View>
           ),
         }}
       />
@@ -65,28 +73,30 @@ export default function TabsLayout() {
         options={{
           title: "Rewrite",
           tabBarLabel: "Rewrite",
-          headerTitle: "Rewrite Message",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "create" : "create-outline"}
-              size={22}
-              color={color}
-            />
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.tabIconWrapper, focused && styles.tabIconWrapperActive]}>
+              <Ionicons
+                name={focused ? "create" : "create-outline"}
+                size={18}
+                color={focused ? "#111827" : "#8E8E93"}
+              />
+            </View>
           ),
         }}
       />
       <Tabs.Screen
         name="explain"
         options={{
-          title: "Explain & Coach",
+          title: "Coach",
           tabBarLabel: "Coach",
-          headerTitle: "Conversation Breakdown",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "bulb" : "bulb-outline"}
-              size={22}
-              color={color}
-            />
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.tabIconWrapper, focused && styles.tabIconWrapperActive]}>
+              <Ionicons
+                name={focused ? "bulb" : "bulb-outline"}
+                size={18}
+                color={focused ? "#111827" : "#8E8E93"}
+              />
+            </View>
           ),
         }}
       />
@@ -95,13 +105,14 @@ export default function TabsLayout() {
         options={{
           title: "Saved",
           tabBarLabel: "Saved",
-          headerTitle: "My Presets & Favorites",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "bookmark" : "bookmark-outline"}
-              size={22}
-              color={color}
-            />
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.tabIconWrapper, focused && styles.tabIconWrapperActive]}>
+              <Ionicons
+                name={focused ? "bookmark" : "bookmark-outline"}
+                size={18}
+                color={focused ? "#111827" : "#8E8E93"}
+              />
+            </View>
           ),
         }}
       />
@@ -110,13 +121,14 @@ export default function TabsLayout() {
         options={{
           title: "Profile",
           tabBarLabel: "Profile",
-          headerTitle: "My Profile",
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? "person" : "person-outline"}
-              size={22}
-              color={color}
-            />
+          tabBarIcon: ({ focused }) => (
+            <View style={[styles.tabIconWrapper, focused && styles.tabIconWrapperActive]}>
+              <Ionicons
+                name={focused ? "person" : "person-outline"}
+                size={18}
+                color={focused ? "#111827" : "#8E8E93"}
+              />
+            </View>
           ),
         }}
       />
@@ -127,8 +139,47 @@ export default function TabsLayout() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: "#F4F4F5",
     alignItems: "center",
     justifyContent: "center",
+  },
+  header: {
+    backgroundColor: "#FFFFFF",
+    borderBottomWidth: 1,
+    borderBottomColor: "#E5E7EB",
+    paddingTop: Platform.OS === "ios" ? 54 : 36,
+    paddingBottom: 16,
+    paddingHorizontal: 20,
+  },
+  headerContent: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  headerLogo: {
+    fontSize: 22,
+    fontWeight: "900",
+    color: "#000000",
+    letterSpacing: -0.5,
+  },
+  themeToggle: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: "#E5E7EB",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+  },
+  tabIconWrapper: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 52,
+    height: 32,
+    borderRadius: 16,
+  },
+  tabIconWrapperActive: {
+    backgroundColor: "#F2F2F7",
   },
 });

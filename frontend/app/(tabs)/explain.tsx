@@ -62,10 +62,10 @@ export default function ExplainScreen() {
           Understand conversational dynamics. We present observations and possibilities as analytical insights rather than definitive mind-reading conclusions.
         </Text>
 
-        {/* Input Card */}
-        <View style={styles.inputCard}>
+        {/* Main card matching Clique design */}
+        <View style={styles.mainCard}>
           <View style={styles.inputHeader}>
-            <Text style={styles.inputTitle}>Paste Your Conversation</Text>
+            <Text style={styles.cardSectionLabel}>Paste Your Conversation</Text>
             {convo.length > 0 && (
               <TouchableOpacity onPress={() => setConvo("")}>
                 <Text style={styles.clearText}>Clear</Text>
@@ -77,47 +77,47 @@ export default function ExplainScreen() {
             multiline
             numberOfLines={5}
             placeholder="Paste SMS, WhatsApp logs, DMs, or emails..."
-            placeholderTextColor="#9CA3AF"
+            placeholderTextColor="#8E8E93"
             value={convo}
             onChangeText={(text) => {
               setConvo(text);
               setError(null);
             }}
           />
-        </View>
 
-        {/* Action Button */}
-        {error && <Text style={styles.errorText}>{error}</Text>}
-        <TouchableOpacity
-          style={[styles.analyzeButton, loading && styles.disabledButton]}
-          onPress={handleAnalyze}
-          disabled={loading}
-        >
-          {loading ? (
-            <ActivityIndicator color="#FFFFFF" />
-          ) : (
-            <View style={styles.buttonInner}>
-              <Ionicons name="analytics" size={18} color="#FFFFFF" style={{ marginRight: 8 }} />
-              <Text style={styles.analyzeButtonText}>Analyze Conversation & Coach Tips</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+          {error && <Text style={styles.errorText}>{error}</Text>}
+          
+          <TouchableOpacity
+            style={[styles.primaryButton, loading && styles.disabledButton]}
+            onPress={handleAnalyze}
+            disabled={loading}
+          >
+            {loading ? (
+              <ActivityIndicator color="#FFFFFF" />
+            ) : (
+              <View style={styles.buttonInner}>
+                <Ionicons name="analytics-outline" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
+                <Text style={styles.primaryButtonText}>Analyze Conversation & Coach</Text>
+              </View>
+            )}
+          </TouchableOpacity>
+        </View>
 
         {/* Analysis Output */}
         {analysis && (
           <View style={styles.analysisSection}>
-            <Text style={styles.sectionHeading}>Coaching & Conversation Insights</Text>
+            <Text style={styles.resultsTitle}>Coaching & Conversation Insights</Text>
 
             {/* Coaching Tips Dashboard */}
             {analysis.coaching_tips && analysis.coaching_tips.length > 0 && (
               <View style={styles.coachingCard}>
                 <View style={styles.coachingHeader}>
-                  <Ionicons name="school" size={20} color="#8B5CF6" style={{ marginRight: 8 }} />
+                  <Ionicons name="school" size={20} color="#111827" style={{ marginRight: 8 }} />
                   <Text style={styles.coachingTitle}>Communication Coaching Tips</Text>
                 </View>
                 {analysis.coaching_tips.map((tip, index) => (
                   <View key={index} style={styles.tipRow}>
-                    <Ionicons name="sparkles" size={16} color="#8B5CF6" style={styles.tipIcon} />
+                    <Ionicons name="sparkles" size={16} color="#8E8E93" style={styles.tipIcon} />
                     <Text style={styles.tipText}>{tip}</Text>
                   </View>
                 ))}
@@ -127,7 +127,7 @@ export default function ExplainScreen() {
             {/* Conversation Balance Widget */}
             <View style={styles.infoCard}>
               <View style={styles.infoTitleRow}>
-                <Ionicons name="git-compare" size={18} color="#10B981" />
+                <Ionicons name="git-compare-outline" size={18} color="#000000" />
                 <Text style={styles.infoTitle}>Conversation Balance</Text>
               </View>
               <Text style={styles.infoContent}>{analysis.conversation_balance}</Text>
@@ -136,7 +136,7 @@ export default function ExplainScreen() {
             {/* What Happened Summary */}
             <View style={styles.infoCard}>
               <View style={styles.infoTitleRow}>
-                <Ionicons name="document-text-outline" size={18} color="#3B82F6" />
+                <Ionicons name="document-text-outline" size={18} color="#000000" />
                 <Text style={styles.infoTitle}>What Happened (Summary)</Text>
               </View>
               <Text style={styles.infoContent}>{analysis.summary}</Text>
@@ -145,7 +145,7 @@ export default function ExplainScreen() {
             {/* Emotional Tone */}
             <View style={styles.infoCard}>
               <View style={styles.infoTitleRow}>
-                <Ionicons name="happy-outline" size={18} color="#EC4899" />
+                <Ionicons name="happy-outline" size={18} color="#000000" />
                 <Text style={styles.infoTitle}>Emotional Tone</Text>
               </View>
               <Text style={styles.infoContent}>{analysis.emotional_tone}</Text>
@@ -154,7 +154,7 @@ export default function ExplainScreen() {
             {/* Misunderstanding Risks */}
             <View style={styles.infoCard}>
               <View style={styles.infoTitleRow}>
-                <Ionicons name="warning-outline" size={18} color="#EF4444" />
+                <Ionicons name="warning-outline" size={18} color="#000000" />
                 <Text style={styles.infoTitle}>Possible Misunderstandings</Text>
               </View>
               <Text style={styles.infoContent}>{analysis.misunderstandings}</Text>
@@ -163,7 +163,7 @@ export default function ExplainScreen() {
             {/* Unanswered Questions */}
             <View style={styles.infoCard}>
               <View style={styles.infoTitleRow}>
-                <Ionicons name="help-circle-outline" size={18} color="#D97706" />
+                <Ionicons name="help-circle-outline" size={18} color="#000000" />
                 <Text style={styles.infoTitle}>Question Status</Text>
               </View>
               <Text style={styles.infoContent}>{analysis.answered_questions}</Text>
@@ -172,7 +172,7 @@ export default function ExplainScreen() {
             {/* Ambiguities */}
             <View style={styles.infoCard}>
               <View style={styles.infoTitleRow}>
-                <Ionicons name="help-buoy-outline" size={18} color="#14B8A6" />
+                <Ionicons name="help-buoy-outline" size={18} color="#000000" />
                 <Text style={styles.infoTitle}>Potential Ambiguity</Text>
               </View>
               <Text style={styles.infoContent}>{analysis.potential_ambiguity}</Text>
@@ -187,29 +187,30 @@ export default function ExplainScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9FAFB",
+    backgroundColor: "#F4F4F5",
   },
   scrollContainer: {
     padding: 16,
     paddingBottom: 40,
   },
   introText: {
-    fontSize: 14,
-    color: "#4B5563",
-    lineHeight: 20,
+    fontSize: 13,
+    color: "#8E8E93",
+    lineHeight: 18,
     marginBottom: 16,
+    paddingHorizontal: 4,
   },
-  inputCard: {
+  mainCard: {
     backgroundColor: "#FFFFFF",
+    borderRadius: 28,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 18,
-    padding: 16,
-    marginBottom: 16,
+    borderColor: "#EBEBEB",
+    padding: 20,
+    marginBottom: 20,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
-    shadowRadius: 8,
+    shadowOpacity: 0.02,
+    shadowRadius: 10,
     elevation: 2,
   },
   inputHeader: {
@@ -218,50 +219,51 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  inputTitle: {
-    fontSize: 13,
+  cardSectionLabel: {
+    fontSize: 11,
     fontWeight: "800",
-    color: "#374151",
+    color: "#8E8E93",
     textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 1.1,
   },
   clearText: {
-    color: "#EF4444",
-    fontSize: 13,
-    fontWeight: "700",
+    color: "#FF3B30",
+    fontSize: 12,
+    fontWeight: "800",
   },
   textArea: {
-    backgroundColor: "#F9FAFB",
+    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 12,
-    padding: 12,
+    borderColor: "#EBEBEB",
+    borderRadius: 18,
+    padding: 14,
     color: "#111827",
     fontSize: 14,
     height: 120,
     textAlignVertical: "top",
-  },
-  errorText: {
-    color: "#EF4444",
-    fontSize: 14,
-    textAlign: "center",
     marginBottom: 16,
   },
-  analyzeButton: {
-    backgroundColor: "#8B5CF6",
-    borderRadius: 14,
-    height: 52,
+  errorText: {
+    color: "#FF3B30",
+    fontSize: 13,
+    textAlign: "center",
+    marginBottom: 12,
+    fontWeight: "600",
+  },
+  primaryButton: {
+    backgroundColor: "#8E8E93",
+    borderRadius: 18,
+    height: 48,
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 24,
-    shadowColor: "#8B5CF6",
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
   },
   disabledButton: {
-    backgroundColor: "#9CA3AF",
+    backgroundColor: "#D1D1D6",
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -269,25 +271,28 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  analyzeButtonText: {
+  primaryButtonText: {
     color: "#FFFFFF",
     fontSize: 15,
-    fontWeight: "bold",
+    fontWeight: "700",
   },
   analysisSection: {
-    marginTop: 8,
+    marginTop: 4,
   },
-  sectionHeading: {
-    fontSize: 18,
+  resultsTitle: {
+    fontSize: 15,
     fontWeight: "800",
     color: "#111827",
-    marginBottom: 16,
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+    marginBottom: 12,
+    marginLeft: 4,
   },
   coachingCard: {
-    backgroundColor: "rgba(139, 92, 246, 0.03)",
-    borderColor: "rgba(139, 92, 246, 0.15)",
+    backgroundColor: "#FFFFFF",
+    borderColor: "#EBEBEB",
     borderWidth: 1,
-    borderRadius: 18,
+    borderRadius: 24,
     padding: 16,
     marginBottom: 16,
   },
@@ -296,13 +301,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "rgba(139, 92, 246, 0.08)",
+    borderBottomColor: "#F4F4F5",
     paddingBottom: 8,
   },
   coachingTitle: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "800",
     color: "#111827",
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   tipRow: {
     flexDirection: "row",
@@ -315,22 +322,17 @@ const styles = StyleSheet.create({
   },
   tipText: {
     fontSize: 14,
-    color: "#374151",
+    color: "#111827",
     flex: 1,
     lineHeight: 20,
   },
   infoCard: {
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E5E7EB",
-    borderRadius: 18,
+    borderColor: "#EBEBEB",
+    borderRadius: 24,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
-    shadowRadius: 6,
-    elevation: 1,
   },
   infoTitleRow: {
     flexDirection: "row",
@@ -338,16 +340,16 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   infoTitle: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: "800",
-    color: "#6B7280",
+    color: "#8E8E93",
     marginLeft: 8,
     textTransform: "uppercase",
-    letterSpacing: 0.5,
+    letterSpacing: 1.1,
   },
   infoContent: {
     fontSize: 15,
-    color: "#1F2937",
+    color: "#111827",
     lineHeight: 22,
   },
 });
