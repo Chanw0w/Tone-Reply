@@ -327,7 +327,7 @@ async def create_preset(req: PresetRequest, current_user: dict = Depends(get_cur
 
 @api_router.get("/chat/presets")
 async def get_presets(current_user: dict = Depends(get_current_user)):
-    cursor = db.presets.find({"user_id": current_user["_id"]})
+    cursor = db.presets.find({"user_id": current_user["_id"]}, {"_id": 1, "name": 1, "goal": 1, "style": 1, "length": 1, "created_at": 1})
     presets = await cursor.to_list(length=100)
     for p in presets:
         p["id"] = p.pop("_id")
@@ -358,7 +358,7 @@ async def create_favorite(req: FavoriteRequest, current_user: dict = Depends(get
 
 @api_router.get("/chat/favorites")
 async def get_favorites(current_user: dict = Depends(get_current_user)):
-    cursor = db.favorites.find({"user_id": current_user["_id"]})
+    cursor = db.favorites.find({"user_id": current_user["_id"]}, {"_id": 1, "original_conversation": 1, "reply_text": 1, "style_label": 1, "created_at": 1})
     favs = await cursor.to_list(length=100)
     for f in favs:
         f["id"] = f.pop("_id")
@@ -375,7 +375,7 @@ async def delete_favorite(fav_id: str, current_user: dict = Depends(get_current_
 # --- HISTORY ROUTE ---
 @api_router.get("/chat/history")
 async def get_history(current_user: dict = Depends(get_current_user)):
-    cursor = db.conversations.find({"user_id": current_user["_id"]}).sort("created_at", -1)
+    cursor = db.conversations.find({"user_id": current_user["_id"]}, {"_id": 1, "conversation_text": 1, "analysis": 1, "created_at": 1}).sort("created_at", -1)
     convs = await cursor.to_list(length=50)
     for c in convs:
         c["id"] = c.pop("_id")
