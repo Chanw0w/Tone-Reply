@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   Platform,
   Clipboard,
   Alert,
+  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
@@ -57,6 +58,72 @@ interface Preset {
   goal: string;
   style: string;
   length: string;
+}
+
+// 3D Tactile Pressable Wrapper
+function TactileButton({ children, onPress, style, disabled }: any) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.94,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 4,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={onPress}
+      disabled={disabled}
+    >
+      <Animated.View style={[style, { transform: [{ scale }] }]}>
+        {children}
+      </Animated.View>
+    </TouchableOpacity>
+  );
+}
+
+// Staggered Entry Reveal Card
+function StaggeredCard({ children, index }: { children: React.ReactNode; index: number }) {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(24)).current;
+
+  useEffect(() => {
+    Animated.sequence([
+      Animated.delay(index * 120),
+      Animated.parallel([
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 350,
+          useNativeDriver: true,
+        }),
+        Animated.spring(translateY, {
+          toValue: 0,
+          friction: 6,
+          tension: 40,
+          useNativeDriver: true,
+        })
+      ])
+    ]).start();
+  }, [index]);
+
+  return (
+    <Animated.View style={{ opacity, transform: [{ translateY }] }}>
+      {children}
+    </Animated.View>
+  );
 }
 
 export default function GenerateScreen() {
@@ -221,9 +288,9 @@ export default function GenerateScreen() {
             </ScrollView>
           </View>
 
-          {/* Generate Button inside the card matching Clique Join Call style */}
+          {/* Tactile Generate Button */}
           {error && <Text style={styles.errorText}>{error}</Text>}
-          <TouchableOpacity
+          <TactileButton
             style={[styles.generateButton, loading && styles.disabledButton]}
             onPress={handleGenerate}
             disabled={loading}
@@ -236,38 +303,40 @@ export default function GenerateScreen() {
                 <Text style={styles.generateButtonText}>Generate Styled Replies</Text>
               </View>
             )}
-          </TouchableOpacity>
+          </TactileButton>
         </View>
 
-        {/* Output Options */}
+        {/* Output Options with Sequential Reveal Stagger Animation */}
         {options.length > 0 && (
           <View style={styles.resultsSection}>
             <Text style={styles.resultsTitle}>Side-by-Side Styled Replies</Text>
             {options.map((opt, index) => (
-              <View key={index} style={styles.replyCard}>
-                <View style={styles.replyCardHeader}>
-                  <Text style={styles.replyStyleLabel}>{opt.style}</Text>
-                  <View style={styles.actionRow}>
-                    <TouchableOpacity
-                      onPress={() => saveToFavorites(opt, index)}
-                      style={styles.actionBtn}
-                    >
-                      <Ionicons
-                        name={savedStatus[index] ? "star" : "star-outline"}
-                        size={18}
-                        color={savedStatus[index] ? "#FFCC00" : "#8E8E93"}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      onPress={() => copyToClipboard(opt.text, index)}
-                      style={styles.actionBtn}
-                    >
-                      <Ionicons name="copy-outline" size={18} color="#8E8E93" />
-                    </TouchableOpacity>
+              <StaggeredCard key={index} index={index}>
+                <View style={styles.replyCard}>
+                  <View style={styles.replyCardHeader}>
+                    <Text style={styles.replyStyleLabel}>{opt.style}</Text>
+                    <View style={styles.actionRow}>
+                      <TouchableOpacity
+                        onPress={() => saveToFavorites(opt, index)}
+                        style={styles.actionBtn}
+                      >
+                        <Ionicons
+                          name={savedStatus[index] ? "star" : "star-outline"}
+                          size={18}
+                          color={savedStatus[index] ? "#FFCC00" : "#8E8E93"}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        onPress={() => copyToClipboard(opt.text, index)}
+                        style={styles.actionBtn}
+                      >
+                        <Ionicons name="copy-outline" size={18} color="#8E8E93" />
+                      </TouchableOpacity>
+                    </View>
                   </View>
+                  <Text style={styles.replyContent}>{opt.text}</Text>
                 </View>
-                <Text style={styles.replyContent}>{opt.text}</Text>
-              </View>
+              </StaggeredCard>
             ))}
           </View>
         )}
@@ -404,6 +473,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 1,
+    width: "100%",
   },
   disabledButton: {
     backgroundColor: "#D1D1D6",

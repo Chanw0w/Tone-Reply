@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import {
   Platform,
   Clipboard,
   Alert,
+  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
@@ -38,6 +39,72 @@ const STYLE_LABELS: Record<keyof Rewrites, { label: string; icon: string; color:
   feminine: { label: "🌸 More Feminine", icon: "flower", color: "#FF1493" },
   professional: { label: "💼 More Professional", icon: "briefcase", color: "#FF9500" },
 };
+
+// 3D Tactile Pressable Wrapper
+function TactileButton({ children, onPress, style, disabled }: any) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.94,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 4,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={onPress}
+      disabled={disabled}
+    >
+      <Animated.View style={[style, { transform: [{ scale }] }]}>
+        {children}
+      </Animated.View>
+    </TouchableOpacity>
+  );
+}
+
+// Staggered Entry Reveal Card
+function StaggeredCard({ children, index }: { children: React.ReactNode; index: number }) {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(24)).current;
+
+  useEffect(() => {
+    Animated.sequence([
+      Animated.delay(index * 100),
+      Animated.parallel([
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 350,
+          useNativeDriver: true,
+        }),
+        Animated.spring(translateY, {
+          toValue: 0,
+          friction: 6,
+          tension: 40,
+          useNativeDriver: true,
+        })
+      ])
+    ]).start();
+  }, [index]);
+
+  return (
+    <Animated.View style={{ opacity, transform: [{ translateY }] }}>
+      {children}
+    </Animated.View>
+  );
+}
 
 export default function RewriteScreen() {
   const [draft, setDraft] = useState("");
@@ -104,7 +171,7 @@ export default function RewriteScreen() {
 
           {error && <Text style={styles.errorText}>{error}</Text>}
           
-          <TouchableOpacity
+          <TactileButton
             style={[styles.primaryButton, loading && styles.disabledButton]}
             onPress={handleRewrite}
             disabled={loading}
@@ -117,34 +184,36 @@ export default function RewriteScreen() {
                 <Text style={styles.primaryButtonText}>Rewrite Message into 9 Styles</Text>
               </View>
             )}
-          </TouchableOpacity>
+          </TactileButton>
         </View>
 
-        {/* Output Options */}
+        {/* Output Options with Staggered Fade Up reveal */}
         {rewrites && (
           <View style={styles.resultsSection}>
             <Text style={styles.resultsTitle}>Choose Your Rewritten Message</Text>
-            {(Object.keys(STYLE_LABELS) as Array<keyof Rewrites>).map((key) => {
+            {(Object.keys(STYLE_LABELS) as Array<keyof Rewrites>).map((key, index) => {
               const textVal = rewrites[key];
               if (!textVal) return null;
               const meta = STYLE_LABELS[key];
 
               return (
-                <View key={key} style={styles.rewriteCard}>
-                  <View style={styles.rewriteCardHeader}>
-                    <View style={styles.styleLabelContainer}>
-                      <Ionicons name={meta.icon as any} size={16} color={meta.color} style={{ marginRight: 6 }} />
-                      <Text style={[styles.rewriteStyleLabel, { color: meta.color }]}>{meta.label}</Text>
+                <StaggeredCard key={key} index={index}>
+                  <View style={styles.rewriteCard}>
+                    <View style={styles.rewriteCardHeader}>
+                      <View style={styles.styleLabelContainer}>
+                        <Ionicons name={meta.icon as any} size={16} color={meta.color} style={{ marginRight: 6 }} />
+                        <Text style={[styles.rewriteStyleLabel, { color: meta.color }]}>{meta.label}</Text>
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => copyToClipboard(textVal)}
+                        style={styles.copyBtn}
+                      >
+                        <Ionicons name="copy-outline" size={18} color="#8E8E93" />
+                      </TouchableOpacity>
                     </View>
-                    <TouchableOpacity
-                      onPress={() => copyToClipboard(textVal)}
-                      style={styles.copyBtn}
-                    >
-                      <Ionicons name="copy-outline" size={18} color="#8E8E93" />
-                    </TouchableOpacity>
+                    <Text style={styles.rewriteContent}>{textVal}</Text>
                   </View>
-                  <Text style={styles.rewriteContent}>{textVal}</Text>
-                </View>
+                </StaggeredCard>
               );
             })}
           </View>
@@ -224,6 +293,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 1,
+    width: "100%",
   },
   disabledButton: {
     backgroundColor: "#D1D1D6",

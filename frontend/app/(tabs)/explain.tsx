@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
@@ -21,6 +22,72 @@ interface AnalysisResult {
   conversation_balance: string;
   potential_ambiguity: string;
   coaching_tips: string[];
+}
+
+// 3D Tactile Pressable Wrapper
+function TactileButton({ children, onPress, style, disabled }: any) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const handlePressIn = () => {
+    Animated.spring(scale, {
+      toValue: 0.94,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const handlePressOut = () => {
+    Animated.spring(scale, {
+      toValue: 1,
+      friction: 4,
+      tension: 40,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPressIn={handlePressIn}
+      onPressOut={handlePressOut}
+      onPress={onPress}
+      disabled={disabled}
+    >
+      <Animated.View style={[style, { transform: [{ scale }] }]}>
+        {children}
+      </Animated.View>
+    </TouchableOpacity>
+  );
+}
+
+// Staggered Entry Reveal Card
+function StaggeredCard({ children, index }: { children: React.ReactNode; index: number }) {
+  const opacity = useRef(new Animated.Value(0)).current;
+  const translateY = useRef(new Animated.Value(24)).current;
+
+  useEffect(() => {
+    Animated.sequence([
+      Animated.delay(index * 100),
+      Animated.parallel([
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 350,
+          useNativeDriver: true,
+        }),
+        Animated.spring(translateY, {
+          toValue: 0,
+          friction: 6,
+          tension: 40,
+          useNativeDriver: true,
+        })
+      ])
+    ]).start();
+  }, [index]);
+
+  return (
+    <Animated.View style={{ opacity, transform: [{ translateY }] }}>
+      {children}
+    </Animated.View>
+  );
 }
 
 export default function ExplainScreen() {
@@ -87,7 +154,7 @@ export default function ExplainScreen() {
 
           {error && <Text style={styles.errorText}>{error}</Text>}
           
-          <TouchableOpacity
+          <TactileButton
             style={[styles.primaryButton, loading && styles.disabledButton]}
             onPress={handleAnalyze}
             disabled={loading}
@@ -100,83 +167,97 @@ export default function ExplainScreen() {
                 <Text style={styles.primaryButtonText}>Analyze Conversation & Coach</Text>
               </View>
             )}
-          </TouchableOpacity>
+          </TactileButton>
         </View>
 
-        {/* Analysis Output */}
+        {/* Analysis Output with staggered card entry reveals */}
         {analysis && (
           <View style={styles.analysisSection}>
             <Text style={styles.resultsTitle}>Coaching & Conversation Insights</Text>
 
             {/* Coaching Tips Dashboard */}
             {analysis.coaching_tips && analysis.coaching_tips.length > 0 && (
-              <View style={styles.coachingCard}>
-                <View style={styles.coachingHeader}>
-                  <Ionicons name="school" size={20} color="#111827" style={{ marginRight: 8 }} />
-                  <Text style={styles.coachingTitle}>Communication Coaching Tips</Text>
-                </View>
-                {analysis.coaching_tips.map((tip, index) => (
-                  <View key={index} style={styles.tipRow}>
-                    <Ionicons name="sparkles" size={16} color="#8E8E93" style={styles.tipIcon} />
-                    <Text style={styles.tipText}>{tip}</Text>
+              <StaggeredCard index={0}>
+                <View style={styles.coachingCard}>
+                  <View style={styles.coachingHeader}>
+                    <Ionicons name="school" size={20} color="#111827" style={{ marginRight: 8 }} />
+                    <Text style={styles.coachingTitle}>Communication Coaching Tips</Text>
                   </View>
-                ))}
-              </View>
+                  {analysis.coaching_tips.map((tip, index) => (
+                    <View key={index} style={styles.tipRow}>
+                      <Ionicons name="sparkles" size={16} color="#8E8E93" style={styles.tipIcon} />
+                      <Text style={styles.tipText}>{tip}</Text>
+                    </View>
+                  ))}
+                </View>
+              </StaggeredCard>
             )}
 
             {/* Conversation Balance Widget */}
-            <View style={styles.infoCard}>
-              <View style={styles.infoTitleRow}>
-                <Ionicons name="git-compare-outline" size={18} color="#000000" />
-                <Text style={styles.infoTitle}>Conversation Balance</Text>
+            <StaggeredCard index={1}>
+              <View style={styles.infoCard}>
+                <View style={styles.infoTitleRow}>
+                  <Ionicons name="git-compare-outline" size={18} color="#000000" />
+                  <Text style={styles.infoTitle}>Conversation Balance</Text>
+                </View>
+                <Text style={styles.infoContent}>{analysis.conversation_balance}</Text>
               </View>
-              <Text style={styles.infoContent}>{analysis.conversation_balance}</Text>
-            </View>
+            </StaggeredCard>
 
             {/* What Happened Summary */}
-            <View style={styles.infoCard}>
-              <View style={styles.infoTitleRow}>
-                <Ionicons name="document-text-outline" size={18} color="#000000" />
-                <Text style={styles.infoTitle}>What Happened (Summary)</Text>
+            <StaggeredCard index={2}>
+              <View style={styles.infoCard}>
+                <View style={styles.infoTitleRow}>
+                  <Ionicons name="document-text-outline" size={18} color="#000000" />
+                  <Text style={styles.infoTitle}>What Happened (Summary)</Text>
+                </View>
+                <Text style={styles.infoContent}>{analysis.summary}</Text>
               </View>
-              <Text style={styles.infoContent}>{analysis.summary}</Text>
-            </View>
+            </StaggeredCard>
 
             {/* Emotional Tone */}
-            <View style={styles.infoCard}>
-              <View style={styles.infoTitleRow}>
-                <Ionicons name="happy-outline" size={18} color="#000000" />
-                <Text style={styles.infoTitle}>Emotional Tone</Text>
+            <StaggeredCard index={3}>
+              <View style={styles.infoCard}>
+                <View style={styles.infoTitleRow}>
+                  <Ionicons name="happy-outline" size={18} color="#000000" />
+                  <Text style={styles.infoTitle}>Emotional Tone</Text>
+                </View>
+                <Text style={styles.infoContent}>{analysis.emotional_tone}</Text>
               </View>
-              <Text style={styles.infoContent}>{analysis.emotional_tone}</Text>
-            </View>
+            </StaggeredCard>
 
             {/* Misunderstanding Risks */}
-            <View style={styles.infoCard}>
-              <View style={styles.infoTitleRow}>
-                <Ionicons name="warning-outline" size={18} color="#000000" />
-                <Text style={styles.infoTitle}>Possible Misunderstandings</Text>
+            <StaggeredCard index={4}>
+              <View style={styles.infoCard}>
+                <View style={styles.infoTitleRow}>
+                  <Ionicons name="warning-outline" size={18} color="#000000" />
+                  <Text style={styles.infoTitle}>Possible Misunderstandings</Text>
+                </View>
+                <Text style={styles.infoContent}>{analysis.misunderstandings}</Text>
               </View>
-              <Text style={styles.infoContent}>{analysis.misunderstandings}</Text>
-            </View>
+            </StaggeredCard>
 
             {/* Unanswered Questions */}
-            <View style={styles.infoCard}>
-              <View style={styles.infoTitleRow}>
-                <Ionicons name="help-circle-outline" size={18} color="#000000" />
-                <Text style={styles.infoTitle}>Question Status</Text>
+            <StaggeredCard index={5}>
+              <View style={styles.infoCard}>
+                <View style={styles.infoTitleRow}>
+                  <Ionicons name="help-circle-outline" size={18} color="#000000" />
+                  <Text style={styles.infoTitle}>Question Status</Text>
+                </View>
+                <Text style={styles.infoContent}>{analysis.answered_questions}</Text>
               </View>
-              <Text style={styles.infoContent}>{analysis.answered_questions}</Text>
-            </View>
+            </StaggeredCard>
 
             {/* Ambiguities */}
-            <View style={styles.infoCard}>
-              <View style={styles.infoTitleRow}>
-                <Ionicons name="help-buoy-outline" size={18} color="#000000" />
-                <Text style={styles.infoTitle}>Potential Ambiguity</Text>
+            <StaggeredCard index={6}>
+              <View style={styles.infoCard}>
+                <View style={styles.infoTitleRow}>
+                  <Ionicons name="help-buoy-outline" size={18} color="#000000" />
+                  <Text style={styles.infoTitle}>Potential Ambiguity</Text>
+                </View>
+                <Text style={styles.infoContent}>{analysis.potential_ambiguity}</Text>
               </View>
-              <Text style={styles.infoContent}>{analysis.potential_ambiguity}</Text>
-            </View>
+            </StaggeredCard>
           </View>
         )}
       </ScrollView>
@@ -261,6 +342,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 1,
+    width: "100%",
   },
   disabledButton: {
     backgroundColor: "#D1D1D6",
