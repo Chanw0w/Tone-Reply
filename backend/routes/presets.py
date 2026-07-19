@@ -17,7 +17,7 @@ async def create_preset(req: PresetRequest, current_user: dict = Depends(get_cur
         "goal": req.goal,
         "style": req.style,
         "length": req.length,
-        "created_at": datetime.now(timezone.UTC).isoformat()
+        "created_at": datetime.now(timezone.utc).isoformat()
     }
     await db.presets.insert_one(doc)
     return {"id": preset_id, **req.dict()}

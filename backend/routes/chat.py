@@ -38,7 +38,7 @@ async def analyze_conversation(req: AnalyzeRequest, current_user: dict = Depends
         "user_id": current_user["_id"],
         "conversation_text": req.conversation_text,
         "analysis": parsed,
-        "created_at": datetime.now(timezone.UTC).isoformat()
+        "created_at": datetime.now(timezone.utc).isoformat()
     }
     await db.conversations.insert_one(history_doc)
     

@@ -16,7 +16,7 @@ async def create_favorite(req: FavoriteRequest, current_user: dict = Depends(get
         "original_conversation": req.original_conversation,
         "reply_text": req.reply_text,
         "style_label": req.style_label,
-        "created_at": datetime.now(timezone.UTC).isoformat()
+        "created_at": datetime.now(timezone.utc).isoformat()
     }
     await db.favorites.insert_one(doc)
     return {"id": fav_id, **req.dict()}

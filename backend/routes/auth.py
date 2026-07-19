@@ -20,7 +20,7 @@ async def register(auth_data: UserAuth):
         "_id": user_id,
         "email": email,
         "password_hash": hashed,
-        "created_at": datetime.now(timezone.UTC).isoformat()
+        "created_at": datetime.now(timezone.utc).isoformat()
     }
     await db.users.insert_one(user_doc)
     
