@@ -14,6 +14,10 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 
+interface AnalyzeResponse {
+  analysis: AnalysisResult;
+}
+
 interface AnalysisResult {
   summary: string;
   emotional_tone: string;
@@ -105,7 +109,7 @@ export default function ExplainScreen() {
     setLoading(true);
     setAnalysis(null);
     try {
-      const response = await api.post("/chat/analyze", { conversation_text: convo });
+      const response = await api.post<AnalyzeResponse>("/chat/analyze", { conversation_text: convo });
       if (response && response.analysis) {
         setAnalysis(response.analysis);
       } else {
@@ -155,7 +159,7 @@ export default function ExplainScreen() {
           {error && <Text style={styles.errorText}>{error}</Text>}
           
           <TactileButton
-            style={[styles.primaryButton, loading && styles.disabledButton]}
+            style={loading ? styles.disabledButton : styles.primaryButton}
             onPress={handleAnalyze}
             disabled={loading}
           >

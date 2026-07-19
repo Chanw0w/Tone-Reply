@@ -7,9 +7,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
-  Alert,
-  Clipboard,
-} from "react-native";
+  Alert} from "react-native";
+import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 
@@ -81,10 +80,10 @@ export default function SavedScreen() {
     setLoading(true);
     try {
       if (activeTab === "favorites") {
-        const data = await api.get("/chat/favorites");
+        const data = await api.get<Favorite[]>("/chat/favorites");
         setFavorites(data || []);
       } else {
-        const data = await api.get("/chat/presets");
+        const data = await api.get<Preset[]>("/chat/presets");
         setPresets(data || []);
       }
     } catch (e: any) {
@@ -94,8 +93,8 @@ export default function SavedScreen() {
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    Clipboard.setString(text);
+  const copyToClipboard = async (text: string) => {
+    await Clipboard.setStringAsync(text);
     Alert.alert("Copied!", "Reply text copied to clipboard.");
   };
 

@@ -13,6 +13,7 @@ import {
   Alert,
   Animated,
 } from "react-native";
+import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 
@@ -121,7 +122,7 @@ export default function RewriteScreen() {
     setLoading(true);
     setRewrites(null);
     try {
-      const response = await api.post("/chat/rewrite", { text: draft });
+      const response = await api.post<Rewrites>("/chat/rewrite", { text: draft });
       if (response) {
         setRewrites(response);
       } else {
@@ -134,8 +135,8 @@ export default function RewriteScreen() {
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    Clipboard.setString(text);
+  const copyToClipboard = async (text: string) => {
+    await Clipboard.setStringAsync(text);
     Alert.alert("Copied!", "Rewritten reply copied to clipboard.");
   };
 
@@ -172,7 +173,7 @@ export default function RewriteScreen() {
           {error && <Text style={styles.errorText}>{error}</Text>}
           
           <TactileButton
-            style={[styles.primaryButton, loading && styles.disabledButton]}
+            style={loading ? styles.disabledButton : styles.primaryButton}
             onPress={handleRewrite}
             disabled={loading}
           >

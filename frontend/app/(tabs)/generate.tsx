@@ -13,6 +13,7 @@ import {
   Alert,
   Animated,
 } from "react-native";
+import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 
@@ -50,6 +51,10 @@ const LENGTHS = [
 interface ReplyOption {
   style: string;
   text: string;
+}
+
+interface GenerateResponse {
+  options: ReplyOption[];
 }
 
 interface Preset {
@@ -142,7 +147,7 @@ export default function GenerateScreen() {
 
   const fetchPresets = async () => {
     try {
-      const data = await api.get("/chat/presets");
+      const data = await api.get<Preset[]>("/chat/presets");
       setPresets(data || []);
     } catch (e) {
       console.log("Failed to load presets:", e);
@@ -165,7 +170,7 @@ export default function GenerateScreen() {
     setOptions([]);
     setSavedStatus({});
     try {
-      const response = await api.post("/chat/generate", {
+      const response = await api.post<GenerateResponse>("/chat/generate", {
         conversation_text: convo,
         goal: goal,
         length: length,
@@ -183,7 +188,7 @@ export default function GenerateScreen() {
   };
 
   const copyToClipboard = (text: string, index: number) => {
-    Clipboard.setString(text);
+    await Clipboard.setStringAsync(text);
     Alert.alert("Copied!", "Reply copied to clipboard.");
   };
 

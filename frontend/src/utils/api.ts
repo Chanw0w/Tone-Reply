@@ -1,12 +1,19 @@
 import { storage } from "@/src/utils/storage";
 
-const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL;
-if (!EXPO_PUBLIC_BACKEND_URL) {
-  console.warn("WARNING: EXPO_PUBLIC_BACKEND_URL environment variable is missing!");
+const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || "http://localhost:8000";
+
+interface ApiError {
+  detail?: string;
+  message?: string;
+}
+
+interface RequestConfig extends RequestInit {
+  timeout?: number;
 }
 
 class ApiService {
   private baseUrl: string;
+  private defaultTimeout: number = 30000;
 
   constructor() {
     this.baseUrl = `${EXPO_PUBLIC_BACKEND_URL}/api`;
@@ -24,7 +31,7 @@ class ApiService {
     return await storage.secureRemove("auth_token");
   }
 
-  async request(endpoint: string, options: RequestInit = {}): Promise<any> {
+  async request<T>(endpoint: string, options: RequestConfig = {}): Promise<T> {
     const token = await this.getToken();
     const headers = new Headers(options.headers || {});
     
@@ -33,43 +40,57 @@ class ApiService {
       headers.set("Authorization", `Bearer ${token}`);
     }
 
-    const response = await fetch(`${this.baseUrl}${endpoint}`, {
-      ...options,
-      headers,
-    });
+    const { timeout = this.defaultTimeout, ...fetchOptions } = options;
 
-    if (!response.ok) {
-      let errorMsg = "Something went wrong";
-      try {
-        const errJson = await response.json();
-        errorMsg = errJson.detail || errJson.message || errorMsg;
-      } catch (e) {
-        // use status text if parsing json fails
-        errorMsg = response.statusText || errorMsg;
-      }
-      throw new Error(errorMsg);
-    }
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
 
     try {
-      return await response.json();
-    } catch (e) {
-      return null;
+      const response = await fetch(`${this.baseUrl}${endpoint}`, {
+        ...fetchOptions,
+        headers,
+        signal: controller.signal,
+      });
+
+      if (!response.ok) {
+        let errorMsg = "Something went wrong";
+        try {
+          const errJson: ApiError = await response.json();
+          errorMsg = errJson.detail || errJson.message || errorMsg;
+        } catch {
+          errorMsg = response.statusText || errorMsg;
+        }
+        throw new Error(errorMsg);
+      }
+
+      const contentType = response.headers.get("content-type");
+      if (contentType && contentType.includes("application/json")) {
+        return await response.json();
+      }
+      return null as T;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        throw new Error("Request timed out");
+      }
+      throw error;
+    } finally {
+      clearTimeout(timeoutId);
     }
   }
 
-  async get(endpoint: string): Promise<any> {
-    return this.request(endpoint, { method: "GET" });
+  async get<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: "GET" });
   }
 
-  async post(endpoint: string, body: any): Promise<any> {
-    return this.request(endpoint, {
+  async post<T>(endpoint: string, body: unknown): Promise<T> {
+    return this.request<T>(endpoint, {
       method: "POST",
       body: JSON.stringify(body),
     });
   }
 
-  async delete(endpoint: string): Promise<any> {
-    return this.request(endpoint, { method: "DELETE" });
+  async delete<T>(endpoint: string): Promise<T> {
+    return this.request<T>(endpoint, { method: "DELETE" });
   }
 }
 
