@@ -49,13 +49,13 @@ class RewriteRequest(BaseModel):
 
 
 class FavoriteRequest(BaseModel):
-    original_conversation: str
-    reply_text: str
-    style_label: str
+    original_conversation: str = Field(..., max_length=5000)
+    reply_text: str = Field(..., max_length=2000)
+    style_label: str = Field(..., max_length=100)
 
 
 class PresetRequest(BaseModel):
-    name: str
-    goal: str
-    style: str
-    length: str
+    name: str = Field(..., max_length=100)
+    goal: str = Field(..., max_length=100)
+    style: str = Field(..., max_length=100)
+    length: str = Field(..., max_length=100)

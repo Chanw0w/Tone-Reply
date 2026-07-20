@@ -15,17 +15,20 @@ def mock_db():
     conversations_collection.find_one = AsyncMock(return_value=None)
     conversations_collection.insert_one = AsyncMock()
     conversations_collection.find = MagicMock()
+    conversations_collection.find.return_value.to_list = AsyncMock(return_value=[])
 
     presets_collection = MagicMock()
     presets_collection.find_one = AsyncMock(return_value=None)
     presets_collection.insert_one = AsyncMock()
     presets_collection.find = MagicMock()
+    presets_collection.find.return_value.to_list = AsyncMock(return_value=[])
     presets_collection.delete_one = AsyncMock()
 
     favorites_collection = MagicMock()
     favorites_collection.find_one = AsyncMock(return_value=None)
     favorites_collection.insert_one = AsyncMock()
     favorites_collection.find = MagicMock()
+    favorites_collection.find.return_value.to_list = AsyncMock(return_value=[])
     favorites_collection.delete_one = AsyncMock()
 
     db_mock = MagicMock()
@@ -38,13 +41,24 @@ def mock_db():
 
 
 @pytest.fixture
-async def client(mock_db):
-    """Async test client with mocked database."""
+def mock_llm():
+    """Mock LLM service to avoid needing API keys."""
+    async def mock_get_llm_response(system_msg: str, user_msg_text: str) -> str:
+        return '{"result": "mocked response"}'
+
+    return mock_get_llm_response
+
+
+@pytest.fixture
+async def client(mock_db, mock_llm):
+    """Async test client with mocked database and LLM."""
     with patch("routes.auth.db", mock_db), \
          patch("routes.chat.db", mock_db), \
          patch("routes.favorites.db", mock_db), \
          patch("routes.presets.db", mock_db), \
-         patch("database.db", mock_db):
+         patch("database.db", mock_db), \
+         patch("database.create_indexes", AsyncMock()), \
+         patch("services.llm.get_llm_response", mock_llm):
         transport = ASGITransport(app=app)
         async with AsyncClient(transport=transport, base_url="http://test") as ac:
             yield ac

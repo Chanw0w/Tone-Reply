@@ -109,3 +109,16 @@ async def rewrite_message(req: RewriteRequest, current_user: dict = Depends(get_
     raw_response = await get_llm_response(system_prompt, f"Message to rewrite:\n{req.text}")
     parsed = clean_and_parse_json(raw_response)
     return parsed
+
+
+# --- HISTORY ROUTE ---
+@router.get("/history")
+async def get_history(current_user: dict = Depends(get_current_user)):
+    cursor = db.conversations.find(
+        {"user_id": current_user["_id"]},
+        {"_id": 1, "conversation_text": 1, "analysis": 1, "created_at": 1}
+    ).sort("created_at", -1)
+    convs = await cursor.to_list(length=50)
+    for c in convs:
+        c["id"] = c.pop("_id")
+    return convs

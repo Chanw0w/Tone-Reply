@@ -4,8 +4,14 @@ import uuid
 from fastapi import HTTPException
 from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
 from config import EMERGENT_LLM_KEY
+import os
 
 logger = logging.getLogger(__name__)
+
+# Configurable LLM model via env var
+LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "gemini")
+LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-3.1-pro-preview")
+
 
 async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
     try:
@@ -16,7 +22,7 @@ async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
             api_key=EMERGENT_LLM_KEY,
             session_id=str(uuid.uuid4()),
             system_message=system_msg
-        ).with_model("gemini", "gemini-3.1-pro-preview")
+        ).with_model(LLM_PROVIDER, LLM_MODEL)
 
         user_message = UserMessage(text=user_msg_text)
         full_response = ""
@@ -31,6 +37,7 @@ async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
     except Exception:
         logger.error("Error calling LLM Chat", exc_info=True)
         raise HTTPException(status_code=500, detail="LLM Connection failed")
+
 
 def clean_and_parse_json(text: str):
     cleaned = text.strip()

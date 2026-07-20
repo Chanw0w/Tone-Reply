@@ -2,7 +2,7 @@ import React from "react";
 import { Tabs, Redirect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../../src/utils/auth-context";
-import { ActivityIndicator, View, Text, StyleSheet, TouchableOpacity, Platform } from "react-native";
+import { ActivityIndicator, View, Text, StyleSheet, Platform } from "react-native";
 
 export default function TabsLayout() {
   const { user, isLoading } = useAuth();
@@ -44,9 +44,7 @@ export default function TabsLayout() {
           <View style={styles.header}>
             <View style={styles.headerContent}>
               <Text style={styles.headerLogo}>💬 TONEREPLY</Text>
-              <TouchableOpacity style={styles.themeToggle}>
-                <Ionicons name="moon-outline" size={16} color="#000000" />
-              </TouchableOpacity>
+
             </View>
           </View>
         ),
@@ -162,16 +160,7 @@ const styles = StyleSheet.create({
     color: "#000000",
     letterSpacing: -0.5,
   },
-  themeToggle: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: "#E5E7EB",
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#FFFFFF",
-  },
+
   tabIconWrapper: {
     justifyContent: "center",
     alignItems: "center",

@@ -1,10 +1,41 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useAuth } from "../../src/utils/auth-context";
 import { Ionicons } from "@expo/vector-icons";
+import { api } from "../../src/utils/api";
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
+
+  const handleChangePassword = () => {
+    Alert.alert(
+      "Change Password",
+      "This feature will be available in a future update.",
+      [{ text: "OK" }]
+    );
+  };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      "Delete Account",
+      "This will permanently delete your account and all data. This cannot be undone.",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await api.delete("/auth/me");
+              await logout();
+            } catch (e: any) {
+              Alert.alert("Error", e.message || "Failed to delete account");
+            }
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer} bounces={false}>
@@ -14,45 +45,33 @@ export default function ProfileScreen() {
           <Ionicons name="person-circle" size={80} color="#8E8E93" />
         </View>
         <Text style={styles.emailText}>{user?.email || "user@example.com"}</Text>
-        <View style={styles.badge}>
-          <Ionicons name="sparkles" size={14} color="#FF9500" style={{ marginRight: 4 }} />
-          <Text style={styles.badgeText}>Premium Unlocked</Text>
-        </View>
       </View>
 
-      {/* Features Overview */}
+      {/* Account Actions */}
       <View style={styles.mainCard}>
-        <Text style={styles.cardSectionLabel}>Your Premium Features</Text>
+        <Text style={styles.cardSectionLabel}>Account</Text>
 
-        <View style={styles.featureItem}>
+        <TouchableOpacity style={styles.featureItem} onPress={handleChangePassword}>
           <View style={[styles.iconWrapper, { backgroundColor: "#F4F4F5" }]}>
-            <Ionicons name="infinite" size={20} color="#111827" />
+            <Ionicons name="lock-closed-outline" size={20} color="#111827" />
           </View>
           <View style={styles.featureTextWrapper}>
-            <Text style={styles.featureTitle}>Unlimited Tone Rewrites</Text>
-            <Text style={styles.featureDesc}>No daily limit on reply generation or style conversions.</Text>
+            <Text style={styles.featureTitle}>Change Password</Text>
+            <Text style={styles.featureDesc}>Update your account password</Text>
           </View>
-        </View>
+          <Ionicons name="chevron-forward-outline" size={16} color="#8E8E93" />
+        </TouchableOpacity>
 
-        <View style={styles.featureItem}>
+        <TouchableOpacity style={styles.featureItem} onPress={logout}>
           <View style={[styles.iconWrapper, { backgroundColor: "#F4F4F5" }]}>
-            <Ionicons name="options-outline" size={20} color="#111827" />
+            <Ionicons name="log-out-outline" size={20} color="#111827" />
           </View>
           <View style={styles.featureTextWrapper}>
-            <Text style={styles.featureTitle}>Custom Style Presets</Text>
-            <Text style={styles.featureDesc}>Save presets for dating, professional emails, or friends.</Text>
+            <Text style={styles.featureTitle}>Sign Out</Text>
+            <Text style={styles.featureDesc}>Sign out of your account</Text>
           </View>
-        </View>
-
-        <View style={styles.featureItem}>
-          <View style={[styles.iconWrapper, { backgroundColor: "#F4F4F5" }]}>
-            <Ionicons name="mic-outline" size={20} color="#111827" />
-          </View>
-          <View style={styles.featureTextWrapper}>
-            <Text style={styles.featureTitle}>Voice Recognition (Coming Soon)</Text>
-            <Text style={styles.featureDesc}>Draft replies using speech-to-text directly in the app.</Text>
-          </View>
-        </View>
+          <Ionicons name="chevron-forward-outline" size={16} color="#8E8E93" />
+        </TouchableOpacity>
       </View>
 
       {/* System Info */}
@@ -60,25 +79,21 @@ export default function ProfileScreen() {
         <Text style={styles.cardSectionLabel}>System Info</Text>
         <View style={styles.infoRow}>
           <Text style={styles.infoLabel}>AI Provider</Text>
-          <Text style={styles.infoValue}>Gemini 3.1 Pro (Recommended)</Text>
+          <Text style={styles.infoValue}>Gemini (Configurable)</Text>
         </View>
         <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Database Mode</Text>
-          <Text style={styles.infoValue}>MongoDB Persistent</Text>
-        </View>
-        <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>App Version</Text>
-          <Text style={styles.infoValue}>2.0.26 (Expo New Arch)</Text>
+          <Text style={styles.infoLabel}>Database</Text>
+          <Text style={styles.infoValue}>MongoDB</Text>
         </View>
       </View>
 
-      {/* Danger Zone matching Clique screenshot */}
+      {/* Danger Zone */}
       <View style={[styles.mainCard, { borderColor: "#FFD5D2" }]}>
         <Text style={[styles.cardSectionLabel, { color: "#FF3B30" }]}>Danger Zone</Text>
-        <TouchableOpacity style={styles.dangerRow} onPress={logout}>
+        <TouchableOpacity style={styles.dangerRow} onPress={handleDeleteAccount}>
           <View style={styles.dangerLeft}>
             <Ionicons name="trash-outline" size={20} color="#FF3B30" style={{ marginRight: 12 }} />
-            <Text style={styles.dangerText}>Sign Out Account</Text>
+            <Text style={styles.dangerText}>Delete Account</Text>
           </View>
           <Ionicons name="chevron-forward-outline" size={16} color="#FF3B30" />
         </TouchableOpacity>
@@ -117,24 +132,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "800",
     color: "#111827",
-    marginBottom: 8,
-  },
-  badge: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFF5E6",
-    borderWidth: 1,
-    borderColor: "#FFE0B2",
-    borderRadius: 20,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-  },
-  badgeText: {
-    color: "#FF9500",
-    fontSize: 12,
-    fontWeight: "800",
-    textTransform: "uppercase",
-    letterSpacing: 0.5,
   },
   mainCard: {
     backgroundColor: "#FFFFFF",
