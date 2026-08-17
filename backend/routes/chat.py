@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends
-from database import db
+from database import get_pool
 from models.schemas import AnalyzeRequest, GenerateRequest, RewriteRequest
 from services.auth import get_current_user
 from services.llm import get_llm_response, clean_and_parse_json
@@ -33,14 +33,16 @@ async def analyze_conversation(req: AnalyzeRequest, current_user: dict = Depends
     parsed = clean_and_parse_json(raw_response)
     
     analysis_id = str(uuid.uuid4())
-    history_doc = {
-        "_id": analysis_id,
-        "user_id": current_user["_id"],
-        "conversation_text": req.conversation_text,
-        "analysis": parsed,
-        "created_at": datetime.now(timezone.utc).isoformat()
-    }
-    await db.conversations.insert_one(history_doc)
+    created_at = datetime.now(timezone.utc).isoformat()
+    
+    pool = await get_pool()
+    async with pool.acquire() as conn:
+        await conn.execute(
+            """INSERT INTO conversations (id, user_id, conversation_text, analysis, created_at) 
+               VALUES ($1, $2, $3, $4, $5)""",
+            analysis_id, current_user["id"], req.conversation_text, 
+            str(parsed), created_at  # Store as JSON string
+        )
     
     return {
         "id": analysis_id,
@@ -114,11 +116,23 @@ async def rewrite_message(req: RewriteRequest, current_user: dict = Depends(get_
 # --- HISTORY ROUTE ---
 @router.get("/history")
 async def get_history(current_user: dict = Depends(get_current_user)):
-    cursor = db.conversations.find(
-        {"user_id": current_user["_id"]},
-        {"_id": 1, "conversation_text": 1, "analysis": 1, "created_at": 1}
-    ).sort("created_at", -1)
-    convs = await cursor.to_list(length=50)
-    for c in convs:
-        c["id"] = c.pop("_id")
+    pool = await get_pool()
+    async with pool.acquire() as conn:
+        rows = await conn.fetch(
+            """SELECT id, conversation_text, analysis, created_at 
+               FROM conversations 
+               WHERE user_id = $1 
+               ORDER BY created_at DESC 
+               LIMIT 50""",
+            current_user["id"]
+        )
+    
+    convs = []
+    for row in rows:
+        convs.append({
+            "id": row["id"],
+            "conversation_text": row["conversation_text"],
+            "analysis": row["analysis"],
+            "created_at": row["created_at"]
+        })
     return convs

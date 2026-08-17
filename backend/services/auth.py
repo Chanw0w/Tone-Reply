@@ -3,7 +3,7 @@ import jwt
 from datetime import datetime, timezone, timedelta
 from fastapi import HTTPException, Header
 from typing import Optional
-from database import db
+from database import get_pool
 from config import JWT_SECRET, ALGORITHM, JWT_EXPIRY_DAYS
 
 def hash_password(password: str) -> str:
@@ -34,9 +34,11 @@ async def get_current_user(authorization: Optional[str] = Header(None)) -> dict:
         if not user_id:
             raise HTTPException(status_code=401, detail="Invalid token payload")
         
-        user = await db.users.find_one({"_id": user_id})
-        if not user:
-            raise HTTPException(status_code=401, detail="User not found")
-        return user
+        pool = await get_pool()
+        async with pool.acquire() as conn:
+            user = await conn.fetchrow("SELECT * FROM users WHERE id = $1", user_id)
+            if not user:
+                raise HTTPException(status_code=401, detail="User not found")
+            return dict(user)
     except jwt.PyJWTError:
         raise HTTPException(status_code=401, detail="Token signature expired or invalid")

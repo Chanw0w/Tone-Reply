@@ -1,42 +1,56 @@
 import json
 import logging
-import uuid
+import httpx
 from fastapi import HTTPException
-from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
-from config import EMERGENT_LLM_KEY
-import os
+from config import TOKENTHON_API_KEY, TOKENTHON_BASE_URL, LLM_PROVIDER, LLM_API_KEY, LLM_MODEL
 
 logger = logging.getLogger(__name__)
 
-# Configurable LLM model via env var
-LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "gemini")
-LLM_MODEL = os.environ.get("LLM_MODEL", "gemini-3.1-pro-preview")
-
 
 async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
+    """Get LLM response using Tokenthon (OpenAI-compatible API)."""
     try:
-        if not EMERGENT_LLM_KEY:
-            raise HTTPException(status_code=500, detail="EMERGENT_LLM_KEY not found in environment")
+        api_key = TOKENTHON_API_KEY or LLM_API_KEY
+        base_url = TOKENTHON_BASE_URL
+        model = LLM_MODEL
 
-        chat = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=str(uuid.uuid4()),
-            system_message=system_msg
-        ).with_model(LLM_PROVIDER, LLM_MODEL)
+        if not api_key:
+            raise HTTPException(status_code=500, detail="LLM API key not found in environment")
 
-        user_message = UserMessage(text=user_msg_text)
-        full_response = ""
-        async for event in chat.stream_message(user_message):
-            if isinstance(event, TextDelta):
-                full_response += event.content
-            elif isinstance(event, StreamDone):
-                break
-        return full_response
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+
+        payload = {
+            "model": model,
+            "messages": [
+                {"role": "system", "content": system_msg},
+                {"role": "user", "content": user_msg_text}
+            ],
+            "temperature": 0.7,
+            "max_tokens": 2000
+        }
+
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                f"{base_url}/chat/completions",
+                headers=headers,
+                json=payload
+            )
+
+            if response.status_code != 200:
+                logger.error(f"LLM API error: {response.status_code} - {response.text}")
+                raise HTTPException(status_code=500, detail="LLM request failed")
+
+            data = response.json()
+            return data["choices"][0]["message"]["content"]
+
     except HTTPException:
         raise
-    except Exception:
+    except Exception as e:
         logger.error("Error calling LLM Chat", exc_info=True)
-        raise HTTPException(status_code=500, detail="LLM Connection failed")
+        raise HTTPException(status_code=500, detail=f"LLM Connection failed: {str(e)}")
 
 
 def clean_and_parse_json(text: str):

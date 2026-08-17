@@ -5,9 +5,15 @@ from dotenv import load_dotenv
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB
-MONGO_URL = os.environ.get('MONGO_URL', "mongodb://localhost:27017")
-DB_NAME = os.environ.get('DB_NAME', "test_database")
+# Supabase
+SUPABASE_URL = os.environ.get("SUPABASE_URL")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY")  # Service Role Key
+SUPABASE_PUBLISHABLE_KEY = os.environ.get("SUPABASE_PUBLISHABLE_KEY")
+SUPABASE_SECRET_KEY = os.environ.get("SUPABASE_SECRET_KEY")
+SUPABASE_JWKS_URL = os.environ.get("SUPABASE_JWKS_URL")
+
+# PostgreSQL Connection (Session-mode pooler)
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 # JWT
 JWT_SECRET = os.environ.get("JWT_SECRET")
@@ -16,5 +22,11 @@ if not JWT_SECRET:
 ALGORITHM = "HS256"
 JWT_EXPIRY_DAYS = 7
 
-# LLM
-EMERGENT_LLM_KEY = os.environ.get("EMERGENT_LLM_KEY")
+# LLM (Tokenthon - OpenAI-compatible)
+TOKENTHON_API_KEY = os.environ.get("TOKENTHON_API_KEY")
+TOKENTHON_BASE_URL = os.environ.get("TOKENTHON_BASE_URL", "https://api.tokenthon.com/v1")
+
+# Smart Routing (for when scaling)
+LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "tokenthon")  # tokenthon, openai, anthropic
+LLM_API_KEY = os.environ.get("LLM_API_KEY")
+LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-5-mini")
