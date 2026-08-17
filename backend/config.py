@@ -22,11 +22,12 @@ if not JWT_SECRET:
 ALGORITHM = "HS256"
 JWT_EXPIRY_DAYS = 7
 
-# LLM (Tokenthon - OpenAI-compatible)
-TOKENTHON_API_KEY = os.environ.get("TOKENTHON_API_KEY")
-TOKENTHON_BASE_URL = os.environ.get("TOKENTHON_BASE_URL", "https://api.tokenthon.com/v1")
+# LLM (OpenAPIs - Free OpenAI-compatible proxy, no key needed)
+LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "openapis")
+LLM_API_KEY = os.environ.get("LLM_API_KEY", "shared-beta-key")
+LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://openapis.online/openai")
+LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-5.4-mini")
 
-# Smart Routing (for when scaling)
-LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "tokenthon")  # tokenthon, openai, anthropic
-LLM_API_KEY = os.environ.get("LLM_API_KEY")
-LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-5-mini")
+# Legacy Tokenthon config (kept for backward compatibility)
+TOKENTHON_API_KEY = os.environ.get("TOKENTHON_API_KEY")
+TOKENTHON_BASE_URL = os.environ.get("TOKENTHON_BASE_URL", LLM_BASE_URL)

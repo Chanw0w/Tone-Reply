@@ -2,16 +2,16 @@ import json
 import logging
 import httpx
 from fastapi import HTTPException
-from config import TOKENTHON_API_KEY, TOKENTHON_BASE_URL, LLM_PROVIDER, LLM_API_KEY, LLM_MODEL
+from config import TOKENTHON_API_KEY, TOKENTHON_BASE_URL, LLM_PROVIDER, LLM_API_KEY, LLM_BASE_URL, LLM_MODEL
 
 logger = logging.getLogger(__name__)
 
 
 async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
-    """Get LLM response using Tokenthon (OpenAI-compatible API)."""
+    """Get LLM response using OpenAI-compatible API (OpenAPIs, Tokenthon, etc.)."""
     try:
-        api_key = TOKENTHON_API_KEY or LLM_API_KEY
-        base_url = TOKENTHON_BASE_URL
+        api_key = LLM_API_KEY or TOKENTHON_API_KEY or "shared-beta-key"
+        base_url = LLM_BASE_URL or TOKENTHON_BASE_URL
         model = LLM_MODEL
 
         if not api_key:

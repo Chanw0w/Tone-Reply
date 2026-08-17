@@ -21,15 +21,13 @@ services:
         sync: false
       - key: JWT_SECRET
         sync: false
-      - key: TOKENTHON_API_KEY
-        sync: false
-      - key: TOKENTHON_BASE_URL
-        value: "https://api.tokenthon.com/v1"
       - key: LLM_PROVIDER
-        value: "tokenthon"
+        value: "openapis"
       - key: LLM_API_KEY
-        sync: false
+        value: "shared-beta-key"
+      - key: LLM_BASE_URL
+        value: "https://openapis.online/openai"
       - key: LLM_MODEL
-        value: "gpt-5-mini"
+        value: "gpt-5.4-mini"
       - key: CORS_ORIGINS
         value: "https://tonereply.higgsfield.app,http://localhost:8000,http://localhost:19006"
