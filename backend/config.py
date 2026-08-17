@@ -22,11 +22,11 @@ if not JWT_SECRET:
 ALGORITHM = "HS256"
 JWT_EXPIRY_DAYS = 7
 
-# LLM (OpenAPIs - Free OpenAI-compatible proxy, no key needed)
-LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "openapis")
-LLM_API_KEY = os.environ.get("LLM_API_KEY", "shared-beta-key")
-LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://openapis.online/openai")
-LLM_MODEL = os.environ.get("LLM_MODEL", "gpt-5.4-mini")
+# LLM (Groq - Free, fast, OpenAI-compatible)
+LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "groq")
+LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
+LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://api.groq.com/openai")
+LLM_MODEL = os.environ.get("LLM_MODEL", "llama-3.3-70b-versatile")
 
 # Legacy Tokenthon config (kept for backward compatibility)
 TOKENTHON_API_KEY = os.environ.get("TOKENTHON_API_KEY")

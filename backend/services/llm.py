@@ -10,12 +10,12 @@ logger = logging.getLogger(__name__)
 async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
     """Get LLM response using OpenAI-compatible API (OpenAPIs, Tokenthon, etc.)."""
     try:
-        api_key = LLM_API_KEY or TOKENTHON_API_KEY or "shared-beta-key"
+        api_key = LLM_API_KEY or TOKENTHON_API_KEY
         base_url = LLM_BASE_URL or TOKENTHON_BASE_URL
         model = LLM_MODEL
 
         if not api_key:
-            raise HTTPException(status_code=500, detail="LLM API key not found in environment")
+            raise HTTPException(status_code=500, detail="LLM API key not configured. Set LLM_API_KEY in environment.")
 
         headers = {
             "Authorization": f"Bearer {api_key}",

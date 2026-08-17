@@ -22,12 +22,12 @@ services:
       - key: JWT_SECRET
         sync: false
       - key: LLM_PROVIDER
-        value: "openapis"
+        value: "groq"
       - key: LLM_API_KEY
-        value: "shared-beta-key"
+        sync: false
       - key: LLM_BASE_URL
-        value: "https://openapis.online/openai"
+        value: "https://api.groq.com/openai"
       - key: LLM_MODEL
-        value: "gpt-5.4-mini"
+        value: "llama-3.3-70b-versatile"
       - key: CORS_ORIGINS
         value: "https://tonereply.higgsfield.app,http://localhost:8000,http://localhost:19006"
