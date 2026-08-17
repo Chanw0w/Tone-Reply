@@ -1,4 +1,5 @@
 import json
+import re
 import logging
 import httpx
 from fastapi import HTTPException
@@ -7,8 +8,13 @@ from config import TOKENTHON_API_KEY, TOKENTHON_BASE_URL, LLM_PROVIDER, LLM_API_
 logger = logging.getLogger(__name__)
 
 
+def strip_thinking_tags(text: str) -> str:
+    """Remove <think>...</think> tags from model responses."""
+    return re.sub(r'<think>.*?</think>\s*', '', text, flags=re.DOTALL).strip()
+
+
 async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
-    """Get LLM response using OpenAI-compatible API (OpenAPIs, Tokenthon, etc.)."""
+    """Get LLM response using OpenAI-compatible API (Groq, Tokenthon, etc.)."""
     try:
         api_key = LLM_API_KEY or TOKENTHON_API_KEY
         base_url = LLM_BASE_URL or TOKENTHON_BASE_URL
@@ -44,7 +50,8 @@ async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
                 raise HTTPException(status_code=500, detail="LLM request failed")
 
             data = response.json()
-            return data["choices"][0]["message"]["content"]
+            content = data["choices"][0]["message"]["content"]
+            return strip_thinking_tags(content)
 
     except HTTPException:
         raise

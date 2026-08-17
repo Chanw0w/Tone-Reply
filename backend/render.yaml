@@ -28,6 +28,6 @@ services:
       - key: LLM_BASE_URL
         value: "https://api.groq.com/openai"
       - key: LLM_MODEL
-        value: "llama-3.3-70b-versatile"
+        value: "openai/gpt-oss-20b"
       - key: CORS_ORIGINS
         value: "https://tonereply.higgsfield.app,http://localhost:8000,http://localhost:19006"
