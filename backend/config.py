@@ -25,7 +25,7 @@ JWT_EXPIRY_DAYS = 7
 # LLM (Groq - Free, fast, OpenAI-compatible)
 LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "groq")
 LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
-LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://api.groq.com/openai")
+LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://api.groq.com/openai/v1")
 LLM_MODEL = os.environ.get("LLM_MODEL", "openai/gpt-oss-20b")
 
 # Legacy Tokenthon config (kept for backward compatibility)
