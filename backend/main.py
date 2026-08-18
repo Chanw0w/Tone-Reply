@@ -17,10 +17,10 @@ async def lifespan(app: FastAPI):
 app = FastAPI(title="Tone-Reply API", lifespan=lifespan)
 
 # CORS: use env var for production origins, fallback to localhost for dev
-cors_origins = os.environ.get("CORS_ORIGINS", "http://localhost:8000,http://localhost:19006").split(",")
+cors_origins = os.environ.get("CORS_ORIGINS", "http://localhost:8000,http://localhost:19006,https://tonereply.vercel.app,https://tonereply-i7owwoclt-tone-reply.vercel.app").split(",")
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=False,
+    allow_credentials=True,
     allow_origins=cors_origins,
     allow_methods=["*"],
     allow_headers=["*"],
