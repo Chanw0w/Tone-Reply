@@ -1,6 +1,6 @@
 import { storage } from "@/src/utils/storage";
 
-const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || "http://localhost:8000";
+const EXPO_PUBLIC_BACKEND_URL = process.env.EXPO_PUBLIC_BACKEND_URL || "https://tone-reply-api.onrender.com";
 
 interface ApiError {
   detail?: string;
