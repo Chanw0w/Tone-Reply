@@ -39,6 +39,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "312a3667-43cb-4a4e-a1d0-8043824cbd22"
+      }
+    },
+    "owner": "chanwow1-2"
   }
 }
