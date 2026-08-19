@@ -2,14 +2,16 @@ import React from "react";
 import { View, ActivityIndicator, StyleSheet } from "react-native";
 import { Redirect } from "expo-router";
 import { useAuth } from "../src/utils/auth-context";
+import { useTheme } from "../src/utils/theme-context";
 
 export default function Index() {
   const { user, isLoading } = useAuth();
+  const { theme } = useTheme();
 
   if (isLoading) {
     return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4F46E5" />
+      <View style={[styles.loadingContainer, { backgroundColor: theme.background }]}>
+        <ActivityIndicator size="large" color={theme.primary} />
       </View>
     );
   }
@@ -24,7 +26,6 @@ export default function Index() {
 const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
-    backgroundColor: "#0B0F19",
     alignItems: "center",
     justifyContent: "center",
   },

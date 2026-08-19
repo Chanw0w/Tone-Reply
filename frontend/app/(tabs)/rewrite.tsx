@@ -9,13 +9,14 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Clipboard,
   Alert,
   Animated,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
+import { useTheme } from "../../src/utils/theme-context";
+import { RainbowStripe } from "../../src/components/RainbowStripe";
 
 interface Rewrites {
   confident?: string;
@@ -108,6 +109,7 @@ function StaggeredCard({ children, index }: { children: React.ReactNode; index: 
 }
 
 export default function RewriteScreen() {
+  const { theme } = useTheme();
   const [draft, setDraft] = useState("");
   const [rewrites, setRewrites] = useState<Rewrites | null>(null);
   const [loading, setLoading] = useState(false);
@@ -143,26 +145,26 @@ export default function RewriteScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.background }]}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
-        {/* Main interactive container card matching Clique layout */}
-        <View style={styles.mainCard}>
+        {/* Main interactive container card */}
+        <View style={[styles.mainCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
           <View style={styles.inputHeader}>
-            <Text style={styles.cardSectionLabel}>Original Message Draft</Text>
+            <Text style={[styles.cardSectionLabel, { color: theme.textSecondary }]}>Original Message Draft</Text>
             {draft.length > 0 && (
               <TouchableOpacity onPress={() => setDraft("")}>
-                <Text style={styles.clearText}>Clear</Text>
+                <Text style={[styles.clearText, { color: theme.error }]}>Clear</Text>
               </TouchableOpacity>
             )}
           </View>
-          
+
           <TextInput
-            style={styles.textArea}
+            style={[styles.textArea, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.textPrimary }]}
             multiline
             numberOfLines={4}
             placeholder="Type or paste a draft here..."
-            placeholderTextColor="#8E8E93"
+            placeholderTextColor={theme.inputPlaceholder}
             value={draft}
             onChangeText={(text) => {
               setDraft(text);
@@ -170,19 +172,26 @@ export default function RewriteScreen() {
             }}
           />
 
-          {error && <Text style={styles.errorText}>{error}</Text>}
-          
+          {/* Rainbow accent */}
+          <RainbowStripe height={3} style={styles.rainbowAccent} />
+
+          {error && <Text style={[styles.errorText, { color: theme.error }]}>{error}</Text>}
+
           <TactileButton
-            style={loading ? styles.disabledButton : styles.primaryButton}
+            style={[
+              styles.primaryButton,
+              { backgroundColor: theme.buttonPrimary },
+              loading && [styles.disabledButton, { backgroundColor: theme.buttonDisabled }]
+            ]}
             onPress={handleRewrite}
             disabled={loading}
           >
             {loading ? (
-              <ActivityIndicator color="#FFFFFF" />
+              <ActivityIndicator color={theme.buttonPrimaryText} />
             ) : (
               <View style={styles.buttonInner}>
-                <Ionicons name="refresh-circle" size={20} color="#FFFFFF" style={{ marginRight: 6 }} />
-                <Text style={styles.primaryButtonText}>Rewrite Message into 9 Styles</Text>
+                <Ionicons name="refresh-circle" size={20} color={theme.buttonPrimaryText} style={{ marginRight: 6 }} />
+                <Text style={[styles.primaryButtonText, { color: theme.buttonPrimaryText }]}>Rewrite Message into 9 Styles</Text>
               </View>
             )}
           </TactileButton>
@@ -191,7 +200,7 @@ export default function RewriteScreen() {
         {/* Output Options with Staggered Fade Up reveal */}
         {rewrites && (
           <View style={styles.resultsSection}>
-            <Text style={styles.resultsTitle}>Choose Your Rewritten Message</Text>
+            <Text style={[styles.resultsTitle, { color: theme.textPrimary }]}>Choose Your Rewritten Message</Text>
             {(Object.keys(STYLE_LABELS) as Array<keyof Rewrites>).map((key, index) => {
               const textVal = rewrites[key];
               if (!textVal) return null;
@@ -199,8 +208,11 @@ export default function RewriteScreen() {
 
               return (
                 <StaggeredCard key={key} index={index}>
-                  <View style={styles.rewriteCard}>
-                    <View style={styles.rewriteCardHeader}>
+                  <View style={[styles.rewriteCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+                    {/* Rainbow top border */}
+                    <RainbowStripe height={3} style={styles.replyRainbow} />
+
+                    <View style={[styles.rewriteCardHeader, { borderBottomColor: theme.divider }]}>
                       <View style={styles.styleLabelContainer}>
                         <Ionicons name={meta.icon as any} size={16} color={meta.color} style={{ marginRight: 6 }} />
                         <Text style={[styles.rewriteStyleLabel, { color: meta.color }]}>{meta.label}</Text>
@@ -209,10 +221,10 @@ export default function RewriteScreen() {
                         onPress={() => copyToClipboard(textVal)}
                         style={styles.copyBtn}
                       >
-                        <Ionicons name="copy-outline" size={18} color="#8E8E93" />
+                        <Ionicons name="copy-outline" size={18} color={theme.textMuted} />
                       </TouchableOpacity>
                     </View>
-                    <Text style={styles.rewriteContent}>{textVal}</Text>
+                    <Text style={[styles.rewriteContent, { color: theme.textPrimary }]}>{textVal}</Text>
                   </View>
                 </StaggeredCard>
               );
@@ -227,22 +239,19 @@ export default function RewriteScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F4F5",
   },
   scrollContainer: {
     padding: 16,
     paddingBottom: 40,
   },
   mainCard: {
-    backgroundColor: "#FFFFFF",
     borderRadius: 28,
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     padding: 20,
     marginBottom: 20,
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
   },
@@ -255,49 +264,45 @@ const styles = StyleSheet.create({
   cardSectionLabel: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#8E8E93",
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   clearText: {
-    color: "#FF3B30",
     fontSize: 12,
     fontWeight: "800",
   },
   textArea: {
-    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 18,
     padding: 14,
-    color: "#111827",
     fontSize: 14,
     height: 100,
     textAlignVertical: "top",
     marginBottom: 16,
   },
+  rainbowAccent: {
+    marginBottom: 12,
+    borderRadius: 2,
+  },
   errorText: {
-    color: "#FF3B30",
     fontSize: 13,
     textAlign: "center",
     marginBottom: 12,
     fontWeight: "600",
   },
   primaryButton: {
-    backgroundColor: "#8E8E93",
     borderRadius: 18,
     height: 48,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 1,
     width: "100%",
   },
   disabledButton: {
-    backgroundColor: "#D1D1D6",
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -306,7 +311,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   primaryButtonText: {
-    color: "#FFFFFF",
     fontSize: 15,
     fontWeight: "700",
   },
@@ -316,26 +320,26 @@ const styles = StyleSheet.create({
   resultsTitle: {
     fontSize: 15,
     fontWeight: "800",
-    color: "#111827",
     textTransform: "uppercase",
     letterSpacing: 1.1,
     marginBottom: 12,
     marginLeft: 4,
   },
   rewriteCard: {
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 24,
     padding: 16,
     marginBottom: 16,
+    overflow: "hidden",
+  },
+  replyRainbow: {
+    marginBottom: 12,
   },
   rewriteCardHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#F4F4F5",
     paddingBottom: 8,
     marginBottom: 12,
   },
@@ -352,7 +356,6 @@ const styles = StyleSheet.create({
   },
   rewriteContent: {
     fontSize: 15,
-    color: "#111827",
     lineHeight: 22,
   },
 });

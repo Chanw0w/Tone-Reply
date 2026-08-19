@@ -20,6 +20,10 @@ config.cacheStores = [
 // config.resolver.blacklistRE = /node_modules\/.*\/(android|ios|windows|macos|__tests__|\.git|.*\.android\.js|.*\.ios\.js)$/;
 
 // Reduce the number of workers to decrease resource usage
-config.maxWorkers = 2;
+config.maxWorkers = 1;
+
+// Force child_process workers instead of worker_threads (Node.js v26 compat)
+config.transformer = config.transformer || {};
+config.transformer.unstable_workerThreads = false;
 
 module.exports = config;

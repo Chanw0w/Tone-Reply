@@ -29,8 +29,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       const token = await api.getToken();
       if (token) {
-        const userData = await api.get("/auth/me");
-        setUser(userData);
+        const userData = await api.get<User>("/auth/me");
+        setUser(userData as User);
       }
     } catch (e) {
       console.log("Check auth failed:", e);
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function login(email: string, password: string) {
     setIsLoading(true);
     try {
-      const data = await api.post("/auth/login", { email, password });
+      const data = await api.post<{ token: string; user: User }>("/auth/login", { email, password });
       await api.setToken(data.token);
       setUser(data.user);
       router.replace("/(tabs)/generate");
@@ -59,7 +59,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   async function register(email: string, password: string) {
     setIsLoading(true);
     try {
-      const data = await api.post("/auth/register", { email, password });
+      const data = await api.post<{ token: string; user: User }>("/auth/register", { email, password });
       await api.setToken(data.token);
       setUser(data.user);
       router.replace("/(tabs)/generate");

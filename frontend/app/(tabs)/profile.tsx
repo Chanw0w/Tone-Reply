@@ -1,11 +1,16 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useAuth } from "../../src/utils/auth-context";
+import { useTheme } from "../../src/utils/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
+import { RainbowStripe } from "../../src/components/RainbowStripe";
+import { BotanicalDecoration } from "../../src/components/BotanicalDecoration";
+import { SparkleDecoration } from "../../src/components/SparkleDecoration";
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
+  const { theme, isDark, toggleTheme } = useTheme();
 
   const handleChangePassword = () => {
     Alert.alert(
@@ -38,64 +43,106 @@ export default function ProfileScreen() {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.scrollContainer} bounces={false}>
+    <ScrollView
+      style={[styles.container, { backgroundColor: theme.background }]}
+      contentContainerStyle={styles.scrollContainer}
+      bounces={false}
+    >
       {/* Profile Header Card */}
-      <View style={styles.profileHeaderCard}>
+      <View style={[styles.profileHeaderCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+        <BotanicalDecoration
+          size={40}
+          color={theme.botanicalSilhouette}
+          variant="leaves"
+          style={styles.headerBotanical}
+        />
+
         <View style={styles.avatarContainer}>
-          <Ionicons name="person-circle" size={80} color="#8E8E93" />
+          <View style={[styles.avatarCircle, { backgroundColor: theme.primaryMuted }]}>
+            <Ionicons name="person" size={50} color={theme.primary} />
+          </View>
+          <SparkleDecoration
+            count={2}
+            size={8}
+            color={theme.accent.gold}
+            style={styles.avatarSparkles}
+          />
         </View>
-        <Text style={styles.emailText}>{user?.email || "user@example.com"}</Text>
+
+        <Text style={[styles.emailText, { color: theme.textPrimary }]}>{user?.email || "user@example.com"}</Text>
+
+        <RainbowStripe height={3} style={styles.headerRainbow} />
+      </View>
+
+      {/* Theme Toggle */}
+      <View style={[styles.mainCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+        <Text style={[styles.cardSectionLabel, { color: theme.textSecondary }]}>Appearance</Text>
+
+        <TouchableOpacity style={styles.featureItem} onPress={toggleTheme}>
+          <View style={[styles.iconWrapper, { backgroundColor: theme.primaryMuted }]}>
+            <Ionicons name={isDark ? "moon" : "sunny"} size={20} color={theme.primary} />
+          </View>
+          <View style={styles.featureTextWrapper}>
+            <Text style={[styles.featureTitle, { color: theme.textPrimary }]}>
+              {isDark ? "Dark Mode" : "Light Mode"}
+            </Text>
+            <Text style={[styles.featureDesc, { color: theme.textSecondary }]}>
+              Currently using {isDark ? "dark" : "light"} theme
+            </Text>
+          </View>
+          <Ionicons name="toggle-outline" size={24} color={theme.primary} />
+        </TouchableOpacity>
       </View>
 
       {/* Account Actions */}
-      <View style={styles.mainCard}>
-        <Text style={styles.cardSectionLabel}>Account</Text>
+      <View style={[styles.mainCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+        <Text style={[styles.cardSectionLabel, { color: theme.textSecondary }]}>Account</Text>
 
         <TouchableOpacity style={styles.featureItem} onPress={handleChangePassword}>
-          <View style={[styles.iconWrapper, { backgroundColor: "#F4F4F5" }]}>
-            <Ionicons name="lock-closed-outline" size={20} color="#111827" />
+          <View style={[styles.iconWrapper, { backgroundColor: theme.secondaryMuted }]}>
+            <Ionicons name="lock-closed-outline" size={20} color={theme.secondary} />
           </View>
           <View style={styles.featureTextWrapper}>
-            <Text style={styles.featureTitle}>Change Password</Text>
-            <Text style={styles.featureDesc}>Update your account password</Text>
+            <Text style={[styles.featureTitle, { color: theme.textPrimary }]}>Change Password</Text>
+            <Text style={[styles.featureDesc, { color: theme.textSecondary }]}>Update your account password</Text>
           </View>
-          <Ionicons name="chevron-forward-outline" size={16} color="#8E8E93" />
+          <Ionicons name="chevron-forward-outline" size={16} color={theme.textMuted} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.featureItem} onPress={logout}>
-          <View style={[styles.iconWrapper, { backgroundColor: "#F4F4F5" }]}>
-            <Ionicons name="log-out-outline" size={20} color="#111827" />
+          <View style={[styles.iconWrapper, { backgroundColor: theme.accent.orange + "20" }]}>
+            <Ionicons name="log-out-outline" size={20} color={theme.accent.orange} />
           </View>
           <View style={styles.featureTextWrapper}>
-            <Text style={styles.featureTitle}>Sign Out</Text>
-            <Text style={styles.featureDesc}>Sign out of your account</Text>
+            <Text style={[styles.featureTitle, { color: theme.textPrimary }]}>Sign Out</Text>
+            <Text style={[styles.featureDesc, { color: theme.textSecondary }]}>Sign out of your account</Text>
           </View>
-          <Ionicons name="chevron-forward-outline" size={16} color="#8E8E93" />
+          <Ionicons name="chevron-forward-outline" size={16} color={theme.textMuted} />
         </TouchableOpacity>
       </View>
 
       {/* System Info */}
-      <View style={styles.mainCard}>
-        <Text style={styles.cardSectionLabel}>System Info</Text>
-        <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>AI Provider</Text>
-          <Text style={styles.infoValue}>Gemini (Configurable)</Text>
+      <View style={[styles.mainCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+        <Text style={[styles.cardSectionLabel, { color: theme.textSecondary }]}>System Info</Text>
+        <View style={[styles.infoRow, { borderBottomColor: theme.divider }]}>
+          <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>AI Provider</Text>
+          <Text style={[styles.infoValue, { color: theme.textPrimary }]}>Gemini (Configurable)</Text>
         </View>
-        <View style={styles.infoRow}>
-          <Text style={styles.infoLabel}>Database</Text>
-          <Text style={styles.infoValue}>MongoDB</Text>
+        <View style={[styles.infoRow, { borderBottomColor: theme.divider }]}>
+          <Text style={[styles.infoLabel, { color: theme.textSecondary }]}>Database</Text>
+          <Text style={[styles.infoValue, { color: theme.textPrimary }]}>MongoDB</Text>
         </View>
       </View>
 
       {/* Danger Zone */}
-      <View style={[styles.mainCard, { borderColor: "#FFD5D2" }]}>
-        <Text style={[styles.cardSectionLabel, { color: "#FF3B30" }]}>Danger Zone</Text>
+      <View style={[styles.mainCard, { backgroundColor: theme.surface, borderColor: theme.errorBorder }]}>
+        <Text style={[styles.cardSectionLabel, { color: theme.error }]}>Danger Zone</Text>
         <TouchableOpacity style={styles.dangerRow} onPress={handleDeleteAccount}>
           <View style={styles.dangerLeft}>
-            <Ionicons name="trash-outline" size={20} color="#FF3B30" style={{ marginRight: 12 }} />
-            <Text style={styles.dangerText}>Delete Account</Text>
+            <Ionicons name="trash-outline" size={20} color={theme.error} style={{ marginRight: 12 }} />
+            <Text style={[styles.dangerText, { color: theme.error }]}>Delete Account</Text>
           </View>
-          <Ionicons name="chevron-forward-outline" size={16} color="#FF3B30" />
+          <Ionicons name="chevron-forward-outline" size={16} color={theme.error} />
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -105,7 +152,6 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F4F5",
   },
   scrollContainer: {
     padding: 16,
@@ -114,42 +160,61 @@ const styles = StyleSheet.create({
   profileHeaderCard: {
     alignItems: "center",
     paddingVertical: 24,
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 28,
     marginBottom: 20,
-    shadowColor: "#000",
+    overflow: "hidden",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
   },
+  headerBotanical: {
+    position: "absolute",
+    top: 12,
+    right: 16,
+    opacity: 0.4,
+  },
   avatarContainer: {
+    position: "relative",
     marginBottom: 12,
+  },
+  avatarCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatarSparkles: {
+    position: "absolute",
+    top: -10,
+    right: -20,
   },
   emailText: {
     fontSize: 18,
     fontWeight: "800",
-    color: "#111827",
+    marginBottom: 16,
+  },
+  headerRainbow: {
+    width: "100%",
+    height: 3,
   },
   mainCard: {
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 24,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 1,
   },
   cardSectionLabel: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#8E8E93",
     marginBottom: 16,
     textTransform: "uppercase",
     letterSpacing: 1.1,
@@ -166,8 +231,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 12,
-    borderWidth: 1,
-    borderColor: "#EBEBEB",
   },
   featureTextWrapper: {
     flex: 1,
@@ -175,12 +238,10 @@ const styles = StyleSheet.create({
   featureTitle: {
     fontSize: 14,
     fontWeight: "800",
-    color: "#111827",
     marginBottom: 2,
   },
   featureDesc: {
     fontSize: 12,
-    color: "#8E8E93",
     lineHeight: 16,
   },
   infoRow: {
@@ -188,15 +249,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#F4F4F5",
   },
   infoLabel: {
     fontSize: 14,
-    color: "#8E8E93",
   },
   infoValue: {
     fontSize: 14,
-    color: "#111827",
     fontWeight: "800",
   },
   dangerRow: {
@@ -212,6 +270,5 @@ const styles = StyleSheet.create({
   dangerText: {
     fontSize: 15,
     fontWeight: "800",
-    color: "#FF3B30",
   },
 });

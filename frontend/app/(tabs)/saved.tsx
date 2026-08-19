@@ -7,10 +7,14 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
-  Alert} from "react-native";
+  Alert,
+} from "react-native";
 import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
+import { useTheme } from "../../src/utils/theme-context";
+import { EmptyState } from "../../src/components/EmptyState";
+import { RainbowStripe } from "../../src/components/RainbowStripe";
 
 interface Favorite {
   id: string;
@@ -59,6 +63,7 @@ const LENGTHS = [
 ];
 
 export default function SavedScreen() {
+  const { theme } = useTheme();
   const [activeTab, setActiveTab] = useState<"favorites" | "presets">("favorites");
   const [favorites, setFavorites] = useState<Favorite[]>([]);
   const [presets, setPresets] = useState<Preset[]>([]);
@@ -73,7 +78,6 @@ export default function SavedScreen() {
 
   useEffect(() => {
     fetchData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeTab]);
 
   const fetchData = async () => {
@@ -143,13 +147,13 @@ export default function SavedScreen() {
     }
     setCreatingPreset(true);
     try {
-      const newPreset = await api.post("/chat/presets", {
+      const newPreset = await api.post<Preset>("/chat/presets", {
         name: presetName,
         goal: presetGoal,
         style: "Default",
         length: presetLength,
       });
-      setPresets((prev) => [newPreset, ...prev]);
+      setPresets((prev) => [newPreset as Preset, ...prev]);
       setPresetName("");
       setShowAddForm(false);
       Alert.alert("Success", "Preset created! Apply it on the 'Generate' screen.");
@@ -161,34 +165,52 @@ export default function SavedScreen() {
   };
 
   return (
-    <View style={styles.container}>
-      {/* Tabs segment matching Clique layout */}
-      <View style={styles.segmentedControl}>
+    <View style={[styles.container, { backgroundColor: theme.background }]}>
+      {/* Tabs segment */}
+      <View style={[styles.segmentedControl, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder }]}>
         <TouchableOpacity
-          style={[styles.segmentBtn, activeTab === "favorites" && styles.activeSegmentBtn]}
+          style={[
+            styles.segmentBtn,
+            activeTab === "favorites" && [styles.activeSegmentBtn, { backgroundColor: theme.primary }],
+          ]}
           onPress={() => setActiveTab("favorites")}
         >
           <Ionicons
             name="star"
             size={14}
-            color={activeTab === "favorites" ? "#FFFFFF" : "#8E8E93"}
+            color={activeTab === "favorites" ? theme.textInverse : theme.textMuted}
             style={{ marginRight: 6 }}
           />
-          <Text style={[styles.segmentText, activeTab === "favorites" && styles.activeSegmentText]}>
+          <Text
+            style={[
+              styles.segmentText,
+              { color: theme.textMuted },
+              activeTab === "favorites" && [styles.activeSegmentText, { color: theme.textInverse }],
+            ]}
+          >
             Favorites
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.segmentBtn, activeTab === "presets" && styles.activeSegmentBtn]}
+          style={[
+            styles.segmentBtn,
+            activeTab === "presets" && [styles.activeSegmentBtn, { backgroundColor: theme.primary }],
+          ]}
           onPress={() => setActiveTab("presets")}
         >
           <Ionicons
             name="options"
             size={14}
-            color={activeTab === "presets" ? "#FFFFFF" : "#8E8E93"}
+            color={activeTab === "presets" ? theme.textInverse : theme.textMuted}
             style={{ marginRight: 6 }}
           />
-          <Text style={[styles.segmentText, activeTab === "presets" && styles.activeSegmentText]}>
+          <Text
+            style={[
+              styles.segmentText,
+              { color: theme.textMuted },
+              activeTab === "presets" && [styles.activeSegmentText, { color: theme.textInverse }],
+            ]}
+          >
             Presets
           </Text>
         </TouchableOpacity>
@@ -196,38 +218,40 @@ export default function SavedScreen() {
 
       <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
         {loading ? (
-          <ActivityIndicator color="#111827" size="large" style={{ marginTop: 40 }} />
+          <ActivityIndicator color={theme.primary} size="large" style={{ marginTop: 40 }} />
         ) : activeTab === "favorites" ? (
           /* FAVORITES TAB */
           <View>
             {favorites.length === 0 ? (
-              <View style={styles.emptyState}>
-                <Ionicons name="star-outline" size={48} color="#D1D5DB" />
-                <Text style={styles.emptyTitle}>No Favorites Yet</Text>
-                <Text style={styles.emptySubtitle}>
-                  Save generated replies to access them here instantly.
-                </Text>
-              </View>
+              <EmptyState
+                title="No Favorites Yet"
+                subtitle="Save generated replies to access them here instantly."
+                icon="star"
+              />
             ) : (
               favorites.map((fav) => (
-                <View key={fav.id} style={styles.favCard}>
-                  <View style={styles.favHeader}>
-                    <Text style={styles.favStyle}>{fav.style_label}</Text>
+                <View key={fav.id} style={[styles.favCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+                  <RainbowStripe height={2} style={styles.cardRainbow} />
+
+                  <View style={[styles.favHeader, { borderBottomColor: theme.divider }]}>
+                    <Text style={[styles.favStyle, { color: theme.textPrimary, backgroundColor: theme.inputBackground }]}>
+                      {fav.style_label}
+                    </Text>
                     <View style={styles.actionRow}>
                       <TouchableOpacity onPress={() => copyToClipboard(fav.reply_text)} style={styles.actionBtn}>
-                        <Ionicons name="copy-outline" size={18} color="#8E8E93" />
+                        <Ionicons name="copy-outline" size={18} color={theme.textMuted} />
                       </TouchableOpacity>
                       <TouchableOpacity onPress={() => deleteFavorite(fav.id)} style={styles.actionBtn}>
-                        <Ionicons name="trash-outline" size={18} color="#FF3B30" />
+                        <Ionicons name="trash-outline" size={18} color={theme.error} />
                       </TouchableOpacity>
                     </View>
                   </View>
-                  <Text style={styles.originalLabel}>Original Convo:</Text>
-                  <Text style={styles.originalText} numberOfLines={2}>
+                  <Text style={[styles.originalLabel, { color: theme.textSecondary }]}>Original Convo:</Text>
+                  <Text style={[styles.originalText, { color: theme.textSecondary }]} numberOfLines={2}>
                     {fav.original_conversation}
                   </Text>
-                  <Text style={styles.replyLabel}>Reply:</Text>
-                  <Text style={styles.replyText}>{fav.reply_text}</Text>
+                  <Text style={[styles.replyLabel, { color: theme.textPrimary }]}>Reply:</Text>
+                  <Text style={[styles.replyText, { color: theme.textPrimary }]}>{fav.reply_text}</Text>
                 </View>
               ))
             )}
@@ -236,41 +260,53 @@ export default function SavedScreen() {
           /* PRESETS TAB */
           <View>
             <TouchableOpacity
-              style={styles.addPresetToggle}
+              style={[styles.addPresetToggle, { backgroundColor: theme.surface, borderColor: theme.border }]}
               onPress={() => setShowAddForm(!showAddForm)}
             >
-              <Ionicons name={showAddForm ? "close" : "add-circle-outline"} size={18} color="#111827" style={{ marginRight: 6 }} />
-              <Text style={styles.addPresetToggleText}>
+              <Ionicons name={showAddForm ? "close" : "add-circle-outline"} size={18} color={theme.primary} style={{ marginRight: 6 }} />
+              <Text style={[styles.addPresetToggleText, { color: theme.textPrimary }]}>
                 {showAddForm ? "Cancel Creation" : "Create New Preset"}
               </Text>
             </TouchableOpacity>
 
             {showAddForm && (
-              <View style={styles.presetFormCard}>
-                <Text style={styles.formTitle}>New Custom Preset</Text>
+              <View style={[styles.presetFormCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+                <Text style={[styles.formTitle, { color: theme.textPrimary }]}>New Custom Preset</Text>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.formLabel}>Preset Name</Text>
+                  <Text style={[styles.formLabel, { color: theme.textSecondary }]}>Preset Name</Text>
                   <TextInput
-                    style={styles.input}
+                    style={[styles.input, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.textPrimary }]}
                     placeholder="e.g. My Dating Style, My Wife, My Boss"
-                    placeholderTextColor="#8E8E93"
+                    placeholderTextColor={theme.inputPlaceholder}
                     value={presetName}
                     onChangeText={setPresetName}
                   />
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.formLabel}>Default Goal</Text>
+                  <Text style={[styles.formLabel, { color: theme.textSecondary }]}>Default Goal</Text>
                   <View style={styles.dropdown}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalChips}>
                       {GOALS.map((g) => (
                         <TouchableOpacity
                           key={g}
-                          style={[styles.miniChip, presetGoal === g && styles.activeMiniChip]}
+                          style={[
+                            styles.miniChip,
+                            { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder },
+                            presetGoal === g && [styles.activeMiniChip, { backgroundColor: theme.primary, borderColor: theme.primary }],
+                          ]}
                           onPress={() => setPresetGoal(g)}
                         >
-                          <Text style={[styles.miniChipText, presetGoal === g && styles.activeMiniChipText]}>{g}</Text>
+                          <Text
+                            style={[
+                              styles.miniChipText,
+                              { color: theme.textMuted },
+                              presetGoal === g && [styles.activeMiniChipText, { color: theme.textInverse }],
+                            ]}
+                          >
+                            {g}
+                          </Text>
                         </TouchableOpacity>
                       ))}
                     </ScrollView>
@@ -278,64 +314,82 @@ export default function SavedScreen() {
                 </View>
 
                 <View style={styles.formGroup}>
-                  <Text style={styles.formLabel}>Default Length</Text>
+                  <Text style={[styles.formLabel, { color: theme.textSecondary }]}>Default Length</Text>
                   <View style={styles.dropdown}>
                     <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalChips}>
                       {LENGTHS.map((l) => (
                         <TouchableOpacity
                           key={l}
-                          style={[styles.miniChip, presetLength === l && styles.activeMiniChip]}
+                          style={[
+                            styles.miniChip,
+                            { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder },
+                            presetLength === l && [styles.activeMiniChip, { backgroundColor: theme.primary, borderColor: theme.primary }],
+                          ]}
                           onPress={() => setPresetLength(l)}
                         >
-                          <Text style={[styles.miniChipText, presetLength === l && styles.activeMiniChipText]}>{l}</Text>
+                          <Text
+                            style={[
+                              styles.miniChipText,
+                              { color: theme.textMuted },
+                              presetLength === l && [styles.activeMiniChipText, { color: theme.textInverse }],
+                            ]}
+                          >
+                            {l}
+                          </Text>
                         </TouchableOpacity>
                       ))}
                     </ScrollView>
                   </View>
                 </View>
 
+                <RainbowStripe height={3} style={styles.formRainbow} />
+
                 <TouchableOpacity
-                  style={[styles.submitBtn, creatingPreset && styles.disabledBtn]}
+                  style={[
+                    styles.submitBtn,
+                    { backgroundColor: theme.buttonPrimary },
+                    creatingPreset && [styles.disabledBtn, { backgroundColor: theme.buttonDisabled }],
+                  ]}
                   onPress={createPreset}
                   disabled={creatingPreset}
                 >
                   {creatingPreset ? (
-                    <ActivityIndicator color="#FFFFFF" />
+                    <ActivityIndicator color={theme.buttonPrimaryText} />
                   ) : (
-                    <Text style={styles.submitBtnText}>Save Preset Style</Text>
+                    <Text style={[styles.submitBtnText, { color: theme.buttonPrimaryText }]}>Save Preset Style</Text>
                   )}
                 </TouchableOpacity>
               </View>
             )}
 
             {presets.length === 0 ? (
-              <View style={styles.emptyState}>
-                <Ionicons name="options-outline" size={48} color="#D1D5DB" />
-                <Text style={styles.emptyTitle}>No Presets Yet</Text>
-                <Text style={styles.emptySubtitle}>
-                  Create custom presets above to quickly prefill configurations on the generate screen.
-                </Text>
-              </View>
+              <EmptyState
+                title="No Presets Yet"
+                subtitle="Create custom presets above to quickly prefill configurations on the generate screen."
+                icon="options"
+              />
             ) : (
               presets.map((p) => (
-                <View key={p.id} style={styles.presetCard}>
-                  <View style={styles.presetHeader}>
+                <View key={p.id} style={[styles.presetCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+                  <RainbowStripe height={2} style={styles.cardRainbow} />
+
+                  <View style={[styles.presetHeader, { borderBottomColor: theme.divider }]}>
                     <View style={styles.presetMetaInfo}>
-                      <Ionicons name="color-wand-outline" size={16} color="#111827" style={{ marginRight: 6 }} />
-                      <Text style={styles.presetNameText}>{p.name}</Text>
+                      <Ionicons name="color-wand-outline" size={16} color={theme.primary} style={{ marginRight: 6 }} />
+                      <Text style={[styles.presetNameText, { color: theme.textPrimary }]}>{p.name}</Text>
                     </View>
                     <TouchableOpacity onPress={() => deletePreset(p.id)} style={styles.presetDelete}>
-                      <Ionicons name="trash-outline" size={18} color="#FF3B30" />
+                      <Ionicons name="trash-outline" size={18} color={theme.error} />
                     </TouchableOpacity>
                   </View>
                   <View style={styles.presetBody}>
                     <View style={styles.metaRow}>
-                      <Text style={styles.metaLabel}>Goal: </Text>
-                      <Text style={styles.metaValue}>{p.goal}</Text>
+                      <Text style={[styles.metaLabel, { color: theme.textSecondary }]}>Goal: </Text>
+                      <Text style={[styles.metaValue, { color: theme.textPrimary }]}>{p.goal}</Text>
                     </View>
                     <View style={styles.metaRow}>
-                      <Text style={styles.metaLabel}>Length: </Text>
-                      <Text style={styles.metaValue}>{p.length}</Text>
+                      <Text style={[styles.metaLabel, { color: theme.textSecondary }]}>Length: </Text>
+                      <Text style={[styles.metaValue, { color: theme.textPrimary }]}>{p.length}</Text>
                     </View>
                   </View>
                 </View>
@@ -351,16 +405,13 @@ export default function SavedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F4F5",
   },
   segmentedControl: {
     flexDirection: "row",
-    backgroundColor: "#E5E7EB",
     padding: 4,
     borderRadius: 12,
     margin: 16,
     borderWidth: 1,
-    borderColor: "#E5E7EB",
   },
   segmentBtn: {
     flex: 1,
@@ -371,70 +422,47 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   activeSegmentBtn: {
-    backgroundColor: "#111827",
+    // color set dynamically
   },
   segmentText: {
-    color: "#8E8E93",
     fontSize: 13,
     fontWeight: "800",
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
   activeSegmentText: {
-    color: "#FFFFFF",
+    // color set dynamically
   },
   scrollContainer: {
     paddingHorizontal: 16,
     paddingBottom: 40,
   },
-  emptyState: {
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 60,
-    paddingHorizontal: 24,
-  },
-  emptyTitle: {
-    fontSize: 16,
-    fontWeight: "800",
-    color: "#111827",
-    textTransform: "uppercase",
-    letterSpacing: 1.1,
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  emptySubtitle: {
-    fontSize: 14,
-    color: "#8E8E93",
-    textAlign: "center",
-    lineHeight: 20,
-  },
   favCard: {
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 24,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
+    overflow: "hidden",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
+  },
+  cardRainbow: {
+    marginBottom: 12,
   },
   favHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#F4F4F5",
     paddingBottom: 8,
     marginBottom: 10,
   },
   favStyle: {
     fontSize: 12,
     fontWeight: "800",
-    color: "#111827",
-    backgroundColor: "#F4F4F5",
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
@@ -449,67 +477,57 @@ const styles = StyleSheet.create({
   originalLabel: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#8E8E93",
     marginBottom: 2,
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   originalText: {
     fontSize: 13,
-    color: "#4B5563",
     marginBottom: 12,
   },
   replyLabel: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#111827",
     marginBottom: 2,
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   replyText: {
     fontSize: 15,
-    color: "#111827",
     lineHeight: 22,
   },
   addPresetToggle: {
     flexDirection: "row",
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     height: 48,
     borderRadius: 18,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 1,
   },
   addPresetToggleText: {
-    color: "#111827",
     fontSize: 14,
     fontWeight: "800",
   },
   presetFormCard: {
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 24,
     padding: 16,
     marginBottom: 16,
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.03,
+    shadowOpacity: 0.08,
     shadowRadius: 8,
     elevation: 2,
   },
   formTitle: {
     fontSize: 16,
     fontWeight: "800",
-    color: "#111827",
     marginBottom: 16,
   },
   formGroup: {
@@ -518,19 +536,15 @@ const styles = StyleSheet.create({
   formLabel: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#8E8E93",
     marginBottom: 8,
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   input: {
     height: 44,
-    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 14,
     paddingHorizontal: 12,
-    color: "#111827",
     fontSize: 14,
   },
   dropdown: {
@@ -540,29 +554,27 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   miniChip: {
-    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 6,
     marginRight: 6,
   },
   activeMiniChip: {
-    backgroundColor: "#111827",
-    borderColor: "#111827",
+    // colors set dynamically
   },
   miniChipText: {
-    color: "#8E8E93",
     fontSize: 12,
     fontWeight: "700",
   },
   activeMiniChipText: {
-    color: "#FFFFFF",
     fontWeight: "bold",
   },
+  formRainbow: {
+    marginVertical: 12,
+    borderRadius: 2,
+  },
   submitBtn: {
-    backgroundColor: "#8E8E93",
     height: 44,
     borderRadius: 14,
     justifyContent: "center",
@@ -570,23 +582,21 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
   disabledBtn: {
-    backgroundColor: "#D1D1D6",
+    // color set dynamically
   },
   submitBtnText: {
-    color: "#FFFFFF",
     fontSize: 14,
     fontWeight: "bold",
   },
   presetCard: {
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 24,
     padding: 16,
     marginBottom: 12,
-    shadowColor: "#000",
+    overflow: "hidden",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
   },
@@ -595,7 +605,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     borderBottomWidth: 1,
-    borderBottomColor: "#F4F4F5",
     paddingBottom: 8,
     marginBottom: 10,
   },
@@ -606,7 +615,6 @@ const styles = StyleSheet.create({
   presetNameText: {
     fontSize: 15,
     fontWeight: "800",
-    color: "#111827",
   },
   presetDelete: {
     padding: 4,
@@ -621,12 +629,10 @@ const styles = StyleSheet.create({
   metaLabel: {
     fontSize: 12,
     fontWeight: "800",
-    color: "#8E8E93",
     width: 60,
   },
   metaValue: {
     fontSize: 13,
-    color: "#111827",
     flex: 1,
   },
 });

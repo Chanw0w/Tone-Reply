@@ -14,10 +14,17 @@ import {
 } from "react-native";
 import { Link } from "expo-router";
 import { useAuth } from "../src/utils/auth-context";
+import { useTheme } from "../src/utils/theme-context";
 import { Ionicons } from "@expo/vector-icons";
+import { PhoneIllustration } from "../src/components/PhoneIllustration";
+import { RainbowStripe } from "../src/components/RainbowStripe";
+import { SparkleDecoration } from "../src/components/SparkleDecoration";
+import { OrganicBackground } from "../src/components/OrganicBackground";
+import { BotanicalDecoration } from "../src/components/BotanicalDecoration";
 
 export default function LoginScreen() {
   const { login } = useAuth();
+  const { theme } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -43,32 +50,62 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.background }]}
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
-          {/* Header matching screenshot style */}
-          <View style={styles.header}>
-            <Text style={styles.headerLogo}>💬 TONEREPLY</Text>
+          {/* Organic background decoration */}
+          <OrganicBackground />
+
+          {/* Top sparkle decoration */}
+          <SparkleDecoration
+            count={2}
+            size={10}
+            color={theme.accent.gold}
+            style={styles.topSparkles}
+          />
+
+          {/* Phone illustration */}
+          <View style={styles.illustrationContainer}>
+            <PhoneIllustration size={140} showBubbles={true} />
+            <SparkleDecoration
+              count={2}
+              size={8}
+              color={theme.accent.gold}
+              style={styles.phoneSparkles}
+            />
           </View>
 
-          <View style={styles.formCard}>
-            <Text style={styles.formTitle}>Welcome Back</Text>
-            <Text style={styles.formSubtitle}>Sign in to your communication assistant</Text>
+          {/* Logo */}
+          <View style={styles.logoContainer}>
+            <Text style={[styles.logoText, { color: theme.textPrimary }]}>
+              Tone Reply
+            </Text>
+          </View>
+
+          {/* Rainbow stripe */}
+          <RainbowStripe height={4} style={styles.rainbowStripe} />
+
+          {/* Form card */}
+          <View style={[styles.formCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+            <Text style={[styles.formTitle, { color: theme.textPrimary }]}>Welcome Back</Text>
+            <Text style={[styles.formSubtitle, { color: theme.textSecondary }]}>
+              Sign in to your communication assistant
+            </Text>
 
             {error && (
-              <View style={styles.errorContainer}>
-                <Ionicons name="alert-circle" size={18} color="#FF3B30" style={{ marginRight: 6 }} />
-                <Text style={styles.errorText}>{error}</Text>
+              <View style={[styles.errorContainer, { backgroundColor: theme.errorBackground, borderColor: theme.errorBorder }]}>
+                <Ionicons name="alert-circle" size={18} color={theme.error} style={{ marginRight: 6 }} />
+                <Text style={[styles.errorText, { color: theme.error }]}>{error}</Text>
               </View>
             )}
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Email Address</Text>
+              <Text style={[styles.label, { color: theme.textSecondary }]}>Email Address</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.textPrimary }]}
                 placeholder="name@example.com"
-                placeholderTextColor="#A1A1AA"
+                placeholderTextColor={theme.inputPlaceholder}
                 value={email}
                 onChangeText={(text) => {
                   setEmail(text);
@@ -81,12 +118,12 @@ export default function LoginScreen() {
             </View>
 
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Password</Text>
-              <View style={styles.passwordWrapper}>
+              <Text style={[styles.label, { color: theme.textSecondary }]}>Password</Text>
+              <View style={[styles.passwordWrapper, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder }]}>
                 <TextInput
-                  style={styles.passwordInput}
+                  style={[styles.passwordInput, { color: theme.textPrimary }]}
                   placeholder="Enter your password"
-                  placeholderTextColor="#A1A1AA"
+                  placeholderTextColor={theme.inputPlaceholder}
                   value={password}
                   onChangeText={(text) => {
                     setPassword(text);
@@ -103,33 +140,41 @@ export default function LoginScreen() {
                   <Ionicons
                     name={showPassword ? "eye-off-outline" : "eye-outline"}
                     size={20}
-                    color="#8E8E93"
+                    color={theme.textMuted}
                   />
                 </TouchableOpacity>
               </View>
             </View>
 
             <TouchableOpacity
-              style={styles.primaryButton}
+              style={[styles.primaryButton, { backgroundColor: theme.buttonPrimary }]}
               onPress={handleLogin}
               disabled={loading}
             >
               {loading ? (
-                <ActivityIndicator color="#FFFFFF" />
+                <ActivityIndicator color={theme.buttonPrimaryText} />
               ) : (
-                <Text style={styles.primaryButtonText}>Sign In</Text>
+                <Text style={[styles.primaryButtonText, { color: theme.buttonPrimaryText }]}>Sign In</Text>
               )}
             </TouchableOpacity>
 
             <View style={styles.footer}>
-              <Text style={styles.footerText}>Don't have an account? </Text>
+              <Text style={[styles.footerText, { color: theme.textSecondary }]}>Don't have an account? </Text>
               <Link href="/register" asChild>
                 <TouchableOpacity>
-                  <Text style={styles.linkText}>Create Account</Text>
+                  <Text style={[styles.linkText, { color: theme.primary }]}>Create Account</Text>
                 </TouchableOpacity>
               </Link>
             </View>
           </View>
+
+          {/* Bottom botanical decoration */}
+          <BotanicalDecoration
+            size={50}
+            color={theme.botanicalSilhouette}
+            variant="mixed"
+            style={styles.bottomBotanical}
+          />
         </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -139,60 +184,71 @@ export default function LoginScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F4F5",
   },
   scrollContainer: {
     flexGrow: 1,
     justifyContent: "center",
     padding: 24,
   },
-  header: {
-    alignItems: "center",
-    marginBottom: 40,
+  topSparkles: {
+    position: "absolute",
+    top: 60,
+    right: 40,
   },
-  headerLogo: {
-    fontSize: 26,
+  illustrationContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+    position: "relative",
+  },
+  phoneSparkles: {
+    position: "absolute",
+    top: -10,
+    right: -40,
+  },
+  logoContainer: {
+    alignItems: "center",
+    marginBottom: 16,
+  },
+  logoText: {
+    fontSize: 34,
     fontWeight: "900",
-    color: "#000000",
-    letterSpacing: -0.5,
+    letterSpacing: -1,
+    fontStyle: "italic",
+  },
+  rainbowStripe: {
+    marginBottom: 24,
+    borderRadius: 2,
   },
   formCard: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 24,
+    borderRadius: 28,
     padding: 24,
     borderWidth: 1,
-    borderColor: "#EBEBEB",
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
   },
   formTitle: {
     fontSize: 20,
     fontWeight: "800",
-    color: "#111827",
     textAlign: "center",
     marginBottom: 4,
   },
   formSubtitle: {
     fontSize: 13,
-    color: "#8E8E93",
     textAlign: "center",
     marginBottom: 24,
   },
   errorContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#FFECEA",
-    borderColor: "#FFD5D2",
     borderWidth: 1,
     padding: 12,
     borderRadius: 14,
     marginBottom: 20,
   },
   errorText: {
-    color: "#FF3B30",
     fontSize: 13,
     fontWeight: "600",
     flex: 1,
@@ -203,34 +259,27 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#8E8E93",
     marginBottom: 8,
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   input: {
     height: 48,
-    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 18,
     paddingHorizontal: 16,
-    color: "#111827",
     fontSize: 15,
   },
   passwordWrapper: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 18,
   },
   passwordInput: {
     flex: 1,
     height: 48,
     paddingHorizontal: 16,
-    color: "#111827",
     fontSize: 15,
   },
   eyeIcon: {
@@ -238,19 +287,17 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     height: 48,
-    backgroundColor: "#8E8E93",
     borderRadius: 18,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 12,
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 1,
   },
   primaryButtonText: {
-    color: "#FFFFFF",
     fontSize: 15,
     fontWeight: "700",
   },
@@ -261,12 +308,15 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   footerText: {
-    color: "#8E8E93",
     fontSize: 13,
   },
   linkText: {
-    color: "#111827",
     fontSize: 13,
     fontWeight: "800",
+  },
+  bottomBotanical: {
+    alignSelf: "center",
+    marginTop: 24,
+    opacity: 0.5,
   },
 });

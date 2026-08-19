@@ -13,6 +13,8 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
+import { useTheme } from "../../src/utils/theme-context";
+import { RainbowStripe } from "../../src/components/RainbowStripe";
 
 interface AnalyzeResponse {
   analysis: AnalysisResult;
@@ -95,6 +97,7 @@ function StaggeredCard({ children, index }: { children: React.ReactNode; index: 
 }
 
 export default function ExplainScreen() {
+  const { theme } = useTheme();
   const [convo, setConvo] = useState("");
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -125,30 +128,30 @@ export default function ExplainScreen() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
+      style={[styles.container, { backgroundColor: theme.background }]}
     >
       <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
         {/* Intro */}
-        <Text style={styles.introText}>
+        <Text style={[styles.introText, { color: theme.textSecondary }]}>
           Understand conversational dynamics. We present observations and possibilities as analytical insights rather than definitive mind-reading conclusions.
         </Text>
 
-        {/* Main card matching Clique design */}
-        <View style={styles.mainCard}>
+        {/* Main card */}
+        <View style={[styles.mainCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
           <View style={styles.inputHeader}>
-            <Text style={styles.cardSectionLabel}>Paste Your Conversation</Text>
+            <Text style={[styles.cardSectionLabel, { color: theme.textSecondary }]}>Paste Your Conversation</Text>
             {convo.length > 0 && (
               <TouchableOpacity onPress={() => setConvo("")}>
-                <Text style={styles.clearText}>Clear</Text>
+                <Text style={[styles.clearText, { color: theme.error }]}>Clear</Text>
               </TouchableOpacity>
             )}
           </View>
           <TextInput
-            style={styles.textArea}
+            style={[styles.textArea, { backgroundColor: theme.inputBackground, borderColor: theme.inputBorder, color: theme.textPrimary }]}
             multiline
             numberOfLines={5}
             placeholder="Paste SMS, WhatsApp logs, DMs, or emails..."
-            placeholderTextColor="#8E8E93"
+            placeholderTextColor={theme.inputPlaceholder}
             value={convo}
             onChangeText={(text) => {
               setConvo(text);
@@ -156,19 +159,26 @@ export default function ExplainScreen() {
             }}
           />
 
-          {error && <Text style={styles.errorText}>{error}</Text>}
-          
+          {/* Rainbow accent */}
+          <RainbowStripe height={3} style={styles.rainbowAccent} />
+
+          {error && <Text style={[styles.errorText, { color: theme.error }]}>{error}</Text>}
+
           <TactileButton
-            style={loading ? styles.disabledButton : styles.primaryButton}
+            style={[
+              styles.primaryButton,
+              { backgroundColor: theme.buttonPrimary },
+              loading && [styles.disabledButton, { backgroundColor: theme.buttonDisabled }]
+            ]}
             onPress={handleAnalyze}
             disabled={loading}
           >
             {loading ? (
-              <ActivityIndicator color="#FFFFFF" />
+              <ActivityIndicator color={theme.buttonPrimaryText} />
             ) : (
               <View style={styles.buttonInner}>
-                <Ionicons name="analytics-outline" size={18} color="#FFFFFF" style={{ marginRight: 6 }} />
-                <Text style={styles.primaryButtonText}>Analyze Conversation & Coach</Text>
+                <Ionicons name="analytics-outline" size={18} color={theme.buttonPrimaryText} style={{ marginRight: 6 }} />
+                <Text style={[styles.primaryButtonText, { color: theme.buttonPrimaryText }]}>Analyze Conversation & Coach</Text>
               </View>
             )}
           </TactileButton>
@@ -177,20 +187,20 @@ export default function ExplainScreen() {
         {/* Analysis Output with staggered card entry reveals */}
         {analysis && (
           <View style={styles.analysisSection}>
-            <Text style={styles.resultsTitle}>Coaching & Conversation Insights</Text>
+            <Text style={[styles.resultsTitle, { color: theme.textPrimary }]}>Coaching & Conversation Insights</Text>
 
             {/* Coaching Tips Dashboard */}
             {analysis.coaching_tips && analysis.coaching_tips.length > 0 && (
               <StaggeredCard index={0}>
-                <View style={styles.coachingCard}>
-                  <View style={styles.coachingHeader}>
-                    <Ionicons name="school" size={20} color="#111827" style={{ marginRight: 8 }} />
-                    <Text style={styles.coachingTitle}>Communication Coaching Tips</Text>
+                <View style={[styles.coachingCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+                  <View style={[styles.coachingHeader, { borderBottomColor: theme.divider }]}>
+                    <Ionicons name="school" size={20} color={theme.primary} style={{ marginRight: 8 }} />
+                    <Text style={[styles.coachingTitle, { color: theme.textPrimary }]}>Communication Coaching Tips</Text>
                   </View>
                   {analysis.coaching_tips.map((tip, index) => (
                     <View key={index} style={styles.tipRow}>
-                      <Ionicons name="sparkles" size={16} color="#8E8E93" style={styles.tipIcon} />
-                      <Text style={styles.tipText}>{tip}</Text>
+                      <Ionicons name="sparkles" size={16} color={theme.accent.gold} style={styles.tipIcon} />
+                      <Text style={[styles.tipText, { color: theme.textPrimary }]}>{tip}</Text>
                     </View>
                   ))}
                 </View>
@@ -199,67 +209,67 @@ export default function ExplainScreen() {
 
             {/* Conversation Balance Widget */}
             <StaggeredCard index={1}>
-              <View style={styles.infoCard}>
+              <View style={[styles.infoCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                 <View style={styles.infoTitleRow}>
-                  <Ionicons name="git-compare-outline" size={18} color="#000000" />
-                  <Text style={styles.infoTitle}>Conversation Balance</Text>
+                  <Ionicons name="git-compare-outline" size={18} color={theme.accent.teal} />
+                  <Text style={[styles.infoTitle, { color: theme.textSecondary }]}>Conversation Balance</Text>
                 </View>
-                <Text style={styles.infoContent}>{analysis.conversation_balance}</Text>
+                <Text style={[styles.infoContent, { color: theme.textPrimary }]}>{analysis.conversation_balance}</Text>
               </View>
             </StaggeredCard>
 
             {/* What Happened Summary */}
             <StaggeredCard index={2}>
-              <View style={styles.infoCard}>
+              <View style={[styles.infoCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                 <View style={styles.infoTitleRow}>
-                  <Ionicons name="document-text-outline" size={18} color="#000000" />
-                  <Text style={styles.infoTitle}>What Happened (Summary)</Text>
+                  <Ionicons name="document-text-outline" size={18} color={theme.accent.purple} />
+                  <Text style={[styles.infoTitle, { color: theme.textSecondary }]}>What Happened (Summary)</Text>
                 </View>
-                <Text style={styles.infoContent}>{analysis.summary}</Text>
+                <Text style={[styles.infoContent, { color: theme.textPrimary }]}>{analysis.summary}</Text>
               </View>
             </StaggeredCard>
 
             {/* Emotional Tone */}
             <StaggeredCard index={3}>
-              <View style={styles.infoCard}>
+              <View style={[styles.infoCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                 <View style={styles.infoTitleRow}>
-                  <Ionicons name="happy-outline" size={18} color="#000000" />
-                  <Text style={styles.infoTitle}>Emotional Tone</Text>
+                  <Ionicons name="happy-outline" size={18} color={theme.accent.orange} />
+                  <Text style={[styles.infoTitle, { color: theme.textSecondary }]}>Emotional Tone</Text>
                 </View>
-                <Text style={styles.infoContent}>{analysis.emotional_tone}</Text>
+                <Text style={[styles.infoContent, { color: theme.textPrimary }]}>{analysis.emotional_tone}</Text>
               </View>
             </StaggeredCard>
 
             {/* Misunderstanding Risks */}
             <StaggeredCard index={4}>
-              <View style={styles.infoCard}>
+              <View style={[styles.infoCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                 <View style={styles.infoTitleRow}>
-                  <Ionicons name="warning-outline" size={18} color="#000000" />
-                  <Text style={styles.infoTitle}>Possible Misunderstandings</Text>
+                  <Ionicons name="warning-outline" size={18} color={theme.warning} />
+                  <Text style={[styles.infoTitle, { color: theme.textSecondary }]}>Possible Misunderstandings</Text>
                 </View>
-                <Text style={styles.infoContent}>{analysis.misunderstandings}</Text>
+                <Text style={[styles.infoContent, { color: theme.textPrimary }]}>{analysis.misunderstandings}</Text>
               </View>
             </StaggeredCard>
 
             {/* Unanswered Questions */}
             <StaggeredCard index={5}>
-              <View style={styles.infoCard}>
+              <View style={[styles.infoCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                 <View style={styles.infoTitleRow}>
-                  <Ionicons name="help-circle-outline" size={18} color="#000000" />
-                  <Text style={styles.infoTitle}>Question Status</Text>
+                  <Ionicons name="help-circle-outline" size={18} color={theme.accent.gold} />
+                  <Text style={[styles.infoTitle, { color: theme.textSecondary }]}>Question Status</Text>
                 </View>
-                <Text style={styles.infoContent}>{analysis.answered_questions}</Text>
+                <Text style={[styles.infoContent, { color: theme.textPrimary }]}>{analysis.answered_questions}</Text>
               </View>
             </StaggeredCard>
 
             {/* Ambiguities */}
             <StaggeredCard index={6}>
-              <View style={styles.infoCard}>
+              <View style={[styles.infoCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
                 <View style={styles.infoTitleRow}>
-                  <Ionicons name="help-buoy-outline" size={18} color="#000000" />
-                  <Text style={styles.infoTitle}>Potential Ambiguity</Text>
+                  <Ionicons name="help-buoy-outline" size={18} color={theme.accent.pink} />
+                  <Text style={[styles.infoTitle, { color: theme.textSecondary }]}>Potential Ambiguity</Text>
                 </View>
-                <Text style={styles.infoContent}>{analysis.potential_ambiguity}</Text>
+                <Text style={[styles.infoContent, { color: theme.textPrimary }]}>{analysis.potential_ambiguity}</Text>
               </View>
             </StaggeredCard>
           </View>
@@ -272,7 +282,6 @@ export default function ExplainScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F4F5",
   },
   scrollContainer: {
     padding: 16,
@@ -280,21 +289,18 @@ const styles = StyleSheet.create({
   },
   introText: {
     fontSize: 13,
-    color: "#8E8E93",
     lineHeight: 18,
     marginBottom: 16,
     paddingHorizontal: 4,
   },
   mainCard: {
-    backgroundColor: "#FFFFFF",
     borderRadius: 28,
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     padding: 20,
     marginBottom: 20,
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.02,
+    shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
   },
@@ -307,49 +313,45 @@ const styles = StyleSheet.create({
   cardSectionLabel: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#8E8E93",
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   clearText: {
-    color: "#FF3B30",
     fontSize: 12,
     fontWeight: "800",
   },
   textArea: {
-    backgroundColor: "#F4F4F5",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 18,
     padding: 14,
-    color: "#111827",
     fontSize: 14,
     height: 120,
     textAlignVertical: "top",
     marginBottom: 16,
   },
+  rainbowAccent: {
+    marginBottom: 12,
+    borderRadius: 2,
+  },
   errorText: {
-    color: "#FF3B30",
     fontSize: 13,
     textAlign: "center",
     marginBottom: 12,
     fontWeight: "600",
   },
   primaryButton: {
-    backgroundColor: "#8E8E93",
     borderRadius: 18,
     height: 48,
     justifyContent: "center",
     alignItems: "center",
-    shadowColor: "#000",
+    shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 1,
     width: "100%",
   },
   disabledButton: {
-    backgroundColor: "#D1D1D6",
     shadowOpacity: 0,
     elevation: 0,
   },
@@ -358,7 +360,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   primaryButtonText: {
-    color: "#FFFFFF",
     fontSize: 15,
     fontWeight: "700",
   },
@@ -368,15 +369,12 @@ const styles = StyleSheet.create({
   resultsTitle: {
     fontSize: 15,
     fontWeight: "800",
-    color: "#111827",
     textTransform: "uppercase",
     letterSpacing: 1.1,
     marginBottom: 12,
     marginLeft: 4,
   },
   coachingCard: {
-    backgroundColor: "#FFFFFF",
-    borderColor: "#EBEBEB",
     borderWidth: 1,
     borderRadius: 24,
     padding: 16,
@@ -387,13 +385,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#F4F4F5",
     paddingBottom: 8,
   },
   coachingTitle: {
     fontSize: 14,
     fontWeight: "800",
-    color: "#111827",
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
@@ -408,14 +404,11 @@ const styles = StyleSheet.create({
   },
   tipText: {
     fontSize: 14,
-    color: "#111827",
     flex: 1,
     lineHeight: 20,
   },
   infoCard: {
-    backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#EBEBEB",
     borderRadius: 24,
     padding: 16,
     marginBottom: 16,
@@ -428,14 +421,12 @@ const styles = StyleSheet.create({
   infoTitle: {
     fontSize: 11,
     fontWeight: "800",
-    color: "#8E8E93",
     marginLeft: 8,
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   infoContent: {
     fontSize: 15,
-    color: "#111827",
     lineHeight: 22,
   },
 });

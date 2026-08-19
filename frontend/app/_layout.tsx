@@ -2,9 +2,11 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
 import { LogBox } from "react-native";
+import { useFonts } from "expo-font";
 
 import { useIconFonts } from "@/src/hooks/use-icon-fonts";
 import { AuthProvider } from "../src/utils/auth-context";
+import { ThemeProvider } from "../src/utils/theme-context";
 
 
 // Disable logbox errors etc so that users can see the app
@@ -18,7 +20,17 @@ LogBox.ignoreAllLogs(true)
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const [loaded, error] = useIconFonts();
+  const [iconFontsLoaded, iconFontsError] = useIconFonts();
+
+  // Load custom serif fonts for retro vibe
+  const [fontsLoaded, fontsError] = useFonts({
+    'PlayfairDisplay_400Regular': require('../assets/fonts/PlayfairDisplay_400Regular.ttf'),
+    'PlayfairDisplay_700Bold': require('../assets/fonts/PlayfairDisplay_700Bold.ttf'),
+    'PlayfairDisplay_900Black': require('../assets/fonts/PlayfairDisplay_900Black.ttf'),
+  });
+
+  const loaded = iconFontsLoaded && fontsLoaded;
+  const error = iconFontsError || fontsError;
 
   useEffect(() => {
     if (loaded || error) {
@@ -31,8 +43,10 @@ export default function RootLayout() {
   if (!loaded && !error) return null;
 
   return (
-    <AuthProvider>
-      <Stack screenOptions={{ headerShown: false }} />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
