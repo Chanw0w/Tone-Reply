@@ -1,0 +1,359 @@
+screen,section,element,key,value
+brand,info,name,Tone Reply
+brand,info,tagline,AI-powered communication assistant
+brand,info,logoIcon,✦
+brand,info,logoText,Tone Reply
+brand,info,bundleId,com.emergent.tonereply
+brand,info,version,1.0.0
+brand,colors,background-light,#FFFFFF
+brand,colors,surface-light,#FDF6EC
+brand,colors,primary-light,#3D6B4F
+brand,colors,primaryMuted-light,#E8F5E9
+brand,colors,secondary-light,#E8C4B8
+brand,colors,text-light,#1A1A1A
+brand,colors,textSecondary-light,#6B7280
+brand,colors,textMuted-light,#9CA3AF
+brand,colors,border-light,#E5E7EB
+brand,colors,background-dark,#000000
+brand,colors,surface-dark,#111827
+brand,colors,primary-dark,#4A9BA8
+brand,colors,primaryMuted-dark,#1A2E35
+brand,colors,secondary-dark,#7B6B8D
+brand,colors,text-dark,#F5F0E6
+brand,colors,textSecondary-dark,#9CA3AF
+brand,colors,textMuted-dark,#6B7280
+brand,colors,border-dark,#374151
+brand,colors,accent-gold,#C9A84C
+brand,colors,accent-purple,#7B6B8D
+brand,colors,accent-pink,#E87898
+brand,colors,accent-orange,#D4845A
+brand,colors,accent-teal,#4A9BA8
+brand,colors,rainbow-1,#7B6B8D
+brand,colors,rainbow-2,#E87898
+brand,colors,rainbow-3,#D4845A
+brand,colors,rainbow-4,#E8A840
+brand,colors,rainbow-5,#4A9BA8
+brand,typography,heading,Poppins 900 Black
+brand,typography,body,System default
+brand,rainbowStripe,colors,"#7B6B8D, #E87898, #D4845A, #E8A840, #4A9BA8"
+auth,login,heading,Welcome Back
+auth,login,subtitle,Sign in to your communication assistant
+auth,login,label-email,Email Address
+auth,login,placeholder-email,name@example.com
+auth,login,label-password,Password
+auth,login,placeholder-password,Enter your password
+auth,login,button,Sign In
+auth,login,footer-text,Don't have an account?
+auth,login,footer-link,Create Account
+auth,login,error-empty,Please fill in all fields
+auth,login,error-fail,Failed to log in
+auth,register,heading,Create Account
+auth,register,subtitle,Sign up for intelligent assistant access
+auth,register,label-email,Email Address
+auth,register,placeholder-email,name@example.com
+auth,register,label-password,Password
+auth,register,placeholder-password,Choose password (min 6 chars)
+auth,register,label-confirm,Confirm Password
+auth,register,placeholder-confirm,Confirm your password
+auth,register,button,Create Account
+auth,register,footer-text,Already have an account?
+auth,register,footer-link,Sign In
+auth,register,error-empty,Please fill in all fields
+auth,register,error-no-match,Passwords do not match
+auth,register,error-short,Password must be at least 6 characters
+auth,register,error-fail,Failed to create account
+tabs,layout,tab-generate,Generate
+tabs,layout,tab-rewrite,Rewrite
+tabs,layout,tab-coach,Coach
+tabs,layout,tab-saved,Saved
+tabs,layout,tab-profile,Profile
+generate,input,section-title,Apply Custom Style Presets
+generate,input,label,Paste Conversation
+generate,input,clear,Clear
+generate,input,placeholder,Paste chat history DMs or emails here...
+generate,goal,label,Choose Response Goal
+generate,goal,opt-1,Continue conversation
+generate,goal,opt-2,Reply politely
+generate,goal,opt-3,End conversation
+generate,goal,opt-4,Set boundary
+generate,goal,opt-5,Ask for clarification
+generate,goal,opt-6,Be playful
+generate,goal,opt-7,Sound confident
+generate,goal,opt-8,Apologize
+generate,goal,opt-9,Reconnect
+generate,goal,opt-10,Say no
+generate,goal,opt-11,Flirt
+generate,goal,opt-12,Break up respectfully
+generate,goal,opt-13,Ask out
+generate,goal,opt-14,Negotiate
+generate,goal,opt-15,Calm argument
+generate,goal,opt-16,Be professional
+generate,goal,opt-17,Follow up
+generate,length,label,Choose Format & Length
+generate,length,opt-1,One sentence
+generate,length,opt-2,Short
+generate,length,opt-3,Medium
+generate,length,opt-4,Long
+generate,length,opt-5,Paragraph
+generate,length,opt-6,Bullet points
+generate,length,opt-7,Text message
+generate,length,opt-8,Email
+generate,action,button,Generate Styled Replies
+generate,results,title,Side-by-Side Styled Replies
+generate,error,validation,Please paste a conversation first
+generate,error,invalid,Invalid response received from LLM
+generate,error,fail,Failed to generate replies. Please try again.
+generate,alert,preset-title,Preset Applied
+generate,alert,preset-msg,"Loaded configuration for "${preset.name}""
+generate,alert,copied-title,Copied!
+generate,alert,copied-msg,Reply copied to clipboard.
+generate,alert,saved-title,Saved!
+generate,alert,saved-msg,Successfully added to saved replies.
+generate,alert,error-title,Error
+generate,alert,save-fail-msg,Failed to save reply.
+rewrite,input,label,Original Message Draft
+rewrite,input,clear,Clear
+rewrite,input,placeholder,Type or paste a draft here...
+rewrite,action,button,Rewrite Message into 9 Styles
+rewrite,results,title,Choose Your Rewritten Message
+rewrite,styles,confident,😎 More Confident
+rewrite,styles,romantic,❤️ More Romantic
+rewrite,styles,flirty,✨ More Flirty
+rewrite,styles,less_needy,🎯 Less Needy
+rewrite,styles,respectful,🤝 More Respectful
+rewrite,styles,mysterious,🕵️ More Mysterious
+rewrite,styles,masculine,💪 More Masculine
+rewrite,styles,feminine,🌸 More Feminine
+rewrite,styles,professional,💼 More Professional
+rewrite,error,validation,Please paste a draft to rewrite first
+rewrite,error,invalid,Invalid response received from server
+rewrite,error,fail,Failed to rewrite. Please try again.
+rewrite,alert,copied-title,Copied!
+rewrite,alert,copied-msg,Rewritten reply copied to clipboard.
+coach,description,intro,Understand conversational dynamics. We present observations and possibilities as analytical insights rather than definitive mind-reading conclusions.
+coach,input,label,Paste Your Conversation
+coach,input,clear,Clear
+coach,input,placeholder,Paste SMS WhatsApp logs DMs or emails...
+coach,action,button,Analyze Conversation & Coach
+coach,results,title,Coaching & Conversation Insights
+coach,card,coaching,Communication Coaching Tips
+coach,card,balance,Conversation Balance
+coach,card,summary,What Happened (Summary)
+coach,card,emotional,Emotional Tone
+coach,card,misunderstandings,Possible Misunderstandings
+coach,card,questions,Question Status
+coach,card,ambiguity,Potential Ambiguity
+coach,error,validation,Please paste a conversation first
+coach,error,invalid,Invalid response received from server
+coach,error,fail,Failed to analyze conversation. Please try again.
+saved,tabs,favorites,Favorites
+saved,tabs,presets,Presets
+saved,empty,no-fav-title,No Favorites Yet
+saved,empty,no-fav-sub,Save generated replies to access them here instantly.
+saved,empty,no-preset-title,No Presets Yet
+saved,empty,no-preset-sub,Create custom presets above to quickly prefill configurations on the generate screen.
+saved,preset,create-btn,Create New Preset
+saved,preset,cancel-btn,Cancel Creation
+saved,preset,form-title,New Custom Preset
+saved,preset,label-name,Preset Name
+saved,preset,placeholder-name,"e.g. My Dating Style, My Wife, My Boss"
+saved,preset,label-goal,Default Goal
+saved,preset,label-length,Default Length
+saved,preset,save-btn,Save Preset Style
+saved,item,label-convo,Original Convo:
+saved,item,label-reply,Reply:
+saved,item,label-goal,Goal:
+saved,item,label-length,Length:
+saved,alert,copied-title,Copied!
+saved,alert,copied-msg,Reply text copied to clipboard.
+saved,alert,delete-fav-title,Confirm Delete
+saved,alert,delete-fav-msg,Are you sure you want to remove this from favorites?
+saved,alert,delete-preset-title,Confirm Delete
+saved,alert,delete-preset-msg,Are you sure you want to delete this style preset?
+saved,alert,cancel,Cancel
+saved,alert,delete,Delete
+saved,alert,deleted-fav-title,Deleted
+saved,alert,deleted-fav-msg,Favorite removed successfully
+saved,alert,deleted-preset-title,Deleted
+saved,alert,deleted-preset-msg,Preset deleted successfully
+saved,alert,error-title,Error
+saved,alert,delete-fail-msg,Failed to delete
+saved,alert,name-error-title,Error
+saved,alert,name-error-msg,Please provide a preset name
+saved,alert,success-title,Success
+saved,alert,success-msg,"Preset created! Apply it on the 'Generate' screen."
+saved,alert,preset-fail-msg,Failed to create preset
+profile,section,appearance,Appearance
+profile,feature,dark-title,Dark Mode
+profile,feature,light-title,Light Mode
+profile,feature,dark-desc,Currently using dark theme
+profile,feature,light-desc,Currently using light theme
+profile,section,account,Account
+profile,feature,pw-title,Change Password
+profile,feature,pw-desc,Update your account password
+profile,feature,signout-title,Sign Out
+profile,feature,signout-desc,Sign out of your account
+profile,section,system,System Info
+profile,info,ai-provider-label,AI Provider
+profile,info,ai-provider-value,Gemini (Configurable)
+profile,info,db-label,Database
+profile,info,db-value,MongoDB
+profile,section,danger,Danger Zone
+profile,action,delete-account,Delete Account
+profile,alert,pw-title,Change Password
+profile,alert,pw-msg,This feature will be available in a future update.
+profile,alert,ok,OK
+profile,alert,delete-title,Delete Account
+profile,alert,delete-msg,This will permanently delete your account and all data. This cannot be undone.
+profile,alert,cancel,Cancel
+profile,alert,delete,Delete
+profile,alert,error-title,Error
+profile,alert,delete-fail-msg,Failed to delete account
+profile,fallback,email,user@example.com
+landing,navbar,logo,✦ Tone Reply
+landing,navbar,link-1,Features
+landing,navbar,link-2,How It Works
+landing,navbar,link-3,Pricing
+landing,navbar,link-4,Testimonials
+landing,navbar,cta,Get Started Free
+landing,navbar,toggle-light,☀️
+landing,navbar,toggle-dark,🌙
+landing,hero,headline-1,Say the right
+landing,hero,headline-2,thing every time
+landing,hero,subtitle,"Tone Reply is your AI-powered communication assistant. Paste any conversation and get multiple reply options tailored to your exact goal — whether that's setting a boundary flirting negotiating or simply being more confident."
+landing,hero,cta,Try It Now
+landing,hero,badge-1,Chat
+landing,hero,badge-2,Analyze
+landing,hero,badge-3,Rewrite
+landing,hero,badge-4,Save
+landing,hero,mockup-in-1,"Hey, are we still on for tonight?"
+landing,hero,mockup-out-1,"I'd love to but I'm swamped. Rain check?"
+landing,hero,mockup-in-2,"Sure, no worries!"
+landing,hero,mockup-reply-1-style,Polite
+landing,hero,mockup-reply-1-text,"Absolutely! Let's reschedule soon."
+landing,hero,mockup-reply-2-style,Casual
+landing,hero,mockup-reply-2-text,"Totally! Next time for sure 🙌"
+landing,features,label,FEATURES
+landing,features,headline-1,Everything you need to
+landing,features,headline-2,communicate with confidence
+landing,features,card1-icon,💬
+landing,features,card1-title,Smart Reply Generation
+landing,features,card1-desc,"Paste a conversation, pick your goal and tone, and get multiple styled reply options — from polite to assertive to flirty."
+landing,features,card1-color,#3D6B4F
+landing,features,card2-icon,✍️
+landing,features,card2-title,9-Style Rewriter
+landing,features,card2-desc,"Take any draft message and instantly see it rewritten in 9 distinct personality styles: confident, romantic, professional, mysterious, and more."
+landing,features,card2-color,#7B6B8D
+landing,features,card3-icon,🧠
+landing,features,card3-title,Conversation Coach
+landing,features,card3-desc,"Get deep analysis of any conversation — emotional tone, misunderstandings, unanswered questions, and actionable coaching tips."
+landing,features,card3-color,#4A9BA8
+landing,features,card4-icon,📌
+landing,features,card4-title,Custom Presets
+landing,features,card4-desc,"Save your favorite reply configurations as reusable presets. One tap to apply your go-to style for any situation."
+landing,features,card4-color,#D4845A
+landing,features,card5-icon,⭐
+landing,features,card5-title,Save & Organize
+landing,features,card5-desc,"Bookmark the replies you love. Build a personal library of perfect responses for future conversations."
+landing,features,card5-color,#C9A84C
+landing,features,card6-icon,📱
+landing,features,card6-title,Multi-Platform
+landing,features,card6-desc,"Works on iOS Android and web. Your communication assistant goes wherever your conversations happen."
+landing,features,card6-color,#E87898
+landing,ctaBlock,headline-1,Stop overthinking
+landing,ctaBlock,headline-2,your messages
+landing,ctaBlock,subtitle,"Whether it's a tricky work email a sensitive text or a first message — Tone Reply helps you find the right words in seconds."
+landing,ctaBlock,button,Start Free Today
+landing,howItWorks,label,HOW IT WORKS
+landing,howItWorks,headline-1,Three steps to
+landing,howItWorks,headline-2,better conversations
+landing,howItWorks,step1-num,01
+landing,howItWorks,step1-title,Paste Your Conversation
+landing,howItWorks,step1-desc,"Drop in any chat history email thread or message draft. Tone Reply understands context."
+landing,howItWorks,step2-num,02
+landing,howItWorks,step2-title,Choose Your Goal
+landing,howItWorks,step2-desc,"Select from 17 intent options — from Reply politely to Set a boundary to Flirt to Negotiate."
+landing,howItWorks,step3-num,03
+landing,howItWorks,step3-title,Pick Your Format
+landing,howItWorks,step3-desc,"One sentence? Full email? Text message? Bullet points? You decide how the reply should look."
+landing,howItWorks,step4-num,04
+landing,howItWorks,step4-title,Get Multiple Options
+landing,howItWorks,step4-desc,Receive several styled replies side by side each with a different tone and approach.
+landing,howItWorks,step5-num,05
+landing,howItWorks,step5-title,Rewrite & Refine
+landing,howItWorks,step5-desc,Love the idea but not the wording? Rewrite any reply in 9 personality styles instantly.
+landing,howItWorks,step6-num,06
+landing,howItWorks,step6-title,Save & Reuse
+landing,howItWorks,step6-desc,Bookmark your favorites or save as presets for one-tap access next time.
+landing,results,label,RESULTS
+landing,results,headline-1,What users are saying
+landing,results,headline-2,about their experience
+landing,results,stat1-value,9
+landing,results,stat1-label,Message Styles
+landing,results,stat1-detail,One draft nine completely different vibes — from professional to mysterious.
+landing,results,stat2-value,17
+landing,results,stat2-label,Reply Goals
+landing,results,stat2-detail,Every conversation is different. Pick the exact intent that fits your situation.
+landing,results,stat3-value,7
+landing,results,stat3-label,Insight Cards
+landing,results,stat3-detail,"Emotional tone balance misunderstandings ambiguity — all analyzed in seconds."
+landing,pricing,label,PRICING
+landing,pricing,headline-1,Simple transparent
+landing,pricing,headline-2,pricing
+landing,pricing,subtitle,"Start free, upgrade when you need more. No hidden fees."
+landing,pricing,tier1-name,Free
+landing,pricing,tier1-price,$0
+landing,pricing,tier1-period,/mo
+landing,pricing,tier1-feat-1,20 generates/day
+landing,pricing,tier1-feat-2,10 rewrites/day
+landing,pricing,tier1-feat-3,3 saves
+landing,pricing,tier1-feat-4,Basic styles
+landing,pricing,tier1-feat-5,Conversation coach
+landing,pricing,tier1-cta,Get Started
+landing,pricing,tier2-name,Pro
+landing,pricing,tier2-price,$9
+landing,pricing,tier2-period,/mo
+landing,pricing,tier2-feat-1,Unlimited generates
+landing,pricing,tier2-feat-2,Unlimited rewrites
+landing,pricing,tier2-feat-3,Unlimited saves
+landing,pricing,tier2-feat-4,All 17 goals
+landing,pricing,tier2-feat-5,All 9 styles
+landing,pricing,tier2-feat-6,Custom presets
+landing,pricing,tier2-feat-7,Priority support
+landing,pricing,tier2-cta,Start Pro
+landing,pricing,tier2-badge,Most Popular
+landing,pricing,tier3-name,Unlimited
+landing,pricing,tier3-price,$19
+landing,pricing,tier3-period,/mo
+landing,pricing,tier3-feat-1,Everything in Pro
+landing,pricing,tier3-feat-2,Priority AI engine
+landing,pricing,tier3-feat-3,Advanced analytics
+landing,pricing,tier3-feat-4,API access
+landing,pricing,tier3-feat-5,Early access to features
+landing,pricing,tier3-feat-6,Dedicated support
+landing,pricing,tier3-cta,Go Unlimited
+landing,testimonials,label,TESTIMONIALS
+landing,testimonials,headline,Don't take our word for it
+landing,testimonials,card1-quote,"I used to spend 20 minutes drafting one work email. Now I paste it into Tone Reply and have 5 perfect options in 10 seconds. It's changed how I communicate professionally."
+landing,testimonials,card1-name,Alex Chen
+landing,testimonials,card1-title,Product Manager
+landing,testimonials,card1-color,#3D6B4F
+landing,testimonials,card2-quote,"The rewrite feature is incredible. I wrote a vulnerable text to someone I'm dating, and Tone Reply gave me 9 versions — from confident to mysterious. I picked the perfect one."
+landing,testimonials,card2-name,Maya Rodriguez
+landing,testimonials,card2-title,Freelance Designer
+landing,testimonials,card2-color,#7B6B8D
+landing,testimonials,card3-quote,"The conversation coach showed me I was asking too many unanswered questions and coming across as needy. Now I'm aware of my patterns and my texts are so much better."
+landing,testimonials,card3-name,Jordan Park
+landing,testimonials,card3-title,College Student
+landing,testimonials,card3-color,#4A9BA8
+landing,finalCta,headline-1,Let's make your
+landing,finalCta,headline-2,conversations effortless
+landing,finalCta,subtitle,"Join hundreds of people who communicate with confidence. Free to start — no credit card required."
+landing,finalCta,button,Get Started Free
+landing,footer,logo,✦ Tone Reply
+landing,footer,tagline,AI-powered communication assistant
+landing,footer,link-1,Features
+landing,footer,link-2,How It Works
+landing,footer,link-3,Pricing
+landing,footer,link-4,Testimonials
+landing,footer,copyright,"© 2026 Tone Reply. All rights reserved."

@@ -1,0 +1,152 @@
+section,element,property,value
+brand,name,display,Tone Reply
+brand,tagline,display,AI-powered communication assistant
+brand,logo,icon,✦
+brand,logo,text,Tone Reply
+navigation,link,1,Features
+navigation,link,2,How It Works
+navigation,link,3,Pricing
+navigation,link,4,Testimonials
+navigation,cta,text,Get Started Free
+navigation,themeToggle,light,☀️
+navigation,themeToggle,dark,🌙
+hero,headline,main,Say the right
+hero,headline,sub,thing every time
+hero,subtitle,body,"Tone Reply is your AI-powered communication assistant. Paste any conversation and get multiple reply options tailored to your exact goal — whether that's setting a boundary, flirting, negotiating, or simply being more confident."
+hero,cta,text,Try It Now
+hero,badges,1,Chat
+hero,badges,2,Analyze
+hero,badges,3,Rewrite
+hero,badges,4,Save
+hero,mockup,incoming1,"Hey, are we still on for tonight?"
+hero,mockup,outgoing1,"I'd love to but I'm swamped. Rain check?"
+hero,mockup,incoming2,"Sure, no worries!"
+hero,mockup,reply1Style,Polite
+hero,mockup,reply1Text,"Absolutely! Let's reschedule soon."
+hero,mockup,reply2Style,Casual
+hero,mockup,reply2Text,"Totally! Next time for sure 🙌"
+features,label,section,FEATURES
+features,headline,main,"Everything you need to"
+features,headline,sub,"communicate with confidence"
+features,card1,icon,💬
+features,card1,title,Smart Reply Generation
+features,card1,desc,"Paste a conversation, pick your goal and tone, and get multiple styled reply options — from polite to assertive to flirty."
+features,card1,color,#3D6B4F
+features,card2,icon,✍️
+features,card2,title,9-Style Rewriter
+features,card2,desc,"Take any draft message and instantly see it rewritten in 9 distinct personality styles: confident, romantic, professional, mysterious, and more."
+features,card2,color,#7B6B8D
+features,card3,icon,🧠
+features,card3,title,Conversation Coach
+features,card3,desc,"Get deep analysis of any conversation — emotional tone, misunderstandings, unanswered questions, and actionable coaching tips."
+features,card3,color,#4A9BA8
+features,card4,icon,📌
+features,card4,title,Custom Presets
+features,card4,desc,"Save your favorite reply configurations as reusable presets. One tap to apply your go-to style for any situation."
+features,card4,color,#D4845A
+features,card5,icon,⭐
+features,card5,title,Save & Organize
+features,card5,desc,"Bookmark the replies you love. Build a personal library of perfect responses for future conversations."
+features,card5,color,#C9A84C
+features,card6,icon,📱
+features,card6,title,Multi-Platform
+features,card6,desc,"Works on iOS, Android, and web. Your communication assistant goes wherever your conversations happen."
+features,card6,color,#E87898
+ctaBlock,headline,main,"Stop overthinking"
+ctaBlock,headline,sub,"your messages"
+ctaBlock,subtitle,body,"Whether it's a tricky work email, a sensitive text, or a first message — Tone Reply helps you find the right words in seconds."
+ctaBlock,cta,text,Start Free Today
+howItWorks,label,section,HOW IT WORKS
+howItWorks,headline,main,"Three steps to"
+howItWorks,headline,sub,"better conversations"
+howItWorks,step1,number,01
+howItWorks,step1,title,Paste Your Conversation
+howItWorks,step1,desc,"Drop in any chat history, email thread, or message draft. Tone Reply understands context."
+howItWorks,step2,number,02
+howItWorks,step2,title,Choose Your Goal
+howItWorks,step2,desc,"Select from 17 intent options — from ""Reply politely"" to ""Set a boundary"" to ""Flirt"" to ""Negotiate."""
+howItWorks,step3,number,03
+howItWorks,step3,title,Pick Your Format
+howItWorks,step3,desc,"One sentence? Full email? Text message? Bullet points? You decide how the reply should look."
+howItWorks,step4,number,04
+howItWorks,step4,title,Get Multiple Options
+howItWorks,step4,desc,"Receive several styled replies side by side, each with a different tone and approach."
+howItWorks,step5,number,05
+howItWorks,step5,title,Rewrite & Refine
+howItWorks,step5,desc,"Love the idea but not the wording? Rewrite any reply in 9 personality styles instantly."
+howItWorks,step6,number,06
+howItWorks,step6,title,Save & Reuse
+howItWorks,step6,desc,"Bookmark your favorites or save as presets for one-tap access next time."
+results,label,section,RESULTS
+results,headline,main,"What users are saying"
+results,headline,sub,"about their experience"
+results,stat1,value,9
+results,stat1,label,Message Styles
+results,stat1,detail,"One draft, nine completely different vibes — from professional to mysterious."
+results,stat2,value,17
+results,stat2,label,Reply Goals
+results,stat2,detail,"Every conversation is different. Pick the exact intent that fits your situation."
+results,stat3,value,7
+results,stat3,label,Insight Cards
+results,stat3,detail,"Emotional tone, balance, misunderstandings, ambiguity — all analyzed in seconds."
+pricing,label,section,PRICING
+pricing,headline,main,"Simple, transparent"
+pricing,headline,sub,pricing
+pricing,subtitle,body,"Start free, upgrade when you need more. No hidden fees."
+pricing,tier1,name,Free
+pricing,tier1,price,$0
+pricing,tier1,period,/mo
+pricing,tier1,feature1,20 generates/day
+pricing,tier1,feature2,10 rewrites/day
+pricing,tier1,feature3,3 saves
+pricing,tier1,feature4,Basic styles
+pricing,tier1,feature5,Conversation coach
+pricing,tier1,cta,Get Started
+pricing,tier2,name,Pro
+pricing,tier2,price,$9
+pricing,tier2,period,/mo
+pricing,tier2,feature1,Unlimited generates
+pricing,tier2,feature2,Unlimited rewrites
+pricing,tier2,feature3,Unlimited saves
+pricing,tier2,feature4,All 17 goals
+pricing,tier2,feature5,All 9 styles
+pricing,tier2,feature6,Custom presets
+pricing,tier2,feature7,Priority support
+pricing,tier2,cta,Start Pro
+pricing,tier2,badge,Most Popular
+pricing,tier3,name,Unlimited
+pricing,tier3,price,$19
+pricing,tier3,period,/mo
+pricing,tier3,feature1,Everything in Pro
+pricing,tier3,feature2,Priority AI engine
+pricing,tier3,feature3,Advanced analytics
+pricing,tier3,feature4,API access
+pricing,tier3,feature5,Early access to features
+pricing,tier3,feature6,Dedicated support
+pricing,tier3,cta,Go Unlimited
+testimonials,label,section,TESTIMONIALS
+testimonials,headline,main,Don't take our word for it
+testimonials,card1,quote,"I used to spend 20 minutes drafting one work email. Now I paste it into Tone Reply and have 5 perfect options in 10 seconds. It's changed how I communicate professionally."
+testimonials,card1,author,Alex Chen
+testimonials,card1,title,Product Manager
+testimonials,card1,color,#3D6B4F
+testimonials,card2,quote,"The rewrite feature is incredible. I wrote a vulnerable text to someone I'm dating, and Tone Reply gave me 9 versions — from confident to mysterious. I picked the perfect one."
+testimonials,card2,author,Maya Rodriguez
+testimonials,card2,title,Freelance Designer
+testimonials,card2,color,#7B6B8D
+testimonials,card3,quote,"The conversation coach showed me I was asking too many unanswered questions and coming across as needy. Now I'm aware of my patterns and my texts are so much better."
+testimonials,card3,author,Jordan Park
+testimonials,card3,title,College Student
+testimonials,card3,color,#4A9BA8
+finalCta,headline,main,"Let's make your"
+finalCta,headline,sub,"conversations effortless"
+finalCta,subtitle,body,"Join hundreds of people who communicate with confidence. Free to start — no credit card required."
+finalCta,cta,text,Get Started Free
+footer,logo,icon,✦
+footer,logo,text,Tone Reply
+footer,tagline,body,AI-powered communication assistant
+footer,link,1,Features
+footer,link,2,How It Works
+footer,link,3,Pricing
+footer,link,4,Testimonials
+footer,copyright,body,"© 2026 Tone Reply. All rights reserved."
