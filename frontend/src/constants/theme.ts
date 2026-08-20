@@ -4,7 +4,7 @@
 // Light Mode Colors (Image 1 + 2 inspired)
 export const lightTheme = {
   // Backgrounds
-  background: '#FDF6EC',        // Cream - warm, inviting
+  background: '#FFFFFF',        // White - clean, minimal
   surface: '#FFFFFF',            // White cards
   surfaceAlt: '#FAF8F5',        // Off-white inputs
   surfaceElevated: '#FFFFFF',   // Elevated cards
@@ -93,7 +93,7 @@ export const lightTheme = {
 // Dark Mode Colors (Image 3 inspired - teal/black)
 export const darkTheme = {
   // Backgrounds
-  background: '#1A2E35',        // Deep teal
+  background: '#000000',        // Pure black
   surface: '#243B42',           // Lighter teal
   surfaceAlt: '#1E3339',        // Slightly lighter
   surfaceElevated: '#2A4550',   // Elevated cards
@@ -184,9 +184,9 @@ export const typography = {
   // Font families
   fonts: {
     serif: {
-      regular: 'PlayfairDisplay_400Regular',
-      bold: 'PlayfairDisplay_700Bold',
-      black: 'PlayfairDisplay_900Black',
+      regular: 'Poppins_400Regular',
+      bold: 'Poppins_700Bold',
+      black: 'Poppins_900Black',
     },
     sans: {
       regular: 'System',
@@ -198,9 +198,9 @@ export const typography = {
 
   // Font family strings for StyleSheet
   fontFamily: {
-    serifRegular: 'PlayfairDisplay_400Regular',
-    serifBold: 'PlayfairDisplay_700Bold',
-    serifBlack: 'PlayfairDisplay_900Black',
+    serifRegular: 'Poppins_400Regular',
+    serifBold: 'Poppins_700Bold',
+    serifBlack: 'Poppins_900Black',
     sansRegular: undefined, // System font
     sansBold: undefined, // System font
   },

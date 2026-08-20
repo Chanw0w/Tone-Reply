@@ -110,7 +110,7 @@ const PRICING = [
 ];
 
 export default function Index() {
-  const { theme } = useTheme();
+  const { theme, isDark, toggleTheme } = useTheme();
   const { user } = useAuth();
   const router = useRouter();
   const [openStep, setOpenStep] = useState<number | null>(0);
@@ -165,9 +165,14 @@ export default function Index() {
                 </View>
               )}
             </View>
-            <TouchableOpacity style={s.navCta} onPress={handleGetStarted}>
-              <Text style={s.navCtaText}>Get Started Free</Text>
-            </TouchableOpacity>
+            <View style={s.navRight}>
+              <TouchableOpacity style={s.themeToggle} onPress={toggleTheme}>
+                <Text style={s.themeToggleText}>{isDark ? "☀️" : "🌙"}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={s.navCta} onPress={handleGetStarted}>
+                <Text style={s.navCtaText}>Get Started Free</Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <RainbowStripe />
         </View>
@@ -392,7 +397,7 @@ export default function Index() {
         </View>
 
         {/* ===== TESTIMONIALS ===== */}
-        <View style={[s.section, { backgroundColor: "#1A2E35" }]}>
+        <View style={[s.section, { backgroundColor: "#000000" }]}>
           <View style={s.sectionHeader}>
             <View style={[s.sectionLabelWrap, { backgroundColor: "rgba(255,255,255,0.1)" }]}>
               <Text style={[s.sectionLabel, { color: "#FFFFFF" }]}>TESTIMONIALS</Text>
@@ -479,6 +484,16 @@ const styles = (theme: any) =>
     logoIcon: { color: theme.primary },
     navLinks: { flexDirection: "row", gap: 28 },
     navLink: { fontSize: 15, color: theme.textSecondary, fontWeight: "500" },
+    navRight: { flexDirection: "row", alignItems: "center", gap: 12 },
+    themeToggle: {
+      width: 44,
+      height: 44,
+      borderRadius: 22,
+      backgroundColor: theme.surfaceAlt,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    themeToggleText: { fontSize: 20 },
     navCta: {
       backgroundColor: theme.primary,
       paddingHorizontal: 24,

@@ -24,9 +24,9 @@ export default function RootLayout() {
 
   // Load custom serif fonts for retro vibe
   const [fontsLoaded, fontsError] = useFonts({
-    'PlayfairDisplay_400Regular': require('../assets/fonts/PlayfairDisplay_400Regular.ttf'),
-    'PlayfairDisplay_700Bold': require('../assets/fonts/PlayfairDisplay_700Bold.ttf'),
-    'PlayfairDisplay_900Black': require('../assets/fonts/PlayfairDisplay_900Black.ttf'),
+    'Poppins_400Regular': require('../assets/fonts/Poppins_400Regular.ttf'),
+    'Poppins_700Bold': require('../assets/fonts/Poppins_700Bold.ttf'),
+    'Poppins_900Black': require('../assets/fonts/Poppins_900Black.ttf'),
   });
 
   const loaded = iconFontsLoaded && fontsLoaded;
