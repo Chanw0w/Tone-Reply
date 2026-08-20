@@ -40,3 +40,4 @@ yarn-error.*
 app-example
 frontend/ToneReply.app
 frontend/build-simulator.tar.gz
+.vercel

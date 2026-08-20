@@ -1,0 +1,8 @@
+node_modules
+.metro-cache
+.vercel
+*.app
+*.tar.gz
+scripts
+__tests__
+.git
