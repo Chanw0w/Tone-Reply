@@ -5,8 +5,7 @@ import { useTheme } from "../../src/utils/theme-context";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
-import { BotanicalDecoration } from "../../src/components/BotanicalDecoration";
-import { SparkleDecoration } from "../../src/components/SparkleDecoration";
+import { typography, borderRadius } from "../../src/constants/theme";
 
 export default function ProfileScreen() {
   const { user, logout } = useAuth();
@@ -50,23 +49,10 @@ export default function ProfileScreen() {
     >
       {/* Profile Header Card */}
       <View style={[styles.profileHeaderCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-        <BotanicalDecoration
-          size={40}
-          color={theme.botanicalSilhouette}
-          variant="leaves"
-          style={styles.headerBotanical}
-        />
-
         <View style={styles.avatarContainer}>
           <View style={[styles.avatarCircle, { backgroundColor: theme.primaryMuted }]}>
             <Ionicons name="person" size={50} color={theme.primary} />
           </View>
-          <SparkleDecoration
-            count={2}
-            size={8}
-            color={theme.accent.gold}
-            style={styles.avatarSparkles}
-          />
         </View>
 
         <Text style={[styles.emailText, { color: theme.textPrimary }]}>{user?.email || "user@example.com"}</Text>
@@ -161,7 +147,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 24,
     borderWidth: 1,
-    borderRadius: 28,
+    borderRadius: 24,
     marginBottom: 20,
     overflow: "hidden",
     shadowColor: "#8B6F5E",
@@ -169,12 +155,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
-  },
-  headerBotanical: {
-    position: "absolute",
-    top: 12,
-    right: 16,
-    opacity: 0.4,
   },
   avatarContainer: {
     position: "relative",
@@ -187,14 +167,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  avatarSparkles: {
-    position: "absolute",
-    top: -10,
-    right: -20,
-  },
   emailText: {
     fontSize: 18,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginBottom: 16,
   },
   headerRainbow: {
@@ -203,7 +178,7 @@ const styles = StyleSheet.create({
   },
   mainCard: {
     borderWidth: 1,
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 16,
     marginBottom: 16,
     shadowColor: "#8B6F5E",
@@ -214,7 +189,7 @@ const styles = StyleSheet.create({
   },
   cardSectionLabel: {
     fontSize: 11,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginBottom: 16,
     textTransform: "uppercase",
     letterSpacing: 1.1,
@@ -237,12 +212,13 @@ const styles = StyleSheet.create({
   },
   featureTitle: {
     fontSize: 14,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginBottom: 2,
   },
   featureDesc: {
     fontSize: 12,
     lineHeight: 16,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   infoRow: {
     flexDirection: "row",
@@ -252,10 +228,11 @@ const styles = StyleSheet.create({
   },
   infoLabel: {
     fontSize: 14,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   infoValue: {
     fontSize: 14,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
   },
   dangerRow: {
     flexDirection: "row",
@@ -269,6 +246,6 @@ const styles = StyleSheet.create({
   },
   dangerText: {
     fontSize: 15,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
   },
 });

@@ -17,11 +17,9 @@ import { useAuth } from "../src/utils/auth-context";
 import { useTheme } from "../src/utils/theme-context";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
-import { PhoneIllustration } from "../src/components/PhoneIllustration";
 import { RainbowStripe } from "../src/components/RainbowStripe";
-import { SparkleDecoration } from "../src/components/SparkleDecoration";
-import { OrganicBackground } from "../src/components/OrganicBackground";
-import { BotanicalDecoration } from "../src/components/BotanicalDecoration";
+import { StaticSparkle } from "../src/components/SparkleDecoration";
+import { typography, borderRadius } from "../src/constants/theme";
 
 export default function LoginScreen() {
   const { login } = useAuth();
@@ -56,40 +54,24 @@ export default function LoginScreen() {
     >
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <ScrollView contentContainerStyle={styles.scrollContainer} bounces={false}>
-          {/* Organic background decoration */}
-          <OrganicBackground />
-
-          {/* Top sparkle decoration */}
-          <SparkleDecoration
-            count={2}
-            size={10}
-            color={theme.accent.gold}
-            style={[styles.topSparkles, { top: insets.top + 20 }]}
-          />
-
-          {/* Phone illustration */}
-          <View style={styles.illustrationContainer}>
-            <PhoneIllustration size={140} showBubbles={true} />
-            <SparkleDecoration
-              count={2}
-              size={8}
-              color={theme.accent.gold}
-              style={styles.phoneSparkles}
-            />
+          {/* Top sparkle decorations */}
+          <View style={[styles.sparkleRow, { top: insets.top + 20 }]}>
+            <StaticSparkle size={10} color={theme.accent.gold} />
+            <StaticSparkle size={8} color="#E87898" />
           </View>
 
           {/* Logo */}
           <View style={styles.logoContainer}>
+            <StaticSparkle size={16} color={theme.accent.gold} />
             <Text style={[styles.logoText, { color: theme.textPrimary }]}>
               Tone Reply
             </Text>
           </View>
 
-          {/* Rainbow stripe */}
-          <RainbowStripe height={4} style={styles.rainbowStripe} />
-
           {/* Form card */}
           <View style={[styles.formCard, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+            <RainbowStripe height={8} style={styles.formRainbow} />
+
             <Text style={[styles.formTitle, { color: theme.textPrimary }]}>Welcome Back</Text>
             <Text style={[styles.formSubtitle, { color: theme.textSecondary }]}>
               Sign in to your communication assistant
@@ -169,14 +151,6 @@ export default function LoginScreen() {
               </Link>
             </View>
           </View>
-
-          {/* Bottom botanical decoration */}
-          <BotanicalDecoration
-            size={50}
-            color={theme.botanicalSilhouette}
-            variant="mixed"
-            style={styles.bottomBotanical}
-          />
         </ScrollView>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
@@ -192,54 +166,49 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 24,
   },
-  topSparkles: {
+  sparkleRow: {
     position: "absolute",
     right: 40,
-  },
-  illustrationContainer: {
-    alignItems: "center",
-    marginBottom: 20,
-    position: "relative",
-  },
-  phoneSparkles: {
-    position: "absolute",
-    top: -10,
-    right: -40,
+    flexDirection: "row",
+    gap: 8,
   },
   logoContainer: {
+    flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
+    justifyContent: "center",
+    gap: 8,
+    marginBottom: 24,
   },
   logoText: {
-    fontSize: 34,
-    fontWeight: "900",
-    letterSpacing: -1,
-    fontStyle: "italic",
-  },
-  rainbowStripe: {
-    marginBottom: 24,
-    borderRadius: 2,
+    fontSize: 28,
+    fontFamily: typography.fontFamily.serifBlack,
+    letterSpacing: -0.5,
   },
   formCard: {
-    borderRadius: 28,
-    padding: 24,
+    borderRadius: 24,
     borderWidth: 1,
+    overflow: "hidden",
     shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
     shadowRadius: 10,
     elevation: 2,
   },
+  formRainbow: {
+    width: "100%",
+  },
   formTitle: {
-    fontSize: 20,
-    fontWeight: "800",
+    fontSize: 22,
+    fontFamily: typography.fontFamily.serifBlack,
     textAlign: "center",
+    marginTop: 24,
     marginBottom: 4,
   },
   formSubtitle: {
     fontSize: 13,
     textAlign: "center",
     marginBottom: 24,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   errorContainer: {
     flexDirection: "row",
@@ -248,6 +217,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 14,
     marginBottom: 20,
+    marginHorizontal: 24,
   },
   errorText: {
     fontSize: 13,
@@ -256,10 +226,11 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 18,
+    marginHorizontal: 24,
   },
   label: {
     fontSize: 11,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginBottom: 8,
     textTransform: "uppercase",
     letterSpacing: 1.1,
@@ -267,31 +238,34 @@ const styles = StyleSheet.create({
   input: {
     height: 48,
     borderWidth: 1,
-    borderRadius: 18,
+    borderRadius: 14,
     paddingHorizontal: 16,
     fontSize: 15,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   passwordWrapper: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderRadius: 18,
+    borderRadius: 14,
   },
   passwordInput: {
     flex: 1,
     height: 48,
     paddingHorizontal: 16,
     fontSize: 15,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   eyeIcon: {
     padding: 12,
   },
   primaryButton: {
     height: 48,
-    borderRadius: 18,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 12,
+    marginHorizontal: 24,
     shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
@@ -300,24 +274,21 @@ const styles = StyleSheet.create({
   },
   primaryButtonText: {
     fontSize: 15,
-    fontWeight: "700",
+    fontFamily: typography.fontFamily.serifBold,
   },
   footer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 20,
+    marginBottom: 24,
   },
   footerText: {
     fontSize: 13,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   linkText: {
     fontSize: 13,
-    fontWeight: "800",
-  },
-  bottomBotanical: {
-    alignSelf: "center",
-    marginTop: 24,
-    opacity: 0.5,
+    fontFamily: typography.fontFamily.serifBold,
   },
 });

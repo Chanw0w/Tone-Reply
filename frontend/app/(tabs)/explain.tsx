@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 import { useTheme } from "../../src/utils/theme-context";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
+import { typography, borderRadius } from "../../src/constants/theme";
 
 interface AnalyzeResponse {
   analysis: AnalysisResult;
@@ -292,9 +293,10 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     marginBottom: 16,
     paddingHorizontal: 4,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   mainCard: {
-    borderRadius: 28,
+    borderRadius: 24,
     borderWidth: 1,
     padding: 20,
     marginBottom: 20,
@@ -312,22 +314,23 @@ const styles = StyleSheet.create({
   },
   cardSectionLabel: {
     fontSize: 11,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   clearText: {
     fontSize: 12,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
   },
   textArea: {
     borderWidth: 1,
-    borderRadius: 18,
+    borderRadius: 14,
     padding: 14,
     fontSize: 14,
     height: 120,
     textAlignVertical: "top",
     marginBottom: 16,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   rainbowAccent: {
     marginBottom: 12,
@@ -340,7 +343,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   primaryButton: {
-    borderRadius: 18,
+    borderRadius: 14,
     height: 48,
     justifyContent: "center",
     alignItems: "center",
@@ -361,14 +364,14 @@ const styles = StyleSheet.create({
   },
   primaryButtonText: {
     fontSize: 15,
-    fontWeight: "700",
+    fontFamily: typography.fontFamily.serifBold,
   },
   analysisSection: {
     marginTop: 4,
   },
   resultsTitle: {
     fontSize: 15,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     textTransform: "uppercase",
     letterSpacing: 1.1,
     marginBottom: 12,
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
   },
   coachingCard: {
     borderWidth: 1,
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 16,
     marginBottom: 16,
   },
@@ -389,7 +392,7 @@ const styles = StyleSheet.create({
   },
   coachingTitle: {
     fontSize: 14,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
@@ -406,10 +409,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     flex: 1,
     lineHeight: 20,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   infoCard: {
     borderWidth: 1,
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 16,
     marginBottom: 16,
   },
@@ -420,7 +424,7 @@ const styles = StyleSheet.create({
   },
   infoTitle: {
     fontSize: 11,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginLeft: 8,
     textTransform: "uppercase",
     letterSpacing: 1.1,
@@ -428,5 +432,6 @@ const styles = StyleSheet.create({
   infoContent: {
     fontSize: 15,
     lineHeight: 22,
+    fontFamily: typography.fontFamily.sansRegular,
   },
 });

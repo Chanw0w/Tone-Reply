@@ -15,6 +15,7 @@ import { api } from "../../src/utils/api";
 import { useTheme } from "../../src/utils/theme-context";
 import { EmptyState } from "../../src/components/EmptyState";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
+import { typography, borderRadius } from "../../src/constants/theme";
 
 interface Favorite {
   id: string;
@@ -426,7 +427,7 @@ const styles = StyleSheet.create({
   },
   segmentText: {
     fontSize: 13,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     textTransform: "uppercase",
     letterSpacing: 0.5,
   },
@@ -439,7 +440,7 @@ const styles = StyleSheet.create({
   },
   favCard: {
     borderWidth: 1,
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 16,
     marginBottom: 16,
     overflow: "hidden",
@@ -462,7 +463,7 @@ const styles = StyleSheet.create({
   },
   favStyle: {
     fontSize: 12,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
@@ -476,7 +477,7 @@ const styles = StyleSheet.create({
   },
   originalLabel: {
     fontSize: 11,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginBottom: 2,
     textTransform: "uppercase",
     letterSpacing: 1.1,
@@ -484,10 +485,11 @@ const styles = StyleSheet.create({
   originalText: {
     fontSize: 13,
     marginBottom: 12,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   replyLabel: {
     fontSize: 11,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginBottom: 2,
     textTransform: "uppercase",
     letterSpacing: 1.1,
@@ -495,12 +497,13 @@ const styles = StyleSheet.create({
   replyText: {
     fontSize: 15,
     lineHeight: 22,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   addPresetToggle: {
     flexDirection: "row",
     borderWidth: 1,
     height: 48,
-    borderRadius: 18,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
@@ -512,11 +515,11 @@ const styles = StyleSheet.create({
   },
   addPresetToggleText: {
     fontSize: 14,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
   },
   presetFormCard: {
     borderWidth: 1,
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 16,
     marginBottom: 16,
     shadowColor: "#8B6F5E",
@@ -527,7 +530,7 @@ const styles = StyleSheet.create({
   },
   formTitle: {
     fontSize: 16,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginBottom: 16,
   },
   formGroup: {
@@ -535,7 +538,7 @@ const styles = StyleSheet.create({
   },
   formLabel: {
     fontSize: 11,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     marginBottom: 8,
     textTransform: "uppercase",
     letterSpacing: 1.1,
@@ -546,6 +549,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingHorizontal: 12,
     fontSize: 14,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   dropdown: {
     marginTop: 2,
@@ -565,10 +569,10 @@ const styles = StyleSheet.create({
   },
   miniChipText: {
     fontSize: 12,
-    fontWeight: "700",
+    fontFamily: typography.fontFamily.sansMedium,
   },
   activeMiniChipText: {
-    fontWeight: "bold",
+    fontFamily: typography.fontFamily.serifBold,
   },
   formRainbow: {
     marginVertical: 12,
@@ -586,11 +590,11 @@ const styles = StyleSheet.create({
   },
   submitBtnText: {
     fontSize: 14,
-    fontWeight: "bold",
+    fontFamily: typography.fontFamily.serifBold,
   },
   presetCard: {
     borderWidth: 1,
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 16,
     marginBottom: 12,
     overflow: "hidden",
@@ -614,7 +618,7 @@ const styles = StyleSheet.create({
   },
   presetNameText: {
     fontSize: 15,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
   },
   presetDelete: {
     padding: 4,
@@ -628,11 +632,12 @@ const styles = StyleSheet.create({
   },
   metaLabel: {
     fontSize: 12,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     width: 60,
   },
   metaValue: {
     fontSize: 13,
     flex: 1,
+    fontFamily: typography.fontFamily.sansRegular,
   },
 });

@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import React, { useEffect } from "react";
-import { LogBox } from "react-native";
+import { LogBox, Platform } from "react-native";
 import { useFonts } from "expo-font";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -23,11 +23,15 @@ SplashScreen.preventAutoHideAsync();
 export default function RootLayout() {
   const [iconFontsLoaded, iconFontsError] = useIconFonts();
 
-  // Load custom serif fonts for retro vibe
+  // Load custom fonts for retro vibe + DM Sans for body
   const [fontsLoaded, fontsError] = useFonts({
     'Poppins_400Regular': require('../assets/fonts/Poppins_400Regular.ttf'),
     'Poppins_700Bold': require('../assets/fonts/Poppins_700Bold.ttf'),
     'Poppins_900Black': require('../assets/fonts/Poppins_900Black.ttf'),
+    'DMSans_400Regular': require('../assets/fonts/DMSans_400Regular.ttf'),
+    'DMSans_500Medium': require('../assets/fonts/DMSans_500Medium.ttf'),
+    'DMSans_600SemiBold': require('../assets/fonts/DMSans_600SemiBold.ttf'),
+    'DMSans_700Bold': require('../assets/fonts/DMSans_700Bold.ttf'),
   });
 
   const loaded = iconFontsLoaded && fontsLoaded;
@@ -38,6 +42,14 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
+
+  useEffect(() => {
+    if (Platform.OS === "web") {
+      import("@vercel/speed-insights").then(({ injectSpeedInsights }) => {
+        injectSpeedInsights();
+      });
+    }
+  }, []);
 
   // If the CDN is unreachable we fall through on error rather than wedging
   // the app — icons will tofu, but the app still boots.

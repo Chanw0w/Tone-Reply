@@ -1,8 +1,10 @@
 node_modules
-.metro-cache
-.vercel
-*.app
-*.tar.gz
-scripts
-__tests__
+.expo
+ios
+android
 .git
+__tests__
+cms
+*.md
+.vercel/output
+dist

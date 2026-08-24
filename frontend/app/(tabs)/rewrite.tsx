@@ -17,6 +17,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 import { useTheme } from "../../src/utils/theme-context";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
+import { typography, borderRadius } from "../../src/constants/theme";
 
 interface Rewrites {
   confident?: string;
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   mainCard: {
-    borderRadius: 28,
+    borderRadius: 24,
     borderWidth: 1,
     padding: 20,
     marginBottom: 20,
@@ -263,22 +264,23 @@ const styles = StyleSheet.create({
   },
   cardSectionLabel: {
     fontSize: 11,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     textTransform: "uppercase",
     letterSpacing: 1.1,
   },
   clearText: {
     fontSize: 12,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
   },
   textArea: {
     borderWidth: 1,
-    borderRadius: 18,
+    borderRadius: 14,
     padding: 14,
     fontSize: 14,
     height: 100,
     textAlignVertical: "top",
     marginBottom: 16,
+    fontFamily: typography.fontFamily.sansRegular,
   },
   rainbowAccent: {
     marginBottom: 12,
@@ -291,7 +293,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   primaryButton: {
-    borderRadius: 18,
+    borderRadius: 14,
     height: 48,
     justifyContent: "center",
     alignItems: "center",
@@ -312,14 +314,14 @@ const styles = StyleSheet.create({
   },
   primaryButtonText: {
     fontSize: 15,
-    fontWeight: "700",
+    fontFamily: typography.fontFamily.serifBold,
   },
   resultsSection: {
     marginTop: 4,
   },
   resultsTitle: {
     fontSize: 15,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
     textTransform: "uppercase",
     letterSpacing: 1.1,
     marginBottom: 12,
@@ -327,7 +329,7 @@ const styles = StyleSheet.create({
   },
   rewriteCard: {
     borderWidth: 1,
-    borderRadius: 24,
+    borderRadius: 20,
     padding: 16,
     marginBottom: 16,
     overflow: "hidden",
@@ -349,7 +351,7 @@ const styles = StyleSheet.create({
   },
   rewriteStyleLabel: {
     fontSize: 13,
-    fontWeight: "800",
+    fontFamily: typography.fontFamily.serifBold,
   },
   copyBtn: {
     padding: 4,
@@ -357,5 +359,6 @@ const styles = StyleSheet.create({
   rewriteContent: {
     fontSize: 15,
     lineHeight: 22,
+    fontFamily: typography.fontFamily.sansRegular,
   },
 });

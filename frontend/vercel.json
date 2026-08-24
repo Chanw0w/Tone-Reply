@@ -1,8 +1,9 @@
 {
+  "framework": null,
   "buildCommand": "npx expo export --platform web",
   "outputDirectory": "dist",
-  "framework": null,
+  "installCommand": "npm install --ignore-scripts",
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/((?!_expo/|assets/).*)", "destination": "/index.html" }
   ]
 }

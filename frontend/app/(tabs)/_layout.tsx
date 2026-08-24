@@ -7,6 +7,7 @@ import { ActivityIndicator, View, Text, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
 import { StaticSparkle } from "../../src/components/SparkleDecoration";
+import { typography } from "../../src/constants/theme";
 
 export default function TabsLayout() {
   const { user, isLoading } = useAuth();
@@ -40,7 +41,7 @@ export default function TabsLayout() {
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: "800",
+          fontFamily: typography.fontFamily.serifBold,
           textTransform: "uppercase",
           letterSpacing: 0.5,
           marginTop: 2,
@@ -170,8 +171,8 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   headerLogo: {
-    fontSize: 24,
-    fontWeight: "900",
+    fontSize: 20,
+    fontFamily: typography.fontFamily.serifBlack,
     letterSpacing: -0.5,
   },
   headerRainbow: {
