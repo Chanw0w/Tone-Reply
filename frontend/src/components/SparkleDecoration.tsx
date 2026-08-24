@@ -6,7 +6,7 @@ interface SparkleProps {
   size?: number;
   color?: string;
   delay?: number;
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
 }
 
 function Sparkle({ size = 12, color, delay = 0, style }: SparkleProps) {
@@ -78,7 +78,7 @@ interface SparkleDecorationProps {
   count?: number;
   size?: number;
   color?: string;
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
 }
 
 export function SparkleDecoration({
@@ -112,7 +112,7 @@ export function SparkleDecoration({
 interface StaticSparkleProps {
   size?: number;
   color?: string;
-  style?: ViewStyle;
+  style?: ViewStyle | ViewStyle[];
 }
 
 export function StaticSparkle({ size = 12, color, style }: StaticSparkleProps) {

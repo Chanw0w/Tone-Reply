@@ -15,6 +15,7 @@ import {
 import { Link } from "expo-router";
 import { useAuth } from "../src/utils/auth-context";
 import { useTheme } from "../src/utils/theme-context";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { PhoneIllustration } from "../src/components/PhoneIllustration";
 import { RainbowStripe } from "../src/components/RainbowStripe";
@@ -25,6 +26,7 @@ import { BotanicalDecoration } from "../src/components/BotanicalDecoration";
 export default function LoginScreen() {
   const { login } = useAuth();
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -62,7 +64,7 @@ export default function LoginScreen() {
             count={2}
             size={10}
             color={theme.accent.gold}
-            style={styles.topSparkles}
+            style={[styles.topSparkles, { top: insets.top + 20 }]}
           />
 
           {/* Phone illustration */}
@@ -192,7 +194,6 @@ const styles = StyleSheet.create({
   },
   topSparkles: {
     position: "absolute",
-    top: 60,
     right: 40,
   },
   illustrationContainer: {

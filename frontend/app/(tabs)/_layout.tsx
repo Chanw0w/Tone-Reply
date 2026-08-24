@@ -3,13 +3,15 @@ import { Tabs, Redirect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { useAuth } from "../../src/utils/auth-context";
 import { useTheme } from "../../src/utils/theme-context";
-import { ActivityIndicator, View, Text, StyleSheet, Platform } from "react-native";
+import { ActivityIndicator, View, Text, StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
 import { StaticSparkle } from "../../src/components/SparkleDecoration";
 
 export default function TabsLayout() {
   const { user, isLoading } = useAuth();
   const { theme, isDark } = useTheme();
+  const insets = useSafeAreaInsets();
 
   if (isLoading) {
     return (
@@ -32,8 +34,8 @@ export default function TabsLayout() {
           backgroundColor: theme.tabBarBackground,
           borderTopWidth: 1,
           borderTopColor: theme.tabBarBorder,
-          height: 68,
-          paddingBottom: 8,
+          height: 68 + insets.bottom,
+          paddingBottom: 8 + insets.bottom,
           paddingTop: 8,
         },
         tabBarLabelStyle: {
@@ -44,7 +46,7 @@ export default function TabsLayout() {
           marginTop: 2,
         },
         header: () => (
-          <View style={[styles.header, { backgroundColor: theme.headerBackground, borderBottomColor: theme.tabBarBorder }]}>
+          <View style={[styles.header, { backgroundColor: theme.headerBackground, borderBottomColor: theme.tabBarBorder, paddingTop: insets.top }]}>
             <View style={styles.headerContent}>
               <View style={styles.logoContainer}>
                 <StaticSparkle size={10} color={theme.accent.gold} style={styles.logoSparkle} />
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
   },
   header: {
     borderBottomWidth: 1,
-    paddingTop: Platform.OS === "ios" ? 54 : 36,
+    paddingTop: 0,
     paddingBottom: 0,
   },
   headerContent: {
@@ -171,7 +173,6 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "900",
     letterSpacing: -0.5,
-    fontStyle: "italic",
   },
   headerRainbow: {
     height: 3,
