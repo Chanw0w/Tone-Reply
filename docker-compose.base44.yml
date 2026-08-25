@@ -61,14 +61,13 @@ services:
     environment:
       - EXPO_PUBLIC_BACKEND_URL=https://8000-${BASE44_PUBLIC_HOST_SUFFIX}
       - EXPO_PUBLIC_API_BASE_URL=https://8000-${BASE44_PUBLIC_HOST_SUFFIX}
-      - REACT_NATIVE_PACKAGER_HOSTNAME=0.0.0.0
       - CHOKIDAR_USEPOLLING=true
       - WATCHMAN_DISABLE=1
     depends_on:
       - backend
     command: >
       sh -c "yarn install --ignore-scripts --frozen-lockfile &&
-             npx expo start --web --port 3000 --host 0.0.0.0"
+             npx expo start --web --port 3000 --host lan"
 
 volumes:
   db_data:
