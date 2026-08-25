@@ -1,0 +1,12 @@
+{
+  "previewPort": 3000,
+  "healthPath": "/",
+  "startCommand": "docker compose -f docker-compose.base44.yml up -d",
+  "secrets": [
+    {
+      "name": "LLM_API_KEY",
+      "description": "Groq API key for the LLM powering chat/generate/rewrite features. Get it from console.groq.com -> API Keys. The app boots without it, but the core AI features return errors until it is set.",
+      "requiredAtBoot": false
+    }
+  ]
+}

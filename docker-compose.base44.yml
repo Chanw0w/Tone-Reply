@@ -1,0 +1,76 @@
+# Base44 dev environment for Tone-Reply.
+# Frontend (Expo web) on host port 3000, FastAPI backend on 8000, PostgreSQL in compose.
+# Source is bind-mounted into app services so edits hot-reload without image rebuilds.
+
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: tonereply
+      POSTGRES_PASSWORD: tonereply_dev
+      POSTGRES_DB: tonereply
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tonereply -d tonereply"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  migrate:
+    image: postgres:16-alpine
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./db/init.sql:/init.sql:ro
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+        PGPASSWORD=tonereply_dev psql -h db -U tonereply -d tonereply -v ON_ERROR_STOP=1 -f /init.sql && echo "schema ready"
+
+  backend:
+    image: python:3.11-slim
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+      - backend_pip_cache:/root/.cache/pip
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env.base44-defaults
+      - /run/base44/app.env
+    environment:
+      - DATABASE_URL=postgresql://tonereply:tonereply_dev@db:5432/tonereply
+      - CORS_ORIGINS=https://3000-${BASE44_PUBLIC_HOST_SUFFIX},http://localhost:3000,http://localhost:8081,http://localhost:19006
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    command: >
+      sh -c "pip install -q -r requirements.txt &&
+             uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app"
+
+  web:
+    image: node:22
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - frontend_node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - EXPO_PUBLIC_BACKEND_URL=https://8000-${BASE44_PUBLIC_HOST_SUFFIX}
+      - EXPO_PUBLIC_API_BASE_URL=https://8000-${BASE44_PUBLIC_HOST_SUFFIX}
+      - REACT_NATIVE_PACKAGER_HOSTNAME=0.0.0.0
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHMAN_DISABLE=1
+    depends_on:
+      - backend
+    command: >
+      sh -c "yarn install --ignore-scripts --frozen-lockfile &&
+             npx expo start --web --port 3000 --host 0.0.0.0"
+
+volumes:
+  db_data:
+  backend_pip_cache:
+  frontend_node_modules:
