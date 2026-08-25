@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
     borderRadius: 24,
     borderWidth: 1,
     overflow: "hidden",
+    backgroundColor: "#FDF6EC",
     shadowColor: "#8B6F5E",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.08,
@@ -264,16 +265,18 @@ const styles = StyleSheet.create({
   input: {
     height: 48,
     borderWidth: 1,
-    borderRadius: 14,
+    borderRadius: 12,
     paddingHorizontal: 16,
     fontSize: 15,
     fontFamily: typography.fontFamily.sansRegular,
+    backgroundColor: "#FFFFFF",
   },
   passwordWrapper: {
     flexDirection: "row",
     alignItems: "center",
     borderWidth: 1,
-    borderRadius: 14,
+    borderRadius: 12,
+    backgroundColor: "#FFFFFF",
   },
   passwordInput: {
     flex: 1,
@@ -287,20 +290,16 @@ const styles = StyleSheet.create({
   },
   primaryButton: {
     height: 48,
-    borderRadius: 14,
+    borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
     marginTop: 12,
     marginHorizontal: 24,
-    shadowColor: "#8B6F5E",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    elevation: 1,
+    backgroundColor: "#3D6B4F",
   },
   primaryButtonText: {
     fontSize: 15,
-    fontFamily: typography.fontFamily.serifBold,
+    fontFamily: typography.fontFamily.serifBlack,
   },
   footer: {
     flexDirection: "row",
@@ -315,6 +314,6 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 13,
-    fontFamily: typography.fontFamily.serifBold,
+    fontFamily: typography.fontFamily.serifBlack,
   },
 });
