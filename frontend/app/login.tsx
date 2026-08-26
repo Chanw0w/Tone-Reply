@@ -36,6 +36,10 @@ export default function LoginScreen() {
       setError("Please fill in all fields");
       return;
     }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
     setError(null);
     setLoading(true);
     try {

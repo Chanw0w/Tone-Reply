@@ -60,6 +60,12 @@ class ApiService {
         } catch {
           errorMsg = response.statusText || errorMsg;
         }
+        if (response.status === 401) {
+          await this.removeToken();
+          if (typeof window !== "undefined") {
+            window.location.href = "/login";
+          }
+        }
         throw new Error(errorMsg);
       }
 
