@@ -9,6 +9,8 @@
 - The repo's own `docker-compose.yml` is **stale/wrong** — it runs MongoDB, but the backend uses PostgreSQL. Do not use it; use `docker-compose.base44.yml`.
 - Backend requires `JWT_SECRET` at boot (raises `RuntimeError` if missing). A dev placeholder lives in `.env.base44-defaults`.
 - LLM: Groq by default (`LLM_API_KEY`, `LLM_BASE_URL=https://api.groq.com/openai/v1`, `LLM_MODEL=openai/gpt-oss-20b`). Not required to boot; chat endpoints return 500 until the key is set. Delivered as a secret via `/run/base44/app.env`.
+- Rate limiting uses Redis (`redis` service in compose, `REDIS_URL=redis://redis:6379/0`). The limiter fails open if Redis is unreachable.
+- `get_current_user` caches the user for 30s (in-process); invalidated on password change / account deletion.
 - Frontend reads `EXPO_PUBLIC_BACKEND_URL` (defaults to the production Render URL). In dev it is set to the backend's public preview URL. API uses bearer-token auth (no cookies), so separate origins are fine.
 - Frontend `package.json` has a `preinstall` command guard (`scripts/cmd-guard.js`). We install with `yarn install --ignore-scripts --frozen-lockfile` to bypass it (matches the project's own Vercel `installCommand`).
 

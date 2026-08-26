@@ -1,5 +1,5 @@
 # Base44 dev environment for Tone-Reply.
-# Frontend (Expo web) on host port 3000, FastAPI backend on 8000, PostgreSQL in compose.
+# Frontend (Expo web) on host port 3000, FastAPI backend on 8000, PostgreSQL + Redis in compose.
 # Source is bind-mounted into app services so edits hot-reload without image rebuilds.
 
 services:
@@ -29,6 +29,14 @@ services:
       - |
         PGPASSWORD=tonereply_dev psql -h db -U tonereply -d tonereply -v ON_ERROR_STOP=1 -f /init.sql && echo "schema ready"
 
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
   backend:
     image: python:3.11-slim
     working_dir: /app
@@ -43,15 +51,20 @@ services:
     environment:
       - DATABASE_URL=postgresql://tonereply:tonereply_dev@db:5432/tonereply
       - CORS_ORIGINS=https://3000-${BASE44_PUBLIC_HOST_SUFFIX},http://localhost:3000,http://localhost:8081,http://localhost:19006
+      - REDIS_URL=redis://redis:6379/0
     depends_on:
       migrate:
         condition: service_completed_successfully
+      redis:
+        condition: service_healthy
     command: >
       sh -c "pip install -q -r requirements.txt &&
              uvicorn main:app --host 0.0.0.0 --port 8000 --reload --reload-dir /app"
 
   web:
-    image: node:22
+    build:
+      context: .
+      dockerfile: Dockerfile.web
     working_dir: /app
     volumes:
       - ./frontend:/app
@@ -67,6 +80,7 @@ services:
       - backend
     command: >
       sh -c "yarn install --ignore-scripts --frozen-lockfile &&
+             sh ./scripts/fix-devtools-sandbox.sh &&
              npx expo start --web --port 3000 --host lan"
 
 volumes:

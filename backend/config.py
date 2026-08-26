@@ -28,6 +28,9 @@ LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://api.groq.com/openai/v1")
 LLM_MODEL = os.environ.get("LLM_MODEL", "openai/gpt-oss-20b")
 
+# Redis (distributed rate limiting)
+REDIS_URL = os.environ.get("REDIS_URL", "")
+
 # Legacy Tokenthon config (kept for backward compatibility)
 TOKENTHON_API_KEY = os.environ.get("TOKENTHON_API_KEY")
 TOKENTHON_BASE_URL = os.environ.get("TOKENTHON_BASE_URL", LLM_BASE_URL)

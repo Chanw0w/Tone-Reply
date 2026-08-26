@@ -4,7 +4,13 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from database import get_pool
 from models.schemas import UserAuth, AuthResponse, UserResponse
-from services.auth import hash_password, verify_password, create_jwt_token, get_current_user
+from services.auth import (
+    hash_password,
+    verify_password,
+    create_jwt_token,
+    get_current_user,
+    invalidate_user_cache,
+)
 
 router = APIRouter(prefix="/auth")
 
@@ -17,7 +23,7 @@ class ChangePasswordRequest(BaseModel):
 @router.post("/register", response_model=AuthResponse)
 async def register(auth_data: UserAuth):
     email = auth_data.email.strip().lower()
-    
+
     pool = await get_pool()
     async with pool.acquire() as conn:
         existing_user = await conn.fetchrow("SELECT id FROM users WHERE email = $1", email)
@@ -27,7 +33,7 @@ async def register(auth_data: UserAuth):
         user_id = str(uuid.uuid4())
         hashed = hash_password(auth_data.password)
         created_at = datetime.now(timezone.utc).isoformat()
-        
+
         await conn.execute(
             "INSERT INTO users (id, email, password_hash, created_at) VALUES ($1, $2, $3, $4)",
             user_id, email, hashed, created_at
@@ -43,7 +49,7 @@ async def register(auth_data: UserAuth):
 @router.post("/login", response_model=AuthResponse)
 async def login(auth_data: UserAuth):
     email = auth_data.email.strip().lower()
-    
+
     pool = await get_pool()
     async with pool.acquire() as conn:
         user = await conn.fetchrow("SELECT * FROM users WHERE email = $1", email)
@@ -88,14 +94,15 @@ async def change_password(req: ChangePasswordRequest, current_user: dict = Depen
         raise HTTPException(status_code=422, detail="New password must be at least 6 characters")
 
     new_hash = hash_password(req.new_password)
-    
+
     pool = await get_pool()
     async with pool.acquire() as conn:
         await conn.execute(
             "UPDATE users SET password_hash = $1 WHERE id = $2",
             new_hash, current_user["id"]
         )
-    
+    invalidate_user_cache(current_user["id"])
+
     return {"success": True, "message": "Password changed successfully"}
 
 
@@ -111,4 +118,5 @@ async def delete_account(current_user: dict = Depends(get_current_user)):
         await conn.execute("DELETE FROM presets WHERE user_id = $1", user_id)
         await conn.execute("DELETE FROM favorites WHERE user_id = $1", user_id)
 
+    invalidate_user_cache(user_id)
     return {"success": True, "message": "Account and all data deleted"}

@@ -1,3 +1,4 @@
+import time
 import bcrypt
 import jwt
 from datetime import datetime, timezone, timedelta
@@ -21,6 +22,29 @@ def create_jwt_token(user_id: str, email: str) -> str:
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=ALGORITHM)
 
+
+# Short-lived in-process cache to avoid a DB hit on every authenticated request.
+_USER_CACHE: dict = {}  # user_id -> (user_dict, expiry_ts)
+_USER_CACHE_TTL = 30  # seconds
+
+
+def _get_cached_user(user_id: str):
+    entry = _USER_CACHE.get(user_id)
+    if entry and entry[1] > time.time():
+        return entry[0]
+    _USER_CACHE.pop(user_id, None)
+    return None
+
+
+def _set_cached_user(user_id: str, user: dict) -> None:
+    _USER_CACHE[user_id] = (user, time.time() + _USER_CACHE_TTL)
+
+
+def invalidate_user_cache(user_id: str) -> None:
+    """Invalidate the cached user (call on password change / account deletion)."""
+    _USER_CACHE.pop(user_id, None)
+
+
 async def get_current_user(authorization: Optional[str] = Header(None)) -> dict:
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(
@@ -33,12 +57,18 @@ async def get_current_user(authorization: Optional[str] = Header(None)) -> dict:
         user_id = payload.get("sub")
         if not user_id:
             raise HTTPException(status_code=401, detail="Invalid token payload")
-        
+
+        cached = _get_cached_user(user_id)
+        if cached:
+            return cached
+
         pool = await get_pool()
         async with pool.acquire() as conn:
             user = await conn.fetchrow("SELECT * FROM users WHERE id = $1", user_id)
             if not user:
                 raise HTTPException(status_code=401, detail="User not found")
-            return dict(user)
+            user_dict = dict(user)
+        _set_cached_user(user_id, user_dict)
+        return user_dict
     except jwt.PyJWTError:
         raise HTTPException(status_code=401, detail="Token signature expired or invalid")
