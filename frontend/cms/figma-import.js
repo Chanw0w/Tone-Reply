@@ -73,7 +73,7 @@ function text(parent, str, opts = {}) {
   t.name = opts.name || str.slice(0, 30);
   t.characters = str;
   t.fontSize = opts.size || 16;
-  t.fontName = opts.font || { family: "Inter", style: "Regular" };
+  t.fontName = opts.font || { family: "{Poppins}", style: "Black" };
   t.fills = [{ type: "SOLID", color: hexToRgb(opts.color || COLORS.text) }];
   if (opts.align) t.textAlignHorizontal = opts.align;
   if (opts.width) { t.resizeWithoutConstraints(opts.width, 100); t.textAutoResize = "HEIGHT"; }
@@ -145,10 +145,10 @@ text(bubble3, "Sure, no worries!", { size: 12, color: COLORS.text });
 
 const replyOpts = autoFrame(phone, "Reply Options", { layout: "VERTICAL", gap: 8, padding: 0 });
 const r1 = frame(replyOpts, "Polite", { h: 60, bg: COLORS.white, radius: 12, stroke: COLORS.primary, strokeWidth: 1.5, layout: "VERTICAL", padding: 10 });
-text(r1, "POLITE", { size: 10, color: COLORS.primary, font: { family: "Inter", style: "Bold" } });
+text(r1, "POLITE", { size: 10, color: COLORS.primary, font: { family: "Poppins", style: "Bold" } });
 text(r1, "Absolutely! Let's reschedule soon.", { size: 11, color: COLORS.textSec });
 const r2 = frame(replyOpts, "Casual", { h: 60, bg: COLORS.white, radius: 12, stroke: COLORS.purple, strokeWidth: 1.5, layout: "VERTICAL", padding: 10 });
-text(r2, "CASUAL", { size: 10, color: COLORS.purple, font: { family: "Inter", style: "Bold" } });
+text(r2, "CASUAL", { size: 10, color: COLORS.purple, font: { family: "Poppins", style: "Bold" } });
 text(r2, "Totally! Next time for sure 🙌", { size: 11, color: COLORS.textSec });
 
 // ============================================================
@@ -158,7 +158,7 @@ const featSection = frame(root, "Features Section", { w: W, layout: "VERTICAL", 
 
 const featHeader = autoFrame(featSection, "Section Header", { layout: "VERTICAL", gap: 16 });
 const featLabel = frame(featHeader, "Label", { h: 28, bg: COLORS.primaryMuted, radius: 6, layout: "HORIZONTAL", crossAlign: "CENTER", padding: 14, autoW: true });
-text(featLabel, "FEATURES", { size: 11, color: COLORS.primary, font: { family: "Inter", style: "Bold" }, letterSpacing: 1.5 });
+text(featLabel, "FEATURES", { size: 11, color: COLORS.primary, font: { family: "Poppins", style: "Bold" }, letterSpacing: 1.5 });
 text(featHeader, "Everything you need to\ncommunicate with confidence", { size: 36, font: { family: "Poppins", style: "Black" }, color: COLORS.text, lineHeight: 44 });
 
 const features = [
@@ -193,7 +193,7 @@ const ctaLeft = autoFrame(ctaBlock, "CTA Content", { layout: "VERTICAL", gap: 12
 text(ctaLeft, "Stop overthinking\nyour messages", { size: 32, font: { family: "Poppins", style: "Black" }, color: COLORS.white, lineHeight: 40 });
 text(ctaLeft, "Whether it's a tricky work email, a sensitive text, or a first message — Tone Reply helps you find the right words in seconds.", { size: 15, color: "rgba(255,255,255,0.85)", lineHeight: 24, width: 440 });
 const ctaBtn = frame(ctaLeft, "Button", { h: 48, layout: "HORIZONTAL", mainAlign: "CENTER", crossAlign: "CENTER", bg: COLORS.white, radius: 24, padding: 28, autoW: true });
-text(ctaBtn, "Start Free Today", { size: 15, color: COLORS.primary, font: { family: "Inter", style: "Bold" } });
+text(ctaBtn, "Start Free Today", { size: 15, color: COLORS.primary, font: { family: "Poppins", style: "Bold" } });
 const ctaDecor = autoFrame(ctaBlock, "Decor", { layout: "VERTICAL", gap: 16, crossAlign: "CENTER" });
 text(ctaDecor, "✦", { size: 40, color: COLORS.gold });
 const ctaCircle = frame(ctaDecor, "Circle", { w: 100, h: 100, radius: 50 }); fill(ctaCircle, "rgba(255,255,255,0.1)");
@@ -204,7 +204,7 @@ const ctaCircle = frame(ctaDecor, "Circle", { w: 100, h: 100, radius: 50 }); fil
 const howSection = frame(root, "How It Works", { w: W, layout: "VERTICAL", padding: PAD, gap: 40, bg: COLORS.bg });
 const howHeader = autoFrame(howSection, "Header", { layout: "VERTICAL", gap: 16 });
 const howLabel = frame(howHeader, "Label", { h: 28, bg: COLORS.primaryMuted, radius: 6, layout: "HORIZONTAL", crossAlign: "CENTER", padding: 14, autoW: true });
-text(howLabel, "HOW IT WORKS", { size: 11, color: COLORS.primary, font: { family: "Inter", style: "Bold" }, letterSpacing: 1.5 });
+text(howLabel, "HOW IT WORKS", { size: 11, color: COLORS.primary, font: { family: "Poppins", style: "Bold" }, letterSpacing: 1.5 });
 text(howHeader, "Three steps to\nbetter conversations", { size: 36, font: { family: "Poppins", style: "Black" }, color: COLORS.text, lineHeight: 44 });
 
 const steps = [
@@ -220,7 +220,7 @@ steps.forEach((s, i) => {
   const card = autoFrame(howSection, `Step ${s.num}`, { layout: "VERTICAL", gap: 0, bg: i === 0 ? COLORS.primaryMuted : COLORS.surface, radius: 16, stroke: i === 0 ? COLORS.primary : COLORS.border, strokeWidth: 1, padding: 20 });
   const header = autoFrame(card, "Header", { layout: "HORIZONTAL", gap: 16, crossAlign: "CENTER" });
   text(header, s.num, { size: 20, font: { family: "Poppins", style: "Black" }, color: i === 0 ? COLORS.primary : COLORS.textMuted });
-  text(header, s.title, { size: 16, color: i === 0 ? COLORS.primary : COLORS.text, font: { family: "Inter", style: "Semi Bold" } });
+  text(header, s.title, { size: 16, color: i === 0 ? COLORS.primary : COLORS.text, font: { family: "Poppins", style: "Semi Bold" } });
   text(header, i === 0 ? "−" : "+", { size: 22, color: COLORS.textMuted });
   if (i === 0) {
     text(card, s.desc, { size: 14, color: COLORS.textSec, lineHeight: 22, width: 800 });
@@ -233,7 +233,7 @@ steps.forEach((s, i) => {
 const resultsSection = frame(root, "Results", { w: W, layout: "VERTICAL", padding: PAD, gap: 40, bg: COLORS.primary });
 const resHeader = autoFrame(resultsSection, "Header", { layout: "VERTICAL", gap: 16 });
 const resLabel = frame(resHeader, "Label", { h: 28, bg: "rgba(255,255,255,0.15)", radius: 6, layout: "HORIZONTAL", crossAlign: "CENTER", padding: 14, autoW: true });
-text(resLabel, "RESULTS", { size: 11, color: COLORS.white, font: { family: "Inter", style: "Bold" }, letterSpacing: 1.5 });
+text(resLabel, "RESULTS", { size: 11, color: COLORS.white, font: { family: "Poppins", style: "Bold" }, letterSpacing: 1.5 });
 text(resHeader, "What users are saying\nabout their experience", { size: 36, font: { family: "Poppins", style: "Black" }, color: COLORS.white, lineHeight: 44 });
 
 const resGrid = frame(resultsSection, "Stats Grid", { w: W - PAD * 2, layout: "HORIZONTAL", gap: 20 });
@@ -245,7 +245,7 @@ const stats = [
 stats.forEach(s => {
   const card = autoFrame(resGrid, s.label, { layout: "VERTICAL", gap: 8, bg: "rgba(255,255,255,0.08)", radius: CARD_RADIUS, stroke: "rgba(255,255,255,0.12)", strokeWidth: 1, padding: 28, w: (W - PAD * 2 - 40) / 3 });
   text(card, s.val, { size: 48, font: { family: "Poppins", style: "Black" }, color: COLORS.white });
-  text(card, s.label, { size: 18, color: COLORS.white, font: { family: "Inter", style: "Bold" } });
+  text(card, s.label, { size: 18, color: COLORS.white, font: { family: "Poppins", style: "Bold" } });
   text(card, s.detail, { size: 14, color: "rgba(255,255,255,0.7)", lineHeight: 22 });
 });
 
@@ -255,7 +255,7 @@ stats.forEach(s => {
 const priceSection = frame(root, "Pricing", { w: W, layout: "VERTICAL", padding: PAD, gap: 40, bg: COLORS.bg });
 const priceHeader = autoFrame(priceSection, "Header", { layout: "VERTICAL", gap: 12 });
 const priceLabel = frame(priceHeader, "Label", { h: 28, bg: COLORS.primaryMuted, radius: 6, layout: "HORIZONTAL", crossAlign: "CENTER", padding: 14, autoW: true });
-text(priceLabel, "PRICING", { size: 11, color: COLORS.primary, font: { family: "Inter", style: "Bold" }, letterSpacing: 1.5 });
+text(priceLabel, "PRICING", { size: 11, color: COLORS.primary, font: { family: "Poppins", style: "Bold" }, letterSpacing: 1.5 });
 text(priceHeader, "Simple, transparent\npricing", { size: 36, font: { family: "Poppins", style: "Black" }, color: COLORS.text, lineHeight: 44 });
 text(priceHeader, "Start free, upgrade when you need more. No hidden fees.", { size: 15, color: COLORS.textSec, lineHeight: 24 });
 
@@ -270,7 +270,7 @@ tiers.forEach(t => {
   const card = autoFrame(priceGrid, t.name, { layout: "VERTICAL", gap: 12, bg: COLORS.surface, radius: CARD_RADIUS, stroke: t.primary ? COLORS.primary : COLORS.border, strokeWidth: t.primary ? 2 : 1, padding: 28, w: 300, autoH: true });
   if (t.badge) {
     const badge = frame(card, "Badge", { h: 24, bg: COLORS.primary, radius: 12, layout: "HORIZONTAL", mainAlign: "CENTER", crossAlign: "CENTER", padding: 14, autoW: true });
-    text(badge, t.badge, { size: 11, color: COLORS.white, font: { family: "Inter", style: "Bold" } });
+    text(badge, t.badge, { size: 11, color: COLORS.white, font: { family: "Poppins", style: "Bold" } });
   }
   text(card, t.name, { size: 18, font: { family: "Poppins", style: "Bold" }, color: COLORS.text });
   const priceRow = autoFrame(card, "Price", { layout: "HORIZONTAL", gap: 4, crossAlign: "BASELINE" });
@@ -283,7 +283,7 @@ tiers.forEach(t => {
     text(row, f, { size: 14, color: COLORS.textSec });
   });
   const btn = frame(card, "CTA", { h: 48, bg: t.primary ? COLORS.primary : COLORS.surface, radius: 16, layout: "HORIZONTAL", mainAlign: "CENTER", crossAlign: "CENTER", stroke: t.primary ? "transparent" : COLORS.border, strokeWidth: 1, autoW: true, padding: 28 });
-  text(btn, t.cta, { size: 15, color: t.primary ? COLORS.white : COLORS.text, font: { family: "Inter", style: "Bold" } });
+  text(btn, t.cta, { size: 15, color: t.primary ? COLORS.white : COLORS.text, font: { family: "Poppins", style: "Bold" } });
 });
 
 // ============================================================
@@ -292,7 +292,7 @@ tiers.forEach(t => {
 const testSection = frame(root, "Testimonials", { w: W, layout: "VERTICAL", padding: PAD, gap: 40, bg: COLORS.black });
 const testHeader = autoFrame(testSection, "Header", { layout: "VERTICAL", gap: 16 });
 const testLabel = frame(testHeader, "Label", { h: 28, bg: "rgba(255,255,255,0.1)", radius: 6, layout: "HORIZONTAL", crossAlign: "CENTER", padding: 14, autoW: true });
-text(testLabel, "TESTIMONIALS", { size: 11, color: COLORS.white, font: { family: "Inter", style: "Bold" }, letterSpacing: 1.5 });
+text(testLabel, "TESTIMONIALS", { size: 11, color: COLORS.white, font: { family: "Poppins", style: "Bold" }, letterSpacing: 1.5 });
 text(testHeader, "Don't take our word for it", { size: 36, font: { family: "Poppins", style: "Black" }, color: COLORS.white, lineHeight: 44 });
 
 const testimonials = [
@@ -309,7 +309,7 @@ testimonials.forEach(t => {
   const avatar = frame(author, "Avatar", { w: 44, h: 44, radius: 22, layout: "HORIZONTAL", mainAlign: "CENTER", crossAlign: "CENTER" }); fill(avatar, t.color);
   text(avatar, t.name[0], { size: 18, color: COLORS.white });
   const info = autoFrame(author, "Info", { layout: "VERTICAL", gap: 2 });
-  text(info, t.name, { size: 14, color: COLORS.white, font: { family: "Inter", style: "Bold" } });
+  text(info, t.name, { size: 14, color: COLORS.white, font: { family: "Poppins", style: "Bold" } });
   text(info, t.title, { size: 12, color: "rgba(255,255,255,0.5)" });
 });
 

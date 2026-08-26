@@ -24,15 +24,21 @@ export default function RootLayout() {
   const [iconFontsLoaded, iconFontsError] = useIconFonts();
 
   // Load custom fonts for retro vibe + DM Sans for body
-  const [fontsLoaded, fontsError] = useFonts({
-    'Poppins_400Regular': require('../assets/fonts/Poppins_400Regular.ttf'),
-    'Poppins_700Bold': require('../assets/fonts/Poppins_700Bold.ttf'),
-    'Poppins_900Black': require('../assets/fonts/Poppins_900Black.ttf'),
-    'DMSans_400Regular': require('../assets/fonts/DMSans_400Regular.ttf'),
-    'DMSans_500Medium': require('../assets/fonts/DMSans_500Medium.ttf'),
-    'DMSans_600SemiBold': require('../assets/fonts/DMSans_600SemiBold.ttf'),
-    'DMSans_700Bold': require('../assets/fonts/DMSans_700Bold.ttf'),
-  });
+  // On web, fonts are loaded via @font-face in +html.tsx (Google Fonts CDN)
+  // because expo-asset generates empty URIs for local .ttf files in web dev.
+  const [fontsLoaded, fontsError] = useFonts(
+    Platform.OS === 'web'
+      ? {}
+      : {
+          'Poppins_400Regular': require('../assets/fonts/Poppins_400Regular.ttf'),
+          'Poppins_700Bold': require('../assets/fonts/Poppins_700Bold.ttf'),
+          'Poppins_900Black': require('../assets/fonts/Poppins_900Black.ttf'),
+          'DMSans_400Regular': require('../assets/fonts/DMSans_400Regular.ttf'),
+          'DMSans_500Medium': require('../assets/fonts/DMSans_500Medium.ttf'),
+          'DMSans_600SemiBold': require('../assets/fonts/DMSans_600SemiBold.ttf'),
+          'DMSans_700Bold': require('../assets/fonts/DMSans_700Bold.ttf'),
+        },
+  );
 
   const loaded = iconFontsLoaded && fontsLoaded;
   const error = iconFontsError || fontsError;

@@ -43,4 +43,4 @@
 ## Font
 
 - Heading: **Poppins Black** (900)
-- Body: **Inter Regular** (400)
+- Body: **Poppins Regular** (400)
