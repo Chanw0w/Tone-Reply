@@ -8,7 +8,6 @@ from database import close_db_client, create_indexes
 from config import REDIS_URL
 from routes import auth, chat, favorites, presets
 
-# Redis client for distributed rate limiting (None if unavailable)
 redis_client: aioredis.Redis | None = None
 
 
@@ -21,7 +20,6 @@ async def lifespan(app: FastAPI):
             redis_client = aioredis.from_url(REDIS_URL, decode_responses=False)
             await redis_client.ping()
         except Exception:
-            # Fall back to no rate limiting if Redis is unreachable
             redis_client = None
     yield
     await close_db_client()
@@ -31,39 +29,49 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Tone-Reply API", lifespan=lifespan)
 
-# CORS: use env var for production origins, fallback to localhost for dev
 cors_origins = os.environ.get("CORS_ORIGINS", "http://localhost:8000,http://localhost:19006,https://tonereply.vercel.app,https://tonereply-i7owwoclt-tone-reply.vercel.app").split(",")
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
     allow_origins=cors_origins,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "DELETE", "OPTIONS"],
+    allow_headers=["Authorization", "Content-Type"],
 )
 
 
 @app.middleware("http")
 async def rate_limit_middleware(request: Request, call_next):
-    """Rate limit expensive LLM endpoints (10 req/min per IP) using Redis.
+    """Rate limit endpoints using Redis (10 req/min for LLM, 5 req/min for auth).
 
-    Falls open (allows the request) if Redis is unavailable so the app stays up.
+    Falls open if Redis is unavailable.
     """
     path = request.url.path
-    if path in ("/api/chat/analyze", "/api/chat/generate", "/api/chat/rewrite"):
-        client_ip = request.client.host if request.client else "unknown"
+    client_ip = request.client.host if request.client else "unknown"
+
+    rate_limit_paths = {
+        "/api/chat/analyze": 10,
+        "/api/chat/generate": 10,
+        "/api/chat/rewrite": 10,
+        "/api/auth/login": 5,
+        "/api/auth/register": 5,
+    }
+
+    if path in rate_limit_paths:
+        max_requests = rate_limit_paths[path]
         key = f"rate:{client_ip}:{path}"
         if redis_client is not None:
             try:
                 count = await redis_client.incr(key)
                 if count == 1:
                     await redis_client.expire(key, 60)
-                if count > 10:
+                if count > max_requests:
                     return JSONResponse(
                         status_code=429,
                         content={"detail": "Rate limit exceeded. Try again in a minute."},
                     )
             except Exception:
-                pass  # fail-open: allow the request if Redis hiccups
+                pass
+
     response = await call_next(request)
     return response
 
