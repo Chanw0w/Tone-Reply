@@ -8,6 +8,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useIconFonts } from "@/src/hooks/use-icon-fonts";
 import { AuthProvider } from "../src/utils/auth-context";
 import { ThemeProvider } from "../src/utils/theme-context";
+import "../src/utils/web-fonts";
 
 
 // Disable logbox errors etc so that users can see the app
