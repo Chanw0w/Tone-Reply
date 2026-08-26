@@ -35,27 +35,27 @@ class AuthResponse(BaseModel):
 
 
 class AnalyzeRequest(BaseModel):
-    conversation_text: str = Field(..., max_length=5000)
+    conversation_text: str = Field(..., min_length=1, max_length=5000)
 
 
 class GenerateRequest(BaseModel):
-    conversation_text: str = Field(..., max_length=5000)
-    goal: str = Field(..., max_length=100)
-    length: str = Field(..., max_length=100)
+    conversation_text: str = Field(..., min_length=1, max_length=5000)
+    goal: str = Field(..., min_length=1, max_length=100)
+    length: str = Field(..., min_length=1, max_length=100)
 
 
 class RewriteRequest(BaseModel):
-    text: str = Field(..., max_length=5000)
+    text: str = Field(..., min_length=1, max_length=5000)
 
 
 class FavoriteRequest(BaseModel):
-    original_conversation: str = Field(..., max_length=5000)
-    reply_text: str = Field(..., max_length=2000)
-    style_label: str = Field(..., max_length=100)
+    original_conversation: str = Field(..., min_length=1, max_length=5000)
+    reply_text: str = Field(..., min_length=1, max_length=2000)
+    style_label: str = Field(..., min_length=1, max_length=100)
 
 
 class PresetRequest(BaseModel):
-    name: str = Field(..., max_length=100)
-    goal: str = Field(..., max_length=100)
-    style: str = Field(..., max_length=100)
-    length: str = Field(..., max_length=100)
+    name: str = Field(..., min_length=1, max_length=100)
+    goal: str = Field(..., min_length=1, max_length=100)
+    style: str = Field(..., min_length=1, max_length=100)
+    length: str = Field(..., min_length=1, max_length=100)
