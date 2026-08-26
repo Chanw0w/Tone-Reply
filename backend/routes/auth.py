@@ -74,7 +74,6 @@ async def me(current_user: dict = Depends(get_current_user)):
 
 @router.post("/refresh", response_model=AuthResponse)
 async def refresh_token(current_user: dict = Depends(get_current_user)):
-    """Issue a fresh JWT token for the authenticated user."""
     user_id = current_user["id"]
     email = current_user["email"]
     token = create_jwt_token(user_id, email)
@@ -86,7 +85,6 @@ async def refresh_token(current_user: dict = Depends(get_current_user)):
 
 @router.post("/change-password")
 async def change_password(req: ChangePasswordRequest, current_user: dict = Depends(get_current_user)):
-    """Change the authenticated user's password."""
     if not verify_password(req.current_password, current_user["password_hash"]):
         raise HTTPException(status_code=401, detail="Current password is incorrect")
 
@@ -108,15 +106,15 @@ async def change_password(req: ChangePasswordRequest, current_user: dict = Depen
 
 @router.delete("/me")
 async def delete_account(current_user: dict = Depends(get_current_user)):
-    """Delete the authenticated user and all associated data."""
     user_id = current_user["id"]
 
     pool = await get_pool()
     async with pool.acquire() as conn:
-        await conn.execute("DELETE FROM users WHERE id = $1", user_id)
-        await conn.execute("DELETE FROM conversations WHERE user_id = $1", user_id)
-        await conn.execute("DELETE FROM presets WHERE user_id = $1", user_id)
-        await conn.execute("DELETE FROM favorites WHERE user_id = $1", user_id)
+        async with conn.transaction():
+            await conn.execute("DELETE FROM favorites WHERE user_id = $1", user_id)
+            await conn.execute("DELETE FROM presets WHERE user_id = $1", user_id)
+            await conn.execute("DELETE FROM conversations WHERE user_id = $1", user_id)
+            await conn.execute("DELETE FROM users WHERE id = $1", user_id)
 
     invalidate_user_cache(user_id)
     return {"success": True, "message": "Account and all data deleted"}
