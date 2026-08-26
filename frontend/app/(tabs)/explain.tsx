@@ -9,13 +9,14 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Animated,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { api } from "../../src/utils/api";
 import { useTheme } from "../../src/utils/theme-context";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
 import { typography, borderRadius } from "../../src/constants/theme";
+import { TactileButton } from "../../src/components/TactileButton";
+import { StaggeredCard } from "../../src/components/StaggeredCard";
 
 interface AnalyzeResponse {
   analysis: AnalysisResult;
@@ -29,72 +30,6 @@ interface AnalysisResult {
   conversation_balance: string;
   potential_ambiguity: string;
   coaching_tips: string[];
-}
-
-// 3D Tactile Pressable Wrapper
-function TactileButton({ children, onPress, style, disabled }: any) {
-  const scale = useRef(new Animated.Value(1)).current;
-
-  const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.94,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 4,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      <Animated.View style={[style, { transform: [{ scale }] }]}>
-        {children}
-      </Animated.View>
-    </TouchableOpacity>
-  );
-}
-
-// Staggered Entry Reveal Card
-function StaggeredCard({ children, index }: { children: React.ReactNode; index: number }) {
-  const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(24)).current;
-
-  useEffect(() => {
-    Animated.sequence([
-      Animated.delay(index * 100),
-      Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 350,
-          useNativeDriver: true,
-        }),
-        Animated.spring(translateY, {
-          toValue: 0,
-          friction: 6,
-          tension: 40,
-          useNativeDriver: true,
-        })
-      ])
-    ]).start();
-  }, [index]);
-
-  return (
-    <Animated.View style={{ opacity, transform: [{ translateY }] }}>
-      {children}
-    </Animated.View>
-  );
 }
 
 export default function ExplainScreen() {

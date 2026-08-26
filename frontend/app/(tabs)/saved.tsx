@@ -16,6 +16,7 @@ import { useTheme } from "../../src/utils/theme-context";
 import { EmptyState } from "../../src/components/EmptyState";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
 import { typography, borderRadius } from "../../src/constants/theme";
+import { GOALS, LENGTHS } from "../../src/constants/config";
 
 interface Favorite {
   id: string;
@@ -31,37 +32,6 @@ interface Preset {
   style: string;
   length: string;
 }
-
-const GOALS = [
-  "Continue conversation",
-  "Reply politely",
-  "End conversation",
-  "Set boundary",
-  "Ask for clarification",
-  "Be playful",
-  "Sound confident",
-  "Apologize",
-  "Reconnect",
-  "Say no",
-  "Flirt",
-  "Break up respectfully",
-  "Ask out",
-  "Negotiate",
-  "Calm argument",
-  "Be professional",
-  "Follow up"
-];
-
-const LENGTHS = [
-  "One sentence",
-  "Short",
-  "Medium",
-  "Long",
-  "Paragraph",
-  "Bullet points",
-  "Text message",
-  "Email"
-];
 
 export default function SavedScreen() {
   const { theme } = useTheme();

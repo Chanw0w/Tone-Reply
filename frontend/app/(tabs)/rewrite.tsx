@@ -10,7 +10,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
-  Animated,
 } from "react-native";
 import * as Clipboard from "expo-clipboard";
 import { Ionicons } from "@expo/vector-icons";
@@ -18,96 +17,9 @@ import { api } from "../../src/utils/api";
 import { useTheme } from "../../src/utils/theme-context";
 import { RainbowStripe } from "../../src/components/RainbowStripe";
 import { typography, borderRadius } from "../../src/constants/theme";
-
-interface Rewrites {
-  confident?: string;
-  romantic?: string;
-  flirty?: string;
-  less_needy?: string;
-  respectful?: string;
-  mysterious?: string;
-  masculine?: string;
-  feminine?: string;
-  professional?: string;
-}
-
-const STYLE_LABELS: Record<keyof Rewrites, { label: string; icon: string; color: string }> = {
-  confident: { label: "😎 More Confident", icon: "checkmark-circle", color: "#111827" },
-  romantic: { label: "❤️ More Romantic", icon: "heart", color: "#FF2D55" },
-  flirty: { label: "✨ More Flirty", icon: "sparkles", color: "#5856D6" },
-  less_needy: { label: "🎯 Less Needy", icon: "shield-checkmark", color: "#007AFF" },
-  respectful: { label: "🤝 More Respectful", icon: "people", color: "#34C759" },
-  mysterious: { label: "🕵️ More Mysterious", icon: "eye-off", color: "#8E8E93" },
-  masculine: { label: "💪 More Masculine", icon: "fitness", color: "#FF3B30" },
-  feminine: { label: "🌸 More Feminine", icon: "flower", color: "#FF1493" },
-  professional: { label: "💼 More Professional", icon: "briefcase", color: "#FF9500" },
-};
-
-// 3D Tactile Pressable Wrapper
-function TactileButton({ children, onPress, style, disabled }: any) {
-  const scale = useRef(new Animated.Value(1)).current;
-
-  const handlePressIn = () => {
-    Animated.spring(scale, {
-      toValue: 0.94,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const handlePressOut = () => {
-    Animated.spring(scale, {
-      toValue: 1,
-      friction: 4,
-      tension: 40,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  return (
-    <TouchableOpacity
-      activeOpacity={0.9}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
-      onPress={onPress}
-      disabled={disabled}
-    >
-      <Animated.View style={[style, { transform: [{ scale }] }]}>
-        {children}
-      </Animated.View>
-    </TouchableOpacity>
-  );
-}
-
-// Staggered Entry Reveal Card
-function StaggeredCard({ children, index }: { children: React.ReactNode; index: number }) {
-  const opacity = useRef(new Animated.Value(0)).current;
-  const translateY = useRef(new Animated.Value(24)).current;
-
-  useEffect(() => {
-    Animated.sequence([
-      Animated.delay(index * 100),
-      Animated.parallel([
-        Animated.timing(opacity, {
-          toValue: 1,
-          duration: 350,
-          useNativeDriver: true,
-        }),
-        Animated.spring(translateY, {
-          toValue: 0,
-          friction: 6,
-          tension: 40,
-          useNativeDriver: true,
-        })
-      ])
-    ]).start();
-  }, [index]);
-
-  return (
-    <Animated.View style={{ opacity, transform: [{ translateY }] }}>
-      {children}
-    </Animated.View>
-  );
-}
+import { TactileButton } from "../../src/components/TactileButton";
+import { StaggeredCard } from "../../src/components/StaggeredCard";
+import { Rewrites, STYLE_LABELS } from "../../src/constants/config";
 
 export default function RewriteScreen() {
   const { theme } = useTheme();
