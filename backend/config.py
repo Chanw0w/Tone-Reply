@@ -26,7 +26,7 @@ JWT_EXPIRY_DAYS = 7
 LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "groq")
 LLM_API_KEY = os.environ.get("LLM_API_KEY", "")
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://api.groq.com/openai/v1")
-LLM_MODEL = os.environ.get("LLM_MODEL", "openai/gpt-oss-20b")
+LLM_MODEL = os.environ.get("LLM_MODEL", "llama3-8b-8192")
 
 # Redis (distributed rate limiting)
 REDIS_URL = os.environ.get("REDIS_URL", "")
