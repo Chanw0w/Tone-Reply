@@ -7,6 +7,16 @@ from config import TOKENTHON_API_KEY, TOKENTHON_BASE_URL, LLM_PROVIDER, LLM_API_
 
 logger = logging.getLogger(__name__)
 
+# Shared HTTP client for connection reuse
+_http_client: httpx.AsyncClient | None = None
+
+
+def _get_http_client() -> httpx.AsyncClient:
+    global _http_client
+    if _http_client is None or _http_client.is_closed:
+        _http_client = httpx.AsyncClient(timeout=60.0)
+    return _http_client
+
 
 def strip_thinking_tags(text: str) -> str:
     """Remove <think>...</think> tags from model responses."""
@@ -38,20 +48,20 @@ async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
             "max_tokens": 2000
         }
 
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.post(
-                f"{base_url}/chat/completions",
-                headers=headers,
-                json=payload
-            )
+        client = _get_http_client()
+        response = await client.post(
+            f"{base_url}/chat/completions",
+            headers=headers,
+            json=payload
+        )
 
-            if response.status_code != 200:
-                logger.error("LLM API error: status=%d", response.status_code)
-                raise HTTPException(status_code=500, detail="LLM request failed")
+        if response.status_code != 200:
+            logger.error("LLM API error: status=%d", response.status_code)
+            raise HTTPException(status_code=500, detail="LLM request failed")
 
-            data = response.json()
-            content = data["choices"][0]["message"]["content"]
-            return strip_thinking_tags(content)
+        data = response.json()
+        content = data["choices"][0]["message"]["content"]
+        return strip_thinking_tags(content)
 
     except HTTPException:
         raise
