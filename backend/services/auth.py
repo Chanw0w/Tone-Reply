@@ -9,15 +9,16 @@ from config import JWT_SECRET, ALGORITHM, JWT_EXPIRY_DAYS
 
 def hash_password(password: str) -> str:
     salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
+    return bcrypt.hashpw(password.encode("utf-8"), salt).decode("utf-8")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+    return bcrypt.checkpw(plain_password.encode("utf-8"), hashed_password.encode("utf-8"))
 
 def create_jwt_token(user_id: str, email: str) -> str:
     payload = {
         "sub": user_id,
         "email": email,
+        "iat": datetime.now(timezone.utc),
         "exp": datetime.now(timezone.utc) + timedelta(days=JWT_EXPIRY_DAYS)
     }
     return jwt.encode(payload, JWT_SECRET, algorithm=ALGORITHM)
@@ -25,7 +26,7 @@ def create_jwt_token(user_id: str, email: str) -> str:
 
 # Short-lived in-process cache to avoid a DB hit on every authenticated request.
 _USER_CACHE: dict = {}  # user_id -> (user_dict, expiry_ts)
-_USER_CACHE_TTL = 30  # seconds
+_USER_CACHE_TTL = 300  # seconds
 
 
 def _get_cached_user(user_id: str):
@@ -41,7 +42,6 @@ def _set_cached_user(user_id: str, user: dict) -> None:
 
 
 def invalidate_user_cache(user_id: str) -> None:
-    """Invalidate the cached user (call on password change / account deletion)."""
     _USER_CACHE.pop(user_id, None)
 
 
@@ -64,7 +64,10 @@ async def get_current_user(authorization: Optional[str] = Header(None)) -> dict:
 
         pool = await get_pool()
         async with pool.acquire() as conn:
-            user = await conn.fetchrow("SELECT * FROM users WHERE id = $1", user_id)
+            user = await conn.fetchrow(
+                "SELECT id, email, password_hash, created_at FROM users WHERE id = $1",
+                user_id
+            )
             if not user:
                 raise HTTPException(status_code=401, detail="User not found")
             user_dict = dict(user)
