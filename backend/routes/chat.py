@@ -1,5 +1,4 @@
 import json
-import json
 import uuid
 from datetime import datetime, timezone
 from fastapi import APIRouter, Depends
@@ -58,7 +57,7 @@ async def analyze_conversation(req: AnalyzeRequest, current_user: dict = Depends
             """INSERT INTO conversations (id, user_id, conversation_text, analysis, created_at) 
                VALUES ($1, $2, $3, $4, $5)""",
             analysis_id, current_user["id"], req.conversation_text, 
-            str(parsed), created_at  # Store as JSON string
+            json.dumps(parsed), created_at
         )
     
     return {
