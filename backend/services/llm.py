@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def strip_thinking_tags(text: str) -> str:
     """Remove <think>...</think> tags from model responses."""
-    return re.sub(r'<think>.*?</think>\s*', '', text, flags=re.DOTALL).strip()
+    return re.sub(r"<think>.*?</think>\s*", "", text, flags=re.DOTALL).strip()
 
 
 async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
@@ -46,7 +46,7 @@ async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
             )
 
             if response.status_code != 200:
-                logger.error(f"LLM API error: {response.status_code} - {response.text}")
+                logger.error("LLM API error: status=%d", response.status_code)
                 raise HTTPException(status_code=500, detail="LLM request failed")
 
             data = response.json()
@@ -57,16 +57,12 @@ async def get_llm_response(system_msg: str, user_msg_text: str) -> str:
         raise
     except Exception as e:
         logger.error("Error calling LLM Chat", exc_info=True)
-        raise HTTPException(status_code=500, detail=f"LLM Connection failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="LLM service temporarily unavailable. Please try again.")
 
 
 def clean_and_parse_json(text: str):
     cleaned = text.strip()
-    if cleaned.startswith("```"):
-        first_line_end = cleaned.find("\n")
-        if first_line_end != -1:
-            cleaned = cleaned[first_line_end:].strip()
-        if cleaned.endswith("```"):
+    if cleaned.startswith(""):
             cleaned = cleaned[:-3].strip()
 
     if cleaned.startswith("json"):
